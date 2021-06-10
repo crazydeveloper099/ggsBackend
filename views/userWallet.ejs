@@ -1,0 +1,202 @@
+<%- include('partials/header_challengeList') %>
+
+<style>
+   /* Works on Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(226, 49, 49) #7d818e11;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: orange;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: blue;
+  border-radius: 20px;
+  border: 3px solid orange;
+}
+ </style>
+
+<script src="/js/walletLogic.js"></script>
+
+<link rel="stylesheet" href="/css/wallet_style.css">
+
+<input type="hidden" id='email' value="<%=email%>">
+<input type="hidden" id="wallet_balance" value="<%=wallet_balance%>">
+<input type="hidden" id="phone" value="<%=phone%>">
+
+<section  style="width: 100%;">  
+    <form id="joinForm" action="/dashboard" method="post">
+      <div style="width:100%; text-align: center;">
+        <input name="id" type="hidden" id="id_store" value="1234">
+    </div> 
+    </form> 
+
+<div style="width:100%; height:100%;">
+    <div class="container" >
+        <div class="wallet" >
+            <content class="right-trans" >
+                
+                <div id="balance" class='coin-text' style="font-family: 'avenir';"></div>
+
+                <button type="button" class="button-view-all c-buttonJoin" id='withdrawButton' style="font-family: 'avenir';border:1px solid #707070;
+                background-color: black;">
+                  RETIRO 
+                  <i class="fas fa-angle-right"></i>
+                </button>
+
+                <div class="trans-list" style="padding: 2vw;"> 
+                    <div style="width: 100%;height:100%;text-align: center;">
+                        <div class="spinner-border spinner-style" ></div>         
+
+                    </div>
+                </div>
+              </content>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="amountInputModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;">
+        <h4 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">
+          Realiza un retiro
+        </h4>
+      </div>
+      <div id='modalBodyParticipate' class="modal-body" style="text-align: center;" >
+        <!-- <form id='uploadForm' action='/declareResult' method='POST' encType="multipart/form-data"> -->
+          <!-- <input style="display: none;" type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required onchange="checkUpload();" /> -->
+          <p id="fileName" style="color: white;"></p>
+          <div id="input-block">
+            <div class="col-sm-12" style="color: white;padding: 1vw;">
+                Para completar tu solicitud, por favor llena los siguientes datos y empezaremos el proceso de verificacion:
+            </div>
+          <div class="col-sm-12">
+            <div class="md-form mt-0">
+              <input type="number" style="color:white;text-align: center; &::-webkit-inner-spin-button display: none; -moz-appearance:textfield;"  class="form-control" id="inputCoins" placeholder="ingresa monto a retirar (1 coin= $1000.00 COP)" required>
+            </div>
+            <div id='insufficientAmountMSG' style="display: none;color: orange;"><strong>No tienes suficiente saldo para retirar</strong></div>
+            <div id='emptyAmountMSG' style="display: none;color: orange;"><strong>Este campo es  obligatorio</strong></div>
+          </div>
+            <div class="col-sm-12">
+              <div class="md-form mt-0">
+                <input type="text" style="color:white;text-align: center;"  class="form-control" id="inputName" placeholder="Nombre completo" required>
+              </div>
+              <div id='emptyNameMSG' style="display: none;color: orange;"><strong>Este campo es  obligatorio</strong></div>
+            </div>
+  
+            <div class="col-sm-12">
+              <div class="md-form mt-0">
+                <input type="text" style="color:white;text-align: center;"  class="form-control" id="inputColID" placeholder="No. de Cédula" required>
+              </div>
+              <div id='emptyIDMSG' style="display: none;color: orange;"><strong>Este campo es  obligatorio</strong></div>
+            </div>
+  
+            <div class="col-sm-12">
+              <div class="md-form mt-0">
+                <input type="text" style="color:white;text-align: center;"  class="form-control" id="inputCity" placeholder="Ciudad" required>
+              </div>
+              <div id='emptyCityMSG' style="display: none;color: orange;"><strong>Este campo es  obligatorio</strong></div>
+            </div>
+          </div>
+          <div id='errorMessage' style="display: none;color: orange;"><strong></strong></div>
+          <button   
+          id="buttonWithdraw"
+          type="button"
+          name="more_challenges" 
+          class="button-view-all c-buttonJoin"
+           > 
+           Continuar
+           <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+        </button>       
+        <!-- </form>   -->
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <a type="button" id="cancel_footer" data-dismiss="modal" class='footerMobileFontSize' style='color:white'> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="declarationForm" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content" style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+        <div class="modal-header " style="border: none;">
+          <h4 class="modal-title" id="staticBackdropLabel" style="width: 100%;text-align: center;"><strong>¡Felicitaciones! ¡Eres un ganador!</strong></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+            <span aria-hidden="true" style="color: white;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <div id='modalFormBody' style="font-size: 1vw;text-align: center;padding: 1vw;"></div> 
+        </div>
+        <div class="modal-footer" >
+            <input type="checkbox" id="aggrementCheckbox" name="aggrementCheckbox">
+            <label for="aggrementCheckbox" style="font-size: 1vw;"> Acepto estos términos y condiciones</label>
+            <br>
+                  <button   
+                  id="buttonSubmitDetails"
+                  type="button"
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin"
+                  disabled
+                   > 
+                   Next
+                   <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+                </button>    
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="successForm"  data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+      <div class="modal-content" style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+        <div class="modal-header " style="border: none;">
+          <h4 class="modal-title" id="staticBackdropLabel" style="width: 100%;text-align: center;"><strong>¡Tu solicitud ha sido enviada! 🎉</strong></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+            <span aria-hidden="true" style="color: white;">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+           <div id='modalFormBody' style="font-size: 1vw;text-align: center;padding: 1vw;">
+            Recibirás una confirmación de solicitud por correo electrónico.<br>
+            Una vez el operador verifique tus datos en un plazo de 5-7 días hábiles, se comunicará contigo para realizar la consignación de tu saldo en COP. 
+        </div> 
+        </div>
+        <div class="modal-footer" style="border: none;">
+                  <button   
+                  id="closeThanksDialog"
+                  type="button"
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin"
+                  
+                   > 
+                   completar
+                   <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+                </button>    
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>  
+
+
+<%- include('partials/footer_challengeList') %>

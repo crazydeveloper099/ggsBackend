@@ -1,0 +1,285 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    // $('#progress').hide();
+    // $('#overlay').hide();
+
+    let activeEvent='LiveEvent';
+    $.cookie("activeEvent", activeEvent);
+    $('.nav-link').click(function() {
+      activeEvent=this.id.split('-')[0];
+});
+
+  
+  $("#publishResult").on("submit", function(){
+    $.cookie("activeEvent", activeEvent);
+    $("#publishResult").submit();
+ })
+
+ $("#editResult").on("submit", function(){
+    $.cookie("activeEvent", activeEvent);
+    $("#editResult").submit();
+ })
+
+ $("#deleteResult").on("submit", function(){
+    $.cookie("activeEvent", activeEvent);
+    $("#deleteResult").submit();
+ })
+
+ $("#deleteChallenge").on("submit", function(){
+    $.cookie("activeEvent", activeEvent);
+    $("#deleteChallenge").submit();
+ })
+ $("#manageChallenge").on("submit", function(){
+    $.cookie("activeEvent", activeEvent);
+    $("#manageChallenge").submit();
+ })
+ 
+ 
+ 
+
+
+    $('.publishButtonClass').click(function(e) {
+      var str = $(this).val();
+      $('#modalSubscriptionForm').modal({
+        show: true
+      });
+      $("#publishChallengeModal").val(str);
+    });
+    if($('#categoryLen').val()>0) {$('.createCategory').hide();}
+   if($('#categoryLen').val()===0 || $('#categoryLen').val()===null){
+     $('.createCategory').show();
+    }
+
+  
+    $('#dropdownUl li').click(function(e) {
+      $('.createCategory').hide();
+      document.getElementById("dropdownValueId").value="";
+      document.getElementById("dropdownValueId").value=$(this).text();
+      document.getElementById("category_newId").value=null;
+    });
+    $('#add_category').click(function(e) {
+      $('.createCategory').show();
+      document.getElementById("dropdownValueId").value=null;
+    });
+  });
+</script>
+
+
+
+<% if(successMessage) {%>
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <strong><%=showMessage%></strong>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<% } %>
+
+
+<div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+  <div class="container">
+    <p style="color:#ffa500; font-size:2rem; font-family: 'BIGMACCA';">ADMINISTRAR | RETOS Y TORNEOS</p>
+  </div>
+</div>
+
+
+
+
+<h2 style="color:white; font-weight:bold; margin-left:250px;"> Challenges Available</h2>
+
+<div class="list-group" id="list-tab" role="tablist">
+  <div>
+    <div style="float:left;">
+    <a href="/userConsole" class="btn btn-black" style="width:10vw;margin-left:250px;">User Console</a>
+    </div>
+    <div style="float:left;">
+      <a href="/addChallenge" class="btn btn-black" style="width:10vw;">ADD EVENT</a>
+      </div>
+      <div style="float:left;">
+        <a href="/posterConsole" class="btn btn-black" style="width:10vw;">MANAGE POSTERS</a>
+        </div>
+        <a href="/payoutWinners"    class="btn btn-black" style="background: #222; color:#FFFFFF ">
+          <strong>PAYOUT WINNERS</strong>
+        </a>
+      
+      </div>
+    </div>
+
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+    <% eventsArr.map((eventType,index)=>{ %>
+      <%if(index==0){ %>
+        <li class="nav-item">
+          <a class="nav-link active" id="<%=eventType+'-tab'%>" data-toggle="tab" href="<%='#'+eventType%>" role="tab" aria-controls="<%=eventType%>"
+            aria-selected="true" onclick="setEventType(event)"><%=eventType%></a>
+        </li>
+      <%}%>
+      <%if(index>0){ %>
+        <li class="nav-item">
+          <a class="nav-link" id="<%=eventType+'-tab'%>" data-toggle="tab" href="<%='#'+eventType%>" role="tab" aria-controls="<%=eventType%>"
+            aria-selected="true"><%=eventType%></a>
+        </li>      
+        <%}%>
+    <% }) %>
+  </ul>
+
+
+    <div class="tab-content" id="myTabContent">
+      <%eventsArr.map((eventType,index)=>{ %>
+    <%if(index==0){ %>
+      <div class="tab-pane fade show active" id="<%=eventType%>" role="tabpanel" aria-labelledby="<%=eventType+'-tab'%>">  
+      <% if(eventsObj[eventType].length>0){
+        eventsObj[eventType].map((datai,i)=>{ %>
+    <div style="padding: 0px 250px 0px; margin-top:35px;">
+      <div class="shadow_admin" style="background:#222; border-radius:10px; padding:15px;">
+        <img style="
+            margin-right:20px;
+            float:left;
+            height:160px;
+            width:260px;
+            padding-bottom:10px;" src=<%=datai.src%>>
+  
+  
+        <div>
+          <h4 style="color:white;"><%- datai.challengeName %></h4>
+          <h6 style="color:#AAAAAA; margin-top: 2px;">Type: <%= datai.challengeType %></h6>
+          <h6 style="color:#AAAAAA; margin-top: 2px;"></h6>
+          <h6 style="color:#AAAAAA;"> <%= datai.category %></h6>
+          <form id="deleteChallenge" action="/adminPanel" method="post">
+            <input type="hidden" id="eventType" name="eventType" value=<%=eventType%>>
+            <input type="hidden" id="custId" name="deleteButton" value=true>
+            <button name="delete" value=<%= datai.challengeId %> type="submit" form="deleteChallenge" class="btn   btn-black" style="background: #222; color:#FFFFFF;float:left;">       
+              DELETE CHALLENGE
+            </button>
+          </form>
+          <form id="manageChallenge" action="/adminPanel" method="post">
+            <input type="hidden" id="custId" name="manageButton" value=true>
+            <button name="manage" value=<%= datai.challengeId %> type="submit" form="manageChallenge" class="btn   btn-black" style="background: #222; color:#FFFFFF;float:left;">
+              MANAGE CHALLENGE
+            </button>
+          </form>
+          <!-- <a href="/chats?id=<%= datai.challengeId %>" name="resultButton" value="<%= datai.challengeId %>" type="submit" form="editResult" class="btn btn-black" style="background: #222; color:#FFFFFF ">
+            <strong>CHAT</strong>
+          </a> -->
+          
+          <% if(!datai.isResultPublished) {%>
+            <form id="publishResult" action="/adminPanel" method="post">
+              <input type="hidden" id="custId" name="publishResult" value=true />
+              <button type="submit" form="publishResult" class="btn btn-black" name="resultButton" value=<%= datai.challengeId %> style="background: #222;color:#FFFFFF;">PUBLISH RESULT</button>
+            </form>
+            <% } %>
+          <% if(datai.isResultPublished) {%>
+          <form id="deleteResult" action="/adminPanel" method="post">
+            <input type="hidden" id="custId" name="deleteResult" value=true>
+            <input type="hidden" id="eventType" name="eventType" value='<%=eventType%>'>
+            <button name="deleteResultId" value="<%= datai.challengeId %>" type="submit" form="deleteResult" class="btn btn-black " style="background: #222; color:#FFFFFF; ">
+              Delete Result
+            </button>
+          </form>
+          <form id="editResult" action="/adminPanel" method="post">
+            <input type="hidden" id="custId" name="publish" value=true>
+            <button name="resultButton" value="<%= datai.challengeId %>" type="submit" form="editResult" class="btn btn-black" style="background: #222; color:#FFFFFF">
+              EDIT RESULT
+            </button>   
+          </form>
+          <% } %>
+        </div>
+      </div>
+    </div>
+    <% })} %>
+  </div>
+
+  <%}%>
+  <%if(index>0){ %>
+
+    <div class="tab-pane fade" id="<%=eventType%>" role="tabpanel" aria-labelledby="<%=eventType+'-tab'%>">  
+
+    <% if(eventsObj[eventType].length>0){
+      eventsObj[eventType].map((datai,i)=>{ %>
+  <div style="padding: 0px 250px 0px; margin-top:35px;">
+    <div class="shadow_admin" style="background:#222; border-radius:10px; padding:15px;">
+      <img style="
+          margin-right:20px;
+          float:left;
+          height:160px;
+          width:260px;
+          padding-bottom:10px;" src=<%=datai.src%>>
+
+
+      <div>
+        <h4 style="color:white;"><%- datai.challengeName %></h4>
+        <h6 style="color:#AAAAAA; margin-top: 2px;">Type: <%= datai.challengeType %></h6>
+        <h6 style="color:#AAAAAA; margin-top: 2px;"></h6>
+        <h6 style="color:#AAAAAA;"> <%= datai.category %></h6>
+      
+        <form id="deleteChallenge" action="/adminPanel" method="post">
+          <input type="hidden" id="custId" name="deleteButton" value=true>
+          <button name="delete" value=<%= datai.challengeId %> type="submit" form="deleteChallenge" class="btn   btn-black" style="background: #222; color:#FFFFFF;float:left;">
+            DELETE CHALLENGE
+          </button>
+        </form>
+        <form id="manageChallenge" action="/adminPanel" method="post">
+          <input type="hidden" id="custId" name="manageButton" value=true>
+          <button name="manage" value=<%= datai.challengeId %> type="submit" form="manageChallenge" class="btn   btn-black" style="background: #222; color:#FFFFFF;float:left;">
+            MANAGE CHALLENGE
+          </button>
+        </form>
+        <!-- <a href="/chats?id=<%= datai.challengeId %>" name="resultButton" value="<%= datai.challengeId %>" type="submit" form="editResult" class="btn btn-black" style="background: #222; color:#FFFFFF ">
+          <strong>CHAT</strong>
+        </a> -->
+        <% if(!datai.isResultPublished) {%>
+          <form id="publishResult" action="/adminPanel" method="post">
+            <input type="hidden" id="custId" name="publishResult" value=true />
+            <button type="submit" form="publishResult" class="btn btn-black" name="resultButton" value=<%= datai.challengeId %> style="background: #222;color:#FFFFFF;">PUBLISH RESULT</button>
+          </form>
+          <% } %>
+        <% if(datai.isResultPublished) {%>
+        <form id="deleteResult" action="/adminPanel" method="post">
+          <input type="hidden" id="custId" name="deleteResult" value=true>
+          <button name="deleteResultId" value="<%=datai.challengeId%>" type="submit" form="deleteResult" class="btn btn-black " style="background: #222; color:#FFFFFF; ">
+            Delete Result
+          </button>
+        </form>
+        <form id="editResult" action="/adminPanel" method="post">
+          <input type="hidden" id="custId" name="publish" value=true>
+          <button name="resultButton" value="<%= datai.challengeId %>" type="submit" form="editResult" class="btn btn-black" style="background: #222; color:#FFFFFF">
+            EDIT RESULT
+          </button>
+          
+          
+        </form>
+        
+        <% } %>
+        <% if(eventType=="normalEvents") {%>
+          <a  href="<%='/selectParticipants?'+datai.challengeId%>">
+            <button class="btn btn-black" style="background: #222; color:#FFFFFF">
+              ADD PARTICIPANTS
+            </button>
+          </a>
+        <% } %>
+
+      </div>
+    </div>
+  </div>
+  <% })} %>
+</div>
+<%}%>
+<% }) %>
+</div>
+</div>
+<br />
+<!-- <progress id='progress' class="pure-material-progress-circular"/> -->
+<!-- <div class="modal fade show" id="modalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Publish Challenge</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div> -->
+<%- include('partials/footer') %>

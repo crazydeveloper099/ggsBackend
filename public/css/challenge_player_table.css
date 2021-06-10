@@ -1,0 +1,468 @@
+
+
+/*//////////////////////////////////////////////////////////////////
+[ FONT ]*/
+
+
+@media only screen and (min-device-width: 801px) {
+
+
+
+.scrollbar
+{
+	margin-left: 30px;
+	float: left;
+	height: 300px;
+	width: 65px;
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
+
+.force-overflow
+{
+	min-height: 450px;
+}
+
+
+
+#style-2::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
+
+
+
+
+@font-face {
+    font-family: Lato-Regular;
+    src: url('../fonts/Lato/Lato-Regular.ttf'); 
+  }
+  
+  @font-face {
+    font-family: Lato-Bold;
+    src: url('../fonts/Lato/Lato-Bold.ttf'); 
+  }
+  
+  /*//////////////////////////////////////////////////////////////////
+  
+  
+  
+  border: none !important;
+  }
+  
+  [ Scroll bar ]*/
+ 
+  /*//////////////////////////////////////////////////////////////////
+  [ Table ]*/
+  
+  .limiter {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .container-table100 {
+    width: 65%;
+    background: rgba(0, 0, 0, 0);
+  
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .wrap-table100 {
+    width: 100%;
+  }
+  
+  /*//////////////////////////////////////////////////////////////////
+  [ Table ]*/
+  .table100 {
+    background: rgba(0, 0, 0, 0);
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  th, td {
+    font-weight: unset;
+    padding-right: 10px;
+  }
+  
+  .column1 {
+    width: 10%;
+    padding-left: 10px;
+  }
+  
+  .column2 {
+    width: 13%;
+  }
+  
+  .column3 {
+    width: 22%;
+  }
+  
+  .column4 {
+    width: 19%;
+  }
+  
+  .column5 {
+    width: 13%;
+  }
+  
+  .table100-head th {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  
+  .table100-body td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  
+  /*==================================================================
+  [ Fix header ]*/
+  .table100 {
+    position: relative;
+    padding-top: 60px;
+  }
+  
+  .table100-head {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  .table100-body {
+    max-height: 585px;
+    overflow: auto;
+  }
+  
+  
+ 
+  
+  /*==================================================================
+  [ Ver5 ]*/
+  .table100.ver5 {
+    margin-right: -30px;
+  }
+
+  .table100.ver5 .table100-head {
+    padding-right: 30px;
+  }
+  
+  .table100.ver5 th {
+    font-family: Lato-Bold;
+    font-size: 1vw;
+    color: white;
+    line-height: 1;
+    text-align: center;
+    background-color: transparent;
+  }
+  
+  .table100.ver5 td {
+    font-family: Lato-Regular;
+    font-size: 1vw;
+    color: white;
+    line-height: 1;
+    text-align: center;
+    background-color:rgba(38, 38, 38, 0.3);
+  }
+  
+  .table100.ver5 .table100-body tr {
+    overflow: hidden; 
+    border-bottom: 10px solid #fff;
+    border-radius: 10px;
+  }
+  
+  .table100.ver5 .table100-body table { 
+    border-collapse: separate; 
+    border-spacing: 0 10px; 
+  }
+  .table100.ver5 .table100-body td {
+      border: solid 1px transparent;
+      border-style: solid none;
+      padding-top: 10px;
+      padding-bottom: 10px;
+  }
+  .table100.ver5 .table100-body td:first-child {
+      border-left-style: solid;
+      border-top-left-radius: 10px; 
+      border-bottom-left-radius: 10px;
+  }
+  .table100.ver5 .table100-body td:last-child {
+      border-right-style: solid;
+      border-bottom-right-radius: 10px; 
+      border-top-right-radius: 10px; 
+  }
+  
+  .table100.ver5 tr:hover td {
+    background-color:rgba(38, 38, 38, 1);
+    cursor: pointer;
+  }
+  
+  .table100.ver5 .table100-head th {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  
+  /*---------------------------------------------*/
+  
+  .table100.ver5 {
+    overflow: hidden;
+  }
+  
+  .table100.ver5 .table100-body{
+    padding-right: 30px;
+  }
+}
+  
+  @media only screen and (max-device-width: 800px) {
+    .scrollbar
+{
+	margin-left: 30px;
+	float: left;
+	height: 300px;
+	width: 65px;
+	background: #F5F5F5;
+	overflow-y: scroll;
+	margin-bottom: 25px;
+}
+
+.force-overflow
+{
+	min-height: 450px;
+}
+
+
+
+#style-2::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+#style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #D62929;
+}
+
+
+
+
+@font-face {
+    font-family: Lato-Regular;
+    src: url('../fonts/Lato/Lato-Regular.ttf'); 
+  }
+  
+  @font-face {
+    font-family: Lato-Bold;
+    src: url('../fonts/Lato/Lato-Bold.ttf'); 
+  }
+  
+  /*//////////////////////////////////////////////////////////////////
+  
+  
+  
+  border: none !important;
+  }
+  
+  [ Scroll bar ]*/
+ 
+  /*//////////////////////////////////////////////////////////////////
+  [ Table ]*/
+  
+  .limiter {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .container-table100 {
+    width: 90%;
+    background: rgba(0, 0, 0, 0);
+  
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .wrap-table100 {
+    width: 100%;
+  }
+  
+  /*//////////////////////////////////////////////////////////////////
+  [ Table ]*/
+  .table100 {
+    background: rgba(0, 0, 0, 0);
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  th, td {
+    font-weight: unset;
+    padding-right: 5px;
+  }
+  
+  .column1 {
+    width: 13%;
+  }
+  
+  .column2 {
+    width: 13%;
+  }
+  
+  .column3 {
+    width: 13%;
+  }
+  
+  .column4 {
+    width: 13%;
+  }
+  
+  .column5 {
+    width: 13%;
+  }
+  
+  .table100-head th {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+  
+  .table100-body td {
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+  
+  /*==================================================================
+  [ Fix header ]*/
+  .table100 {
+    position: relative;
+    padding-top: 60px;
+  }
+  
+  .table100-head {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+  }
+  
+  .table100-body {
+    max-height: 585px;
+    overflow: auto;
+  }
+  
+  
+ 
+  
+  /*==================================================================
+  [ Ver5 ]*/
+  .table100.ver5 {
+    margin-right: -12vw;
+  }
+
+  .table100.ver5 .table100-head {
+    padding-right: 10px;
+  }
+  
+  .table100.ver5 th {
+    font-family: Lato-Bold;
+    font-size: 3vw;
+    color: white;
+    text-align: center;
+    background-color: transparent;
+  }
+  
+  .table100.ver5 td {
+    font-family: Lato-Regular;
+    font-size: 2.5vw;
+    color: white;
+    line-height: 1;
+    text-align: center;
+    background-color:rgba(38, 38, 38, 0.3);
+  }
+  
+  .table100.ver5 .table100-body tr {
+    overflow: hidden; 
+    border-bottom: 10px solid #fff;
+    border-radius: 10px;
+  }
+  
+  .table100.ver5 .table100-body table { 
+    border-collapse: separate; 
+    border-spacing: 0 5vw; 
+  }
+  .table100.ver5 .table100-body td {
+      border: solid 1px transparent;
+      border-style: solid none;
+      padding-top: 3vw;
+      padding-bottom: 3vw;
+  }
+  .table100.ver5 .table100-body td:first-child {
+      border-left-style: solid;
+      border-top-left-radius: 10px; 
+      border-bottom-left-radius: 10px;
+  }
+  .table100.ver5 .table100-body td:last-child {
+      border-right-style: solid;
+      border-bottom-right-radius: 10px; 
+      border-top-right-radius: 10px; 
+  }
+  
+  .table100.ver5 tr:hover td {
+    background-color:rgba(38, 38, 38, 1);
+    cursor: pointer;
+  }
+  
+  .table100.ver5 .table100-head th {
+    padding-top: 3vw;
+    padding-bottom: 3vw;
+  }
+  
+  /*---------------------------------------------*/
+  
+  .table100.ver5 {
+    overflow: hidden;
+  }
+  
+  .table100.ver5 .table100-body{
+    padding-right: 15px;
+  }
+  }

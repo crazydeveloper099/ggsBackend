@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/chatStyle.css"/>
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script id=client_script src="/js/chatLogic.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emojione@3.1.2/lib/js/emojione.min.js"></script> 
+
+<script type="text/javascript" src="/js/emojionearea.min.js"></script>
+<link rel="stylesheet" href='/css/emojionearea.min.css' />
+<script>
+    $(document).ready(function() {
+        window.emojioneVersion = "3.1.2";
+        var el = $("#emojiBut").emojioneArea({standalone: true});
+        $("#emojiBut")[0].emojioneArea.setText('');
+        el[0].emojioneArea.on("emojibtn.click", function(btn, event) {
+            $("#message_form_input").val($("#message_form_input").val()+$("#emojiBut")[0].emojioneArea.getText())
+            $("#emojiBut")[0].emojioneArea.setText('');
+        });
+  });
+</script>
+<input id="challengeID" type="hidden" value="<%=challengeId%>">
+<input type="hidden" id="userGameName" value="Admin">
+<div>
+
+    <div id=messages_center>
+      <ul id="messages"></ul>
+    </div>
+  
+      <div id='bottomDiv'>
+        <div id=username_is_typing_board style="visibility: hidden;margin-left:3vw ;padding: 0.5vw;color: white;">typing..</div>
+        <form class="form-inline" id=message_form autocomplete="off">
+      
+          <input type="text" id="message_form_input" class="form-control form-control-lg" style="height: 8vh;"  placeholder="Type your Message Here" />
+          <div id="emojiBut" type="button" ></div>
+
+          <button id='sendMsgButton' type="submit"><i class="fas fa-paper-plane" style="font-size: 1vw;color: white;"></i></button>
+      </form>  
+        </div>
+</div>
+
+  

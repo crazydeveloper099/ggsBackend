@@ -1,0 +1,111 @@
+
+:root {
+    --carouselNew-tile-width:   49%;
+    --carouselNew-tile-height:  calc(var(--carouselNew-tile-width) / (16 / 9));
+    --carouselNew-growth-factor: 1.0;
+    --carouselNew-fade-opacity:   1;
+    --carouselNew-normal-opacity: 1;
+    --carouselNew-offset-left:  calc(-1 * (var(--carouselNew-tile-width) * (var(--carouselNew-growth-factor) - 1) / 2));
+    --carouselNew-offset-right: calc(var(--carouselNew-tile-width) * (var(--carouselNew-growth-factor) - 1));
+    --carouselNew-transition-1: 1s;
+    --carouselNew-transition-2: 0.5s;
+    --carouselNew-transition-3: 0.3s;
+}
+
+/* carouselNew Container */
+.carouselNew {
+    margin: 0;
+    box-sizing: border-box;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* carouselNew Row */
+.carouselNew-row {
+    white-space: nowrap;
+    margin-top: calc((var(--carouselNew-tile-height) * (var(--carouselNew-growth-factor) - 1)) / 2);
+    margin-left: calc((var(--carouselNew-tile-width) * (var(--carouselNew-growth-factor) - 1)) / 2);
+    margin-right: calc((var(--carouselNew-tile-width) * (var(--carouselNew-growth-factor) - 1)) / 2);
+    transition: var(--carouselNew-transition-2);
+}
+
+/* Content Tile */
+.carouselNew-tile {
+    position: relative;
+    display: inline-flex;
+    width: var(--carouselNew-tile-width);
+    height: var(--carouselNew-tile-height);
+    margin-right: var(--carouselNew-tile-spacing);
+    transition: var(--carouselNew-transition-2);
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
+    cursor: pointer;
+    cursor: hand;
+}
+
+/* Add Extra Margin to Last carouselNew Tile */
+.carouselNew-tile:last-of-type {
+    margin-right: 0;
+}
+
+/* Ensure All Elements Inside Tile are Block */
+.carouselNew-tile * {
+    display: block;
+}
+
+/* carouselNew Row on Hover */
+/* .carouselNew-row:hover {
+    -webkit-transform: translate3d(var(--carouselNew-offset-left), 0, 0);
+    transform: translate3d(var(--carouselNew-offset-left), 0, 0);
+} */
+
+/* Content Tile on carouselNew Row Hover
+.carouselNew-row:hover .carouselNew-tile {
+    opacity: var(--carouselNew-fade-opacity);
+}
+
+/* Content Tile on Hover on carouselNew Row Hover */
+/* .carouselNew-row:hover .carouselNew-tile:hover {
+    -webkit-transform: scale(var(--carouselNew-growth-factor));
+    transform: scale(var(--carouselNew-growth-factor));
+    opacity: var(--carouselNew-normal-opacity);
+} */
+
+/* Content Tile on Hover */
+/* .carouselNew-tile:hover ~ .carouselNew-tile {
+    -webkit-transform: translate3d(var(--carouselNew-offset-right), 0, 0);
+    transform: translate3d(var(--carouselNew-offset-right), 0, 0);
+} */ 
+
+@media only screen and (max-device-width: 800px) {
+    :root {
+
+          --carouselNew-tile-width:   80vw;
+          --carouselNew-growth-factor: 1;
+    
+          --carouselNew-fade-opacity:   1;
+          --carouselNew-normal-opacity: 1;
+    }
+    
+    /* carouselNew Container */
+    .carouselNew {
+          text-align: center;
+    }
+    
+    /* carouselNew Row */
+    .carouselNew-row {
+          text-align: center;
+          margin-bottom: 5vw;
+    }
+    
+    /* Content Tile */
+    .carouselNew-tile {
+          margin-top: 3vw;
+          position: relative;
+          display: table;
+          width: var(--carouselNew-tile-width);
+           text-align: center;
+          justify-content: center;
+    }
+}

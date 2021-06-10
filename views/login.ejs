@@ -1,0 +1,338 @@
+<%- include('partials/login_header.ejs') %>
+<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+<style>
+	.errorInput{
+		-webkit-box-shadow: inset 0px 0px 8px 3px rgba(255,0,0,1);
+-moz-box-shadow: inset 0px 0px 8px 3px rgba(255,0,0,1);
+box-shadow: inset 0px 0px 8px 3px rgba(255,0,0,1);
+	}
+</style>
+<script type="text/javascript">
+  $(document).ready(function() {
+	function validateEmail($email) {
+		var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+		return emailReg.test( $email );
+	}
+	$('.sign-up-htm').hide();
+	$('#tab-1').on('click',()=>{
+		$('.sign-up-htm').fadeOut()
+		$('.sign-in-htm').fadeIn()
+	});
+	$('#tab-2').on('click',()=>{
+		$('.sign-in-htm').fadeOut()
+		$('.sign-up-htm').fadeIn()
+	});  
+	$('#SignupSubmitButton').click((e)=>{
+		e.preventDefault();
+		var emailT=$('#emailS').val();
+		var phoneS=$('#phoneS').val();
+		var nameS=$("#nameS").val();
+		if(nameS===""){
+			$('#phoneSError').html("");
+			$("#phoneS").removeClass('errorInput'); 
+			$('#emailSError').html("");
+			$("#emailS").removeClass('errorInput'); 
+			$('#nameSError').html("<br/>Debes completar este campo");
+			$("#nameS").addClass('errorInput');
+		}
+		else{
+			$('#nameSError').html("");
+			$("#nameS").removeClass('errorInput'); 
+		if(emailT!==""){
+		if( !validateEmail(emailT)) { 
+			$('#nameSError').html("");
+			$("#nameS").removeClass('errorInput');
+			$('#phoneSError').html("");
+			$("#phoneS").removeClass('errorInput');
+			$('#emailSError').html("<br/>Por favor ingresa una dirección email válida");
+			$("#emailS").addClass('errorInput');
+		 }
+		 else{
+			$('#nameSError').html("");
+			$("#nameS").removeClass('errorInput');
+			$('#emailSError').html("");
+			$("#emailS").removeClass('errorInput'); 
+			if(phoneS!==""){
+				if(phoneS.length<9 || phoneS.length>10 || !$.isNumeric(phoneS)) { 
+					$('#phoneSError').html("<br/>Por favor introduzca un número telefónico válido");
+					$("#phoneS").addClass('errorInput');
+				}
+				else{
+				$('#phoneSError').html("");
+				$("#phoneS").removeClass('errorInput'); 
+				$("#SignupSubmitButton").css("display","none");
+				$("#SignupSubmitButtonProgress").css("display","block");
+				$("#nameS").prop('disabled', true);
+				$("#emailS").prop('disabled', true);
+				$("#phoneS").prop('disabled', true);
+				$("#passS").prop('disabled', true);
+				$("#tab-1").prop('disabled', true);
+				var formData = new FormData();
+				formData.append('name', $('#nameS').val());
+				formData.append('email', $('#emailS').val());
+				formData.append('phone', "+57"+$('#phoneS').val());
+				formData.append('password', $('#passS').val());
+				$.ajax({
+						url: window.location.origin+'/signup',  
+						type: 'POST',
+						data: formData,
+						success:function(data){
+							if(data==="success"){
+								location.href = window.location.origin+'/verifyUser';
+							}
+							else if(data==="NumberExistException"){
+								$("#SignupSubmitButtonProgress").css("display","none");
+								$("#SignupSubmitButton").css("display","block");
+								$("#nameS").prop('disabled', false);
+								$("#emailS").prop('disabled', false);
+								$("#phoneS").prop('disabled', false);
+								$("#passS").prop('disabled', false);
+								$("#tab-1").prop('disabled', false);
+								$('#phoneSError').html("<br/>Ya existe una cuenta registrada bajo este número telefónico");
+									$("#phoneS").addClass('errorInput');
+							}
+							else{
+								$("#SignupSubmitButtonProgress").css("display","none");
+								$("#SignupSubmitButton").css("display","block");
+								$("#nameS").prop('disabled', false);
+								$("#emailS").prop('disabled', false);
+								$("#phoneS").prop('disabled', false);
+								$("#passS").prop('disabled', false);
+								$("#tab-1").prop('disabled', false);	
+								if(data.code==='UsernameExistsException'){
+									$('#emailSError').html("<br/>Ese correo ya está registrado");
+									$("#emailS").addClass('errorInput');
+								}
+								
+							}
+						},
+						cache: false,
+						contentType: false,
+						processData: false
+				 });
+				}
+			}
+			else{
+					$('#phoneSError').html("<br/>Por favor introduzca un número telefónico válido");
+					$("#phoneS").addClass('errorInput');
+				}
+			}
+		}
+		else{
+			$('#emailSError').html("<br/>Por favor ingresa tu email");
+			$("#emailS").addClass('errorInput');
+		}
+	  }
+	});
+
+	const disableUiOnSubmit=()=>{
+		    $("#LoginSubmitButtonProgress").css("display","block");
+			$("#submitButtonLogin").css("display","none");
+			$("#emailL").prop('disabled', true);
+			$("#passL").prop('disabled', true);
+			$('#emailLError').html("");
+			$("#emailL").removeClass('errorInput');
+			$('#passL').removeClass('errorInput');
+			$("#passLError").html("");
+			$('#LError').html("");
+	}
+	const enableUI=()=>{
+		$("#LoginSubmitButtonProgress").css("display","none");
+		$("#submitButtonLogin").css("display","block");
+		$("#emailL").prop('disabled', false);
+		$("#passL").prop('disabled', false);
+	}
+	const submitSigninDetail=(token)=>{
+				var formData = new FormData();
+				var token=token===null?null:token.toString()
+				formData.append('email', $('#emailL').val());
+				formData.append('password', $('#passL').val());
+				formData.append('token', token);
+				$.ajax({
+					url: window.location.origin+'/login',  
+					type: 'POST',
+					data: formData,
+					success:function(data){
+						if(data==="successA"){
+							$.removeCookie('tempFbToken')
+							if(!!$.cookie("redirectCookie")){
+								var redirectData=JSON.parse($.cookie('redirectCookie'))
+								if(redirectData.action=='FOWD_CHG'){
+								$.removeCookie('redirectCookie', { path: '/' });
+								location.href = window.location.origin+'/challenge?id='+redirectData.id;
+							 }
+							}
+							else{
+								location.href = window.location.origin+'/dashboard';
+							}
+						}
+						else if(data==="successD"){
+							$.removeCookie('tempFbToken')
+							if(!!$.cookie("redirectCookie")){
+							var redirectData=JSON.parse($.cookie('redirectCookie'))	
+							if(redirectData.action=='FOWD_CHG'){
+								$.removeCookie('redirectCookie', { path: '/' });
+								location.href = window.location.origin+'/challenge?id='+redirectData.id;
+							}
+						   }
+						   else{
+							  location.href = window.location.origin+'/challengeList';
+							}
+						}
+						
+						else{
+							enableUI();
+							if(data.code==='NotAuthorizedException'){
+								$('#LError').html("<br/>Dirección email o contraseña incorrecto/s o inexistentes");
+								$("#emailL").addClass('errorInput');
+								$('#passL').addClass('errorInput');
+							}
+							else if(data.code==='UserNotConfirmedException'){
+								$('#verifyMail').fadeIn();
+								$('#verifyMail').click((e)=>{
+									e.preventDefault();
+									$.cookie('unConfirmedemail', $('#emailL').val(),{ httpOnly: true,  overwrite: true});
+									location.href = window.location.origin+'/resendCode';
+								})
+							}
+						}
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+	}
+	var token='';
+	$('#submitButtonLogin').click((e)=>{
+		e.preventDefault();
+		var emailT=$('#emailL').val();
+		if(emailT!==""){
+			if( !validateEmail(emailT)) { 
+			$('#emailLError').html("<br/>Por favor ingresa una dirección email válida");
+			$("#emailL").addClass('errorInput');
+		}
+		else{
+			disableUiOnSubmit();
+			if(firebase.messaging.isSupported()){
+				if (!firebase.apps.length) {
+					initFirebase();
+				}else {
+					submitSigninDetail($.cookie('tempFbToken'))	    
+				}
+			}
+			else{
+				submitSigninDetail(null)
+			}
+		  }
+		}
+		else{
+			$('#emailLError').html("<br/>Por favor ingresa tu email");
+			$("#emailL").addClass('errorInput');
+		}
+	});
+	const initFirebase=()=>{
+		var firebaseConfig = {
+				"apiKey": "AIzaSyDgWeTlLT4qMGOtop75NPTyz8ZX4woD8hc",
+				"authDomain": "retosgamer-328be.firebaseapp.com",
+				"databaseURL": "https://retosgamer-328be.firebaseio.com",
+				"projectId": "retosgamer-328be",
+				"storageBucket": "retosgamer-328be.appspot.com",
+				"messagingSenderId": "935537268417",
+				"appId": "1:935537268417:web:69f145053c591119fce640",
+				"measurementId": "G-0XR8CZH0JP"
+				};
+				firebase.initializeApp(firebaseConfig);
+				const messaging=firebase.messaging();
+
+				messaging
+				.requestPermission()
+				.then(function () {
+				
+				return messaging.getToken();
+				})
+				.then(function (token) {
+					$.cookie('tempFbToken',token)
+					submitSigninDetail(token)
+					
+				}).catch(function (reason) {
+					$.cookie('tempFbToken',null)
+					submitSigninDetail(null)
+				})
+	}
+  });
+</script>
+<div>
+<div class="login-container">
+<img class="login-image" src="/images/login-side-image.jpg" style="" alt="">
+<div class="login-wrap" style="">
+  <form class="" action="/login" method="post">
+    <div class="login-html">
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab" > Iniciar sesión</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab" >Regístrate</label>
+		<div class="login-form">
+			<div class="sign-in-htm">
+				<p id="LError" style="color: white;margin-top: -1vh;"></p>
+
+				<div class="group">
+					<label for="user" class="label"  style="font-family: 'avenir-light';"><strong>Email</strong></label>
+					<input name="emailL" id="emailL" type="text" class="input" required autocomplete="new-password">
+					<p id="emailLError" style="color: white;margin-top: -1vh;"></p>
+				</div>
+				<div class="group">
+					<label for="pass" class="label" style="font-family: 'avenir-light';"><strong>Contraseña</strong> </label>
+					<input id="passL"  name="password" type="password" class="input" data-type="password" required autocomplete="new-password">
+					<p id="passLError" style="color: white;margin-top: -1vh;"></p>
+				</div>
+				<div class="group">
+					<input id="check" type="checkbox" name="check" class="check" checked>
+					<label for="check" style="color: #B6B6B6;font-family: 'avenir';"><span class="icon"></span> Mantenerme conectado</label>
+				</div>
+				<div class="group">
+					<input type="submit" id="submitButtonLogin" class="button" value="Inicia sesión" style="background:#EE0000;border-radius:10vw;border:none;font-family: 'avenir';">
+					<div class="button" id="LoginSubmitButtonProgress" style="display: none;text-align: center;background:#EE0000;border-radius:10vw;border:none;">
+						<div class="spinner-border" style="height:2vw;width:2vw;border-color:white ;">
+					</div>
+				</div>
+				</div>
+				<div class="foot-lnk" style="margin-top:20px;">
+					<a id='verifyMail' href="/resendCode" style="color: white;display: none;"><strong>Verifica tu dirección email para continuar<i class="fas fa-long-arrow-alt-right"></i></strong></a><br>
+					<a href="/forgetPassword" style="color: white;font-family: 'avenir-light';">¿Se te olvidó tu contraseña?</a>
+				</div>
+			</div>
+			
+      </form>
+      <form class="" action="/signup" method="post">
+			<div class="sign-up-htm">
+        <div class="group">
+          <label for="pass" class="label" style="font-family: 'avenir-light';"><strong>Nombre completo</strong> </label>
+		  <input id="nameS" name="name" type="text" class="input"  required>
+		  <p id="nameSError" style="color: white;margin-top: -1vh;"></p>
+        </div>
+				<div class="group">
+					<label for="user" class="label" style="font-family: 'avenir-light';"><strong>Email</strong></label>
+					<input id="emailS" name="email" type="text" class="input" required>
+					<p id="emailSError" style="color: white;margin-top: -1vh;"></p>
+				</div>
+        <div class="group">
+          <label for="user" class="label" style="font-family: 'avenir-light';"><strong>Telefono que utilizaste para la suscripcion/pago</strong> </label>
+		  <input id="phoneS" name="phone" type="text" class="input" required>
+		  <p id="phoneSError" style="color: white;margin-top: -1vh;"></p>
+        </div>
+        <div class="group">
+					<label for="pass" class="label" style="font-family: 'avenir-light';"><strong>Contraseña</strong> </label>
+					<input id="passS" name="password" type="password" class="input" data-type="password" required>
+					<p id="passSError" style="color: white;margin-top: -1vh;"></p>
+
+				</div>
+				<div class="group">
+					<input type="submit" class="button " id="SignupSubmitButton" value="Regístrate" style="background:#EE0000;border-radius:10vw;border:none;font-family: 'avenir';">
+					<div class="button" id="SignupSubmitButtonProgress" style="display: none;text-align: center;background:#EE0000;border-radius:10vw;border:none;"><div class="spinner-border" style="height:2vw;width:2vw;border-color:white ;"></div></div>
+				</div>
+			</div>
+      </form>
+
+</div>
+
+</div>
+</div>

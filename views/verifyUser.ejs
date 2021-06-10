@@ -1,0 +1,130 @@
+<%- include('partials/login_header.ejs') %>
+
+<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+	<script>
+
+		  $(document).ready(function() {
+			const disableUI=()=>{
+				$(".buttonVerify").css("display","none");
+				$("#SignupSubmitButtonProgress").css("display","block");
+			}
+			const enableUI=()=>{
+				$("#SignupSubmitButtonProgress").css("display","none");
+				$(".buttonVerify").css("display","block");
+				$("#user").prop('disabled', false);
+				$("#emailS").prop('disabled', false);
+			}
+			
+			const showError=()=>{
+				$('#otpError').html("<br/>Código de verificación inválido");
+				$("#user").addClass('errorInput');
+				$("#SignupSubmitButtonProgress").css("display","none");
+				$(".buttonVerify").css("display","block");
+			}
+			const submitDetails=(token)=>{
+				var formData = new FormData();
+				formData.append('verificationCode', $('#user').val());
+				formData.append('token', token);
+				$.ajax({
+					url: window.location.origin+'/verifyUser',  
+					type: 'POST',
+					data: formData,
+					success:function(data){
+						if(data==="success"){
+							$.removeCookie('tempFbToken')
+							location.href = window.location.origin+'/dashboard';
+						}
+						else{
+							enableUI();
+							showError();		   
+						}
+					},
+					cache: false,
+					contentType: false,
+					processData: false
+				});
+			}
+			
+			const IntitalizeFireBaseMessaging=()=>{
+				var firebaseConfig = {
+				"apiKey": "AIzaSyDgWeTlLT4qMGOtop75NPTyz8ZX4woD8hc",
+				"authDomain": "retosgamer-328be.firebaseapp.com",
+				"databaseURL": "https://retosgamer-328be.firebaseio.com",
+				"projectId": "retosgamer-328be",
+				"storageBucket": "retosgamer-328be.appspot.com",
+				"messagingSenderId": "935537268417",
+				"appId": "1:935537268417:web:69f145053c591119fce640",
+				"measurementId": "G-0XR8CZH0JP"
+			};
+			firebase.initializeApp(firebaseConfig);
+			const messaging=firebase.messaging();
+			messaging
+				.requestPermission()
+				.then(function () {
+					return messaging.getToken();
+				})
+				.then(function (token) {
+					$.cookie('tempFbToken',token)
+					submitDetails(token.toString());						
+				})
+				.catch(function (reason) {
+					$.cookie('tempFbToken',null)
+					submitDetails(null);
+				});
+			}
+			$('.buttonVerify').click((e)=>{
+				e.preventDefault();
+				var otp=$('#user').val();
+				if(otp.length!==6 || !$.isNumeric(otp)) { 
+					$('#otpError').html("<br/>Código de verificación inválido");
+					$("#user").addClass('errorInput');
+				}
+				else{
+					disableUI();
+					if(firebase.messaging.isSupported()){
+						if (!firebase.apps.length) {
+							IntitalizeFireBaseMessaging();
+						}else {
+							submitDetails($.cookie('tempFbToken'))	    
+						}
+					}
+					else{
+						submitDetails(null);
+					}
+			    }
+			});
+		});
+		
+	</script>
+<div class="login-container">
+	<img class="login-image" src="/images/login-side-image.jpg" alt="">
+	<div class="login-wrap">
+  <form class="formVerify" action="/verifyUser" method="post">
+	<div class="login-html">
+		<input id="tab-1" type="radio" name="tab" class="sign-in" checked><label for="tab-1" class="tab" style="color: white;">Correo de verificación</label>
+		<input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab"></label>
+		<div class="login-form">
+			<div class="sign-in-htm">
+				<div class="group">
+					<label for="user" class="label" style="font-family:'avenir';">Código de verificación </label>
+					<input name="verificationCode" id="user" type="text" class="input" placeholder="564679">
+					<p id="otpError" style="color: black;margin-top: -1vh;"></p>
+					<input type="hidden" id="token" name="token">
+				</div>
+				<div class="group">
+					<input type="submit" class="button buttonVerify" value="Confirm" style="background:#EE0000;border-radius:10vw;border:none;font-family:'avenir';">
+					<div class="button" id="SignupSubmitButtonProgress" style="display: none;text-align: center;background:#EE0000;border-radius:10vw;border:none;"><div class="spinner-border" style="height:2vw;width:2vw;border-color:white ;"></div></div>
+				</div>
+			</div>
+      </form>
+		</div>
+		<div class="foot-lnk">
+			<a href="/resendCode" style="color: #B6B6B6;font-family: 'avenir';">¿no recibiste tu código? haz click para reenviar</a>
+		  </div>
+	</div>
+	<!-- <div class="foot-lnk" style="margin-top:20px;">
+		<a id='verifyMail' href="/resendCode" style="color: white;display: none;"><strong>Verifica tu dirección email para continuar<i class="fas fa-long-arrow-alt-right"></i></strong></a><br>
+		<a href="/forgetPassword" style="color: white;">¿Se te olvidó tu contraseña?</a>
+	</div> -->
+   

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
+
+  <title>Retos Gamer</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="/css/login_style.css">
+  <link rel="stylesheet" type="text/css" href="css/card_style.css" />
+  <link rel="stylesheet" type="text/css" href="css/footer_style.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="background-color: #0D0D0D !important; ">
+
+      <a href="/dashboard"><img class="navbar-brand" src="/images/RG 5.png" height="50vh" alt="logo"></a>
+   
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item px-2">
+          <a class="nav-link" href="/" style="font-family: 'avenir';"> Inicio </a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link" href="/leaderboard" style="font-family: 'avenir';"> Clasificaciones</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link" href="/aboutUs" style="font-family: 'avenir';"> Nostros</a>
+        </li>
+          <% if (name!=null) { %>
+        <li class="nav-item dropdown px-2">
+         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-family: 'avenir';">
+        Ccenta
+         </a>
+         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+           <a class="dropdown-item" href="#">valid until..</a>
+           <a class="dropdown-item" href="/subscription">Recharge now</a>
+         </div>
+       </li class="nav-item px-2">
+         <% } %>
+      </ul>
+
+    </div>
+
+  </nav>
+
+  <body
+  style="  background: #0D0D0D;
+     -moz-background-size: cover;
+     -webkit-background-size: cover;
+     -o-background-size: cover;
+     background-size: cover;">
+
+<script SameSite="None; Secure" src="https://static.landbot.io/landbot-widget/landbot-widget-1.0.0.js"></script>
+<script>
+  var myLandbot = new LandbotLivechat({
+    index: 'https://chats.landbot.io/v2/H-681998-ZMNSD6NBYYKQ62P5/index.html',
+  });
+</script><script>
+  // Show a proactive message after 10 seconds
+  setTimeout(function() {
+    myLandbot.sendProactive({
+  "message": "No dudes en clickearme si necesitas ayuda! 😉",
+  "author": "Retos Gamer",
+  "avatar": "https://storage.googleapis.com/media.helloumi.com/139922/channels/HMFH5X6PQZDEQVUW5WEPS7YHO9PFQ289.png",
+  "extra": {
+    "hide_textbox": true
+  }
+});
+  }, 60000);
+</script>

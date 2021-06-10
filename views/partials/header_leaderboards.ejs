@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>Retos Gamer</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="icon" type="image/png" href="/images/RG_16x16.png"/>
+  <link rel="stylesheet" type="text/css" href="css/card_style.css" />
+  <link rel="stylesheet" type="text/css" href="css/carousel_leaderboards.css" />
+  <link rel="stylesheet" type="text/css" href="css/footer_style.css" />
+  <link rel="stylesheet" type="text/css" href="css/process.css" />
+  <link rel="stylesheet" type="text/css" href="css/table-style.scss" />
+  <link rel="stylesheet" href="css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="css/magnific-popup.css"/>
+  <link rel="stylesheet" href="css/owl.carousel.min.css"/>
+  <link rel="stylesheet" href="css/animate.css"/>
+  <link rel="stylesheet" href="css/slicknav.min.css"/>
+  <link rel="stylesheet" href="css/testimonial.css"/>
+  <link rel="stylesheet" href="/css/simple-sidebar.css" >
+  <link rel="stylesheet" href="css/nav-bar-style.css"/>
+  <link rel="stylesheet" href="/css/challenge_player_table.css"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rowdies:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/node_modules/owl.carousel/dist/assets/owl.carousel.min.css" />
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/waypoints/4.0.1/jquery.waypoints.js"></script>
+    <script src="https://static.landbot.io/landbot-widget/landbot-widget-1.0.0.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <script src="js/jquery.rcounter.js"></script>
+    <script src="/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+
+    <% if (name!=null) { %>
+      <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
+      <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"></script>
+      <!-- <script>
+          var firebaseConfig = {
+            "apiKey": "AIzaSyDgWeTlLT4qMGOtop75NPTyz8ZX4woD8hc",
+                "authDomain": "retosgamer-328be.firebaseapp.com",
+                "databaseURL": "https://retosgamer-328be.firebaseio.com",
+                "projectId": "retosgamer-328be",
+                "storageBucket": "retosgamer-328be.appspot.com",
+                "messagingSenderId": "935537268417",
+                "appId": "1:935537268417:web:69f145053c591119fce640",
+                "measurementId": "G-0XR8CZH0JP"
+          };
+          firebase.initializeApp(firebaseConfig);
+      
+          const messaging=firebase.messaging();
+      
+          messaging.onMessage(function (payload) {
+              console.log(payload);
+              const notificationOption={
+                  body:payload.notification.body,
+                  icon:payload.notification.icon
+              };
+      
+              if(Notification.permission==="granted"){
+                  var notification=new Notification(payload.notification.title,notificationOption);
+      
+                  notification.onclick=function (ev) {
+                      ev.preventDefault();
+                      window.open(payload.notification.click_action,'_blank');
+                      notification.close();
+                  }
+              }
+      
+          });
+          messaging.onTokenRefresh(function () {
+            alert("yes");
+            messaging.getToken().then((refreshedToken) => {
+            console.log(refreshedToken);
+            console.log('Token refreshed.');
+            // setTokenSentToServer(false);
+            // sendTokenToServer(refreshedToken);
+          }).catch((err) => {
+            console.log('Unable to retrieve refreshed token ', err);
+          });       
+        });
+      
+          
+      
+         
+          
+      </script> -->
+      <% } %>
+
+
+
+  <body class="dashboardClass" >
+
+<div id="wrapper">
+
+  <aside id="sidebar-wrapper" >
+    <!-- <div class="sidebar-brand" style="width:100%;text-align: center;">
+      <a href="/" style="font-size:2vw; font-family: 'BIGMACCA';color: white ;">RG</a>
+    </div> -->
+    <ul class="sidebar-nav">
+      <li style="text-align: center;margin-top: 1.2vw;margin-bottom: 1.2vw;">
+        <a class="" href="/"style="font-size:2.2vw; font-family: 'BIGMACCA';color: white;">
+          <h1 style="font-family: 'BIGMACCA';font-size: 3vh;padding: 0;margin: 0;"  >RETOS<br/>GAMER</h1>
+        </a>
+      </li>
+      <div style="text-align: center;">        
+        <button type="submit" class="walletButtonSidebar" style="">
+          <strong>
+            Billetera                         
+          <span class="wallet-amt-sidebar">          
+            <%=wallet_amount%>
+            <img style="height: 1.1vw;" src="/images/coinIcon.png" alt="" />
+
+          </span>
+          </strong>
+        </button>
+      </div>
+      <div class="sidebar-section-heading">
+        Menu
+      </div>
+      <li class="li-sidebar-links ">
+        <a class="" href="/" ><i class="fa fa-home" ></i>Inicio</a>
+      </li>
+      <li class="li-sidebar-links active">
+        <a class="" href="/leaderboard" ><i class="fa fa-trophy" ></i>Clasificaciones</a>
+      </li>
+      <li class="li-sidebar-links">
+        <a class="" href="/aboutUs" ><i class="fa fa-info-circle" ></i>Nosotros</a>
+      </li>
+      <% if (name!=null) { %>
+        <li  class="li-sidebar-links">
+          <a class="" href="/myProfile" ><i class="fa fa-user" ></i>Mi Perfil</a>
+        </li>
+        <li class="li-sidebar-links">
+          <a class=""  href="/wallet" > <i class="fa fa-wallet" ></i>Mi Billetera</a>
+        </li>
+      
+
+     <% } %>
+     <% if (name==null) { %>
+      <li class="li-sidebar-links"  >
+        <a href="/login" ><i class="fa fa-sign-in-alt" ></i>Iniciar Sesión</a>
+      </li>
+      <% } %>
+      <% if (name!=null) { %>
+        
+        <li class="li-sidebar-links" >
+          <a href="/logout" ><i class="fa fa-sign-out-alt" ></i>Cerrar Sesión</a>
+      </li>
+        <% } %>
+
+        <div class="sidebar-section-heading">
+          Games
+        </div>  
+        <li class="games-sidebar-li">
+          <div><img src="/images/codm-logo.png" alt=""><span>COD Mobile</span></div>
+        </li>
+        <li class="games-sidebar-li">
+          <div><img src="/images/fortnite-logo.png" alt=""><span>Fortnite</span></div>
+        </li>
+        <li class="games-sidebar-li">
+          <div><img src="/images/freefire-logo.png" alt=""><span>Free Fire</span></div>
+        </li>
+    </ul>
+  </aside>
+
+  <script>
+  const $button  = document.querySelector('#sidebar-toggle');
+  const $wrapper = document.querySelector('#wrapper');
+  
+  $button.addEventListener('click', (e) => {
+    e.preventDefault();
+    $wrapper.classList.toggle('toggled');
+  });
+  </script>
+
+
+
+<script SameSite="None; Secure" src="https://static.landbot.io/landbot-widget/landbot-widget-1.0.0.js"></script>
+<script>
+  var myLandbot = new LandbotLivechat({
+    index: 'https://chats.landbot.io/v2/H-681998-ZMNSD6NBYYKQ62P5/index.html',
+  });
+</script><script>
+  // Show a proactive message after 10 seconds
+  setTimeout(function() {
+    myLandbot.sendProactive({
+  "message": "No dudes en clickearme si necesitas ayuda! 😉",
+  "author": "Retos Gamer",
+  "avatar": "https://storage.googleapis.com/media.helloumi.com/139922/channels/HMFH5X6PQZDEQVUW5WEPS7YHO9PFQ289.png",
+  "extra": {
+    "hide_textbox": true
+  }
+});
+  }, 60000);
+</script>

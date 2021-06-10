@@ -1,0 +1,80 @@
+<%- include('partials/header_leaderboards.ejs') %>
+<link rel="stylesheet" type="text/css" href="css/new_card.scss" />
+
+ <script>
+  $(document).ready(function() {
+   if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        $('.mobile-otpimizeNav-cl').show();
+		}
+  });
+ </script>
+
+
+  <% var k=2; %>
+  <div class="mp-heading-container" style="text-align: center;" >
+    <h1  class="mp-heading-mobile" >¡Ganadores!</h1>
+  </div>
+  <div class='lb-heading2-container' >
+    <h1  class="lb-heading2-mobile" >Retos finalizados</h1>
+  </div>
+    <div class='lb-challenges-container' `>
+    <% for (i = 0; i < ((data.length-k)/k)+1; i++) { %>
+      <div class="">
+        <div class="">
+         <div class="carouselNew-row" style="margin-bottom:3vw;">
+        <% data.slice(k*i,(k*i)+k).map(datai =>{ %>
+            <div class="carouselNew-tile mobile-cl-optimize"  >
+              <form   action="/leaderboard" method="post">
+              <input name="id" value=<%= datai.challengeId %> type="hidden" />
+            <a style="max-width: 100%;" href="javascript:void(0);" onclick="$(this).closest('form').submit();">
+              <div class="card-container-lb">
+              <img class="card_image_lb imageBorder" src='<%= JSON.parse(datai.unitChallenge).Item.src.S %>'  >
+              <div class="lb-heading2-container" >
+                <h1 class="heading-card-cl" >
+                  <%- JSON.parse(datai.unitChallenge).Item.challengeName.S %>
+                </h1>
+                <% var limit=JSON.parse(datai.resultData).length>3?3:JSON.parse(datai.resultData).length; %>
+                <h1 class=" heading-card-cl" style="color: #ffff89;">
+                  <% var colorArr=['#B98800','#E5F4F2','#CD7F32']%>
+                  <% if(JSON.parse(datai.resultData).length>0) { %>
+                      <% for(var j=0;j<limit;j++) { %>
+                        <div class="lb-standing-font-size lb-card-content" >
+   
+                          <span class="standing-number-leaderboard span-style-lb-card-content" style="color:<%=colorArr[j]%>;">
+                            <%= j+1 %>
+                          </span>
+                          <span class="standing-name-leaderboard span-style-lb-card-content" ><%= JSON.parse(datai.resultData)[j].username %></span>
+                          <div class="standing-prize-leaderboard" style="display: flex;align-items: baseline;">                        
+                            <span class="span-style-lb-card-content" style="color: #AFB0B1;">
+                              <%= typeof(JSON.parse(datai.unitChallenge).Item.challengePrize.L[j])!='undefined'?JSON.parse(datai.unitChallenge).Item.challengePrize.L[j].S:'-' %> 
+                            </span>
+                           <span class="span-style-lb-card-content coins-text-lb" style="color: #AFB0B1;">Coins</span> 
+                          </div>
+                          <!-- <img style="height: 1.5vw;float: left; margin-right: 0.2vw;" src="/images/coinIcon.png" alt="" /> -->
+                        </div>
+                      <% } %>
+                  <%}%>
+                </h1>
+
+              <!-- <div style="width:100%;text-align:center;  margin: 0;margin-top:-1vh;">
+                <img src="images/winner.png" style="width:6vw; margin-left: auto;margin-right: auto;display: block;">
+              </div> -->
+                <h4 style="color:white"></h4>
+                  <div style="  display: flex;justify-content: center;">
+            </div>
+              </div>
+            </div>
+          </a>
+        </form>
+          </div>
+          <div style="border-bottom: 10px solid #0a0a0a;margin-top: 4vh;margin-bottom: 2vh;" class="hr-mobile"></div>
+
+      <% }); %>
+
+      </div>
+     </div>
+    </div>
+    <% } %>
+  </div>
+  <%- include('partials/footer') %>
+</div>

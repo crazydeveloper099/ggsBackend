@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+.buttonCard{
+  margin-top:15px;
+  padding:10px;
+  width:90%;
+  border:0px solid #222222;
+  border-radius: 20px;
+  font-weight: bold;
+  background: #6666ff;
+  color:#FFF;
+}
+a:hover{
+  color:rgb(233, 159, 159);
+}
+::-webkit-scrollbar {
+width: 0.4vw;
+visibility: hidden;
+
+}
+::-webkit-scrollbar:hover{
+visibility: visible;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb { 
+background:#fd264f; 
+border-radius: 5px; 
+}  
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background:#fd264f; 
+
+}
+.buttonStyle {
+  background: #FFF;
+  color: #d8d800;
+  font: bold 11px "Helvetica";
+  padding: 12px;
+  text-decoration: none;
+
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.buttonStyle:after {
+  background: #d8d800;
+  color: #FFF;
+  content: "!";
+  display: inline-block;
+  font: bold 11px "Georgia";
+  height: 25px;
+  line-height: 25px;
+  margin-left: 10px;
+  text-align: center;
+  width: 25px;
+  
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+.buttonStyle:hover {
+  -webkit-box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 1);
+
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+
+
+
+button:focus {
+  outline: none;
+}
+
+.buttonStyleTimer {
+  background: #FFF;
+  color: black;
+  font: bold 12px "Helvetica";
+  padding: 8px;
+  text-decoration: none;
+font-weight: bold;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+
+  -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  -moz-box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, .25);
+  
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.shareLi {
+      margin-bottom: 15px;
+      color: #fff;
+  position: relative;
+  left: -10px;
+  }
+.shareA {
+          text-transform: uppercase;
+          color: #fff;
+          font-weight: 700;
+          width: 100%;
+          max-width: 300px;
+      }
+      .shareA.btn-facebook {
+          background: #3b5998;
+      }
+      .shareA.btn-twitter {
+          background: #00acee;
+      }
+      .shareA.btn-linkedin {
+          background: #0e76a8;
+      }
+      .shareA.btn-email {
+          background: #ddd;
+          color: #444;
+      }

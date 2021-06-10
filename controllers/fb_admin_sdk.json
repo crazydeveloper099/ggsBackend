@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "retosgamer-328be",
+  "private_key_id": "46146aba46c324a63d277a810edfebb13e6b2e68",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDdAK34ihLMl7ms\nI+GWS0zmzqkiZu9g0xUSSHwKE8a3K7UZz/bqhuXddxNOkEYKR+CdDd9zt3V/PxI5\nWxZ4cuZxDo44NEBzuXc0IhMhZ7xznEwZ7ta6e+MYH7BDyZohgijMzuEDNlEdPOfS\njlD+BZMa7nV3Y4t1OXvOO35JW4kWeJmss+Xyp0EUk+4kJSi+fTm6FFlN7CTvBYA7\nnFfyz+9iVNBzUoWDw2/xrJtlWXFzttVFC7Z1sw9epQAE7yF/w76nLs2Xh/Oovsd3\nwbq7BDqQTxr6HMo21QqZ0STbUuNju5AeXUr53dOKKxnkamCQwJORAx4gAe98qFMr\n4bJ0dMkjAgMBAAECggEAGee0fMeigHzgdL8X+EgHUZ6z0KaENLNJawU4FO5QgrQK\n3GW2KbN6SkVk6/aZXychuwcfRC8jBLFd738v2RqOzH3KSehGDcqVoHTGDUpdmqed\nfAS1AtL2waMlRCzjdj4NjkRJt9isFWNIQTQRZlU88xE0j7QJaso8KuZqXSrvnMR6\naJSyPLev49qEgchsgh1nw0YS+RRY/tQgbckiKu43H7R/eJr/GqfddhyWlsFb1nyM\nrMlUWuGByNMEwzKlaOitknN5EaB0h45xFU8rcut6AxGlMASDEIYokjbu00hnM7AN\nbqDhl7huD2J4uA0F2irR6NxBEg4a8Lu7ZwlXaw9VIQKBgQDy6ONQlxECWCoCEsvl\nJFvmvWCbLKQ/L72PgZgfwbW98OUwhRggbvkjU10t/hZh3mOWorwnL1WqXPf127JL\n/VRYoqOr05+VCSxnJuifvXLvbD//cODGXTqQ7Ygf732Fef1pqnMjfLMNLm6eg94I\n/ORhdF2EdbJOm6UH95/83m1xawKBgQDo6ZFwdB3KHXEKplh0XxTudROCcL/dHDgr\nUHVkPq+ee+me09HD3j0h1I+naP8gHhOfXUMO5rpIEdhPEbrqDWVilLzeR45SOeYz\nIsjzdue05SdK71nnjmHagINejq717+Y8W5PE9hF0lfhUXrDNcMe7Wn3yO14O45b7\n7rd2p92dKQKBgQCobqnoYMevi3iddXEiU0LSTTBmiN7e3XigwGi+ZHBj41zYdwFS\nxABG6XAsCwp0FGOTuQWkWiMZfVuGhC8ul9tblnLNG3GFQxYh9I3K7e97auE5e4iw\no0aP5dTE6ChuXDdGhKVPzxDMrAySJ7fXHZwyoyCRT5czAKO/UYoDKixTPwKBgBK7\njmYEAM1bttbLcDvT1eQj6HDKTrQi6+WX8Aki/Y76mlya3rkpK7OH3BHz4OkdYiik\nIJuXNQ5M2R/q5iSi9S+LlPEvwiOc4oXkW1Mxkgs7jwB45bs4+WfQhEBbq3i+Vb8v\nAmCKBfdhhHqMrx2m33mTGqQb4EHETkVu+rSBZdKZAoGBAJuiYn8I6gMsJdIp7GMB\nliAKChBvpIRGq639gE0UDrjVxxUgEMe2vqyPFe/m3ROdqMe2rN25lz8cpy53cmRQ\nt44nfig/BkaXBXWwp6IMmKx+hgsVCdEt5Voe7keQdB6A8FmhkbriuwG9m9+BGQtE\nFZSfKuJKA7EpMFUdMFF8JP/g\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-3rvad@retosgamer-328be.iam.gserviceaccount.com",
+  "client_id": "101726355583488779118",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-3rvad%40retosgamer-328be.iam.gserviceaccount.com"
+}

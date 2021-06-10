@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+  $(window).on('load', function() {
+    $('#myModal').modal('show');
+  });
+</script>
+<form action="/admin" method="post">
+  <div data-backdrop="static" data-keyboard="false" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true"
+  style="background:#000000">
+    <div class="modal-dialog modal-dialog-centered" role="document" >
+      <div class="modal-content" style="background:#222; border-radius:20px;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle" style="color:white"><strong> Admin Login</strong></h5>
+
+        </div>
+        <div class="modal-body">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">email</span>
+            </div>
+            <input type="email" name="username" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+          </div>
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-default">Password</span>
+            </div>
+            <input type="password" name="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn " style="background:#000000;color:white; border-radius:30px;">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<%- include('partials/footer') %>

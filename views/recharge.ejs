@@ -1,0 +1,27 @@
+<%- include('partials/header') %>
+<ol class="breadcrumb mt-4" style="margin-left:100px; margin-right:100px; background-color: 	#383838;">
+  <li class="breadcrumb-item"><a href="/">HOGAR</a></li>
+  <li class="breadcrumb-item active" aria-current="page">CUENTA</li>
+</ol>
+
+<div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center;">
+  <div class="container">
+    <p style="color:white;" class="lead">CUENTA</p>
+  </div>
+</div>
+
+<div style="margin-left:100px;">
+  <p style="color:white">
+    <%= name %>
+    </p>
+    <p style="color:white">
+      teléfono:<%= phone %>
+      </p>
+      <p style="color:white">
+        TU PRÓXIMA FECHA DE FACTURACIÓN ES EL:<%= end_date %>
+        </p>
+        <p style="color:white">
+          suscripción iniciada: <%= start_date %>
+          </p>
+  </div>
+  <%- include('partials/footer') %>

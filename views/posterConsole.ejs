@@ -1,0 +1,133 @@
+<%- include('partials/header') %>
+<script type="text/javascript">
+    $(document).ready(function() {
+
+       $("#upload").click(function(){
+        let eventType=$("#uploadForm input[type='radio']:checked").val();
+        let href=$("#href").val();
+        $("#href").val(`/events/${eventType}?${href}`)
+          $("#uploadForm").submit();
+       });
+       $("#deleteButton").click(function(){
+           $("#deletePoster").submit();
+       })
+    });
+    
+
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Image</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="help-block with-errors"></div>
+
+        <div class="input-group mb-3" stryle="margin-top:20px;">
+            <form id='uploadForm' action='/posterConsole' method='POST' encType="multipart/form-data">
+              <!-- <input id="jsonData" type="hidden" name="jsonData" value=""> -->
+              <input type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required />
+              <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+              <label for="exampleInputEmail1">Title</label>
+              <input name="title" type="email" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Enter title">
+
+              <label for="description">Description</label>
+              <textarea name='description' class="form-control" id="description" rows="3"></textarea>
+             
+              <label for="exampleInputEmail1">Redirect To:</label>
+                <div style="color:#a8a8a8; font-size:1rem; margin-top:20px; ">
+                  Choose Event Type
+                </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="eventType" id="inlineRadio1" value="StaticChallenge">
+                <label class="form-check-label" for="inlineRadio1">Static Event</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="eventType" id="inlineRadio2" value="LiveEvent">
+                <label class="form-check-label" for="inlineRadio2">Live Event</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="eventType" id="inlineRadio3" value="Tournaments" >
+                <label class="form-check-label" for="inlineRadio3">Tournament</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="eventType" id="inlineRadio4" value="Minecraft" >
+                <label class="form-check-label" for="inlineRadio3">Minecraft Event</label>
+              </div>
+              <input name="href" type="email" class="form-control" id="href" aria-describedby="emailHelp" placeholder="Enter Id here">
+            </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button id="upload" type="button" class="btn btn-primary">Upload</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+    <div class="container">
+      <p style="color:#ffa500; font-size:2rem; font-family: 'BIGMACCA';">POSTER CONSOLE</p>
+    </div>
+  </div>
+  
+  
+  
+  
+  <h2 style="color:white; font-weight:bold; margin-left:250px;"><%= data.length %> POSTERS Available</h2>
+  
+  <div class="list-group" id="list-tab" role="tablist">
+    <div>
+      <div style="float:left;">
+      <a href="#" data-toggle="modal" data-target="#basicExampleModal" id="addPoster" class="btn btn-primary" style="width:10vw;margin-left:250px;">ADD POSTER</a>
+      </div>
+      </div>
+    <% data.map((datai,i)=>{ %>
+    <div style="padding: 0px 250px 0px; margin-top:35px;float: left;">
+      <div class="shadow_admin" style="background:#222; border-radius:10px; padding:15px;display: inline-block;">
+        <img style="
+            margin-right:20px;
+            float:left;
+            height:300px;
+            width:460px;
+            padding-bottom:10px;" src=<%=datai.image_url%>>
+  
+ <form id="deletePoster" action="/posterConsole" method="post">
+    <input type="hidden" id="custId" name="deleteButton" value="true" />
+    <input type="hidden" id="custId" name="delete" value="<%= datai.id %>" />
+
+    <button  id="deleteButton" class="btn btn-danger" 
+        style="background: #222; color:#FFFFFF;float:left;">
+      DELETE POSTER
+    </button>
+  </form> 
+
+      </div>
+    </div>
+    <% }); %>
+  
+  </div>
+  <br />
+  <!-- <progress id='progress' class="pure-material-progress-circular"/> -->
+  <!-- <div class="modal fade show" id="modalSubscriptionForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">Publish Challenge</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <%- include('partials/footer') %>

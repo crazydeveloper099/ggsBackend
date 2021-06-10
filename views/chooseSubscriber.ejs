@@ -1,0 +1,124 @@
+<%- include('partials/chooseSubscriberHeader.ejs') %>
+
+<style>
+   
+    .centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  
+  z-index: 100;
+}
+
+table {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+td {
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+
+
+
+ @-webkit-keyframes neon1 {
+	 from {
+		 text-shadow: 0 0 5px #686868, 0 0 10px #686868, 0 0 15px #686868, 0 0 17px #000, 0 0 20px #000, 0 0 35px #000, 0 0 30px #000, 0 0 35px #000;
+	}
+	 to {
+		 text-shadow: 0 0 5px #686868, 0 0 5px #686868, 0 0 15px #686868, 0 0 10px #000, 0 0 35px #000, 0 0 17px #000, 0 0 50px #000, 0 0 35px #000;
+	}
+}
+ @-moz-keyframes neon1 {
+	 from {
+		 text-shadow: 0 0 5px #686868, 0 0 10px #686868, 0 0 15px #686868, 0 0 17px #000, 0 0 20px #000, 0 0 35px #000, 0 0 30px #000, 0 0 35px #000;
+	}
+	 to {
+		 text-shadow: 0 0 5px #686868, 0 0 5px #686868, 0 0 15px #686868, 0 0 10px #000, 0 0 35px #000, 0 0 17px #000, 0 0 50px #000, 0 0 35px #000;
+	}
+}
+ @keyframes neon1 {
+	 from {
+		 text-shadow: 0 0 5px #686868, 0 0 10px #686868, 0 0 15px #686868, 0 0 17px #000, 0 0 20px #000, 0 0 35px #000, 0 0 30px #000, 0 0 35px #000;
+	}
+	 to {
+		 text-shadow: 0 0 5px #686868, 0 0 5px #686868, 0 0 15px #686868, 0 0 10px #000, 0 0 35px #000, 0 0 17px #000, 0 0 50px #000, 0 0 35px #000;
+	}
+}
+ 
+
+
+</style>
+
+<div class="page-bg"></div>
+
+<div class="animation-wrapper">
+  <div class="particle particle-1"></div>
+  <div class="particle particle-2"></div>
+  <div class="particle particle-3"></div>
+  <div class="particle particle-4"></div>
+</div>
+
+
+
+<div style="text-align: center;">
+    <a href="/dashboard">
+        <!-- <img src="images/RG 5.png" class="sub-ret-img" alt=""> -->
+        <div style="padding: 2.5vw;">        
+            <h4 class="logoGlow">RG</h4>
+        </div>
+    </a>
+</div>
+
+<table>
+    <tr>
+        <td>
+            <div class="centered" style="text-align: center;">
+                <h4 class="sub-heading"><strong>Selecciona tu operador de celular<br> para la suscripción:</strong> </h4>
+                   
+                    <div class="subscribe-m">
+                        <a href="http://wap.divercel.com/lp/retos/">
+                        <div class="bck" style="border:2px solid #000000050;">
+                           <img class="subscribe-m-dim" src="images/claro-logo.png"/> 
+                        </div>
+
+                        <h3 class="sub-text">Claro </h3>
+                    </a>
+                    </div>
+                    <div class="subscribe-m"> 
+                        <a href="http://wap.divercel.com/lp/retos/"> 
+                        <div class="bck2" style="border:2px solid #000000050;">
+                            <img class="sub-img-2" src="images/tigo-logo.png"/> 
+                        </div>   
+                        <h3 class="sub-text">Tigo </h3> 
+                        </a>   
+                    </div>  
+                    <div class="d-flex">
+                        <hr class="my-auto flex-grow-1" style="background-color: azure;">
+                        <div class="px-4" style="color: white;">OR</div>
+                        <hr class="my-auto flex-grow-1" style="background-color: azure;">
+                        
+                      </div>  
+                      <p style="color:white;font-size: medium;">¿ya tienes una cuenta activa?</p>
+                        <form action="/login" method="get">
+                        <button type="submit" class="dashboard-grid-button">Inicia sesión <i class="fas fa-chevron-right" style="margin-left:1vw;"></i></button>
+                        </form>     
+                </div>
+        </td>
+    </tr>
+   
+</table>
+
+
+
+
+

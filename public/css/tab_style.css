@@ -1,0 +1,140 @@
+/* body {
+    color: #efedef;
+    font-family: "Roboto", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    line-height: 1.6em;
+    }
+*/
+@font-face {
+  font-family: "avenir-light";
+
+  src: url("/fonts/avenir-light.woff") format("woff"), /* Modern Browsers */
+    url("/fonts/avenir-light.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+ 
+@font-face {
+  font-family: "avenir";
+
+  src: url("/fonts/avenir.woff") format("woff"), /* Modern Browsers */
+    url("/fonts/avenir.woff2") format("woff2"); /* Modern Browsers */
+  font-weight: normal;
+  font-style: normal;
+}
+
+  button:focus,
+  input:focus,
+  textarea:focus,
+  select:focus {
+    outline: none; 
+  }
+  @media only screen and (min-device-width: 801px) {
+    .mobileTabOptimize{
+      display: unset;
+    }
+   
+  .tabs {
+    display: block;
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -moz-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: 0;
+    overflow: hidden;
+    padding: 2vw;
+    background-color: #1C1D20;
+    border-radius: 1.5vw;
+  }
+    .tabs [class^="tab"] label,
+    .tabs [class*=" tab"] label {
+      color: white;
+      cursor: pointer;
+      display: block;
+      font-size: 1vw;
+      font-weight: 300;
+      line-height: 1em;
+      padding: 0.1vw 1vw;
+      text-align: center; 
+      
+    }
+    .tabs [class^="tab"] [type="radio"],
+    .tabs [class*=" tab"] [type="radio"] {
+      /* border-bottom: 1px solid rgba(239, 237, 239, 0.5); */
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      display: block;
+      width: 100%;   
+      -webkit-transition: all 0.3s ease-in-out;
+      -moz-transition: all 0.3s ease-in-out;
+      -o-transition: all 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out; }
+      .tabs [class^="tab"] [type="radio"]:hover, .tabs [class^="tab"] [type="radio"]:focus,
+      .tabs [class*=" tab"] [type="radio"]:hover, .tabs [class*=" tab"] [type="radio"]:focus {}
+
+      .tabs [class^="tab"] [type="radio"]:checked,
+      .tabs [class*=" tab"] [type="radio"]:checked {
+        border-bottom: 5px solid red; 
+        border-top-left-radius:10px ;
+        border-top-right-radius:10px ;
+    }
+      .tabs [class^="tab"] [type="radio"]:checked + div,
+      .tabs [class*=" tab"] [type="radio"]:checked + div {
+        opacity: 1; }
+      .tabs [class^="tab"] [type="radio"] + div,
+      .tabs [class*=" tab"] [type="radio"] + div {
+        display: block;
+        opacity: 0;
+        width: 100%;
+        padding: 2rem 0;
+        -webkit-transition: all 0.3s ease-in-out;
+        -moz-transition: all 0.3s ease-in-out;
+        -o-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out; }
+    .tabs .tab-2 { 
+       width:15%;  
+    }
+      
+      .tabs .tab-2 [type="radio"] + div {
+        width: 1000%;
+        margin-left: 1000%; }
+      .tabs .tab-2 [type="radio"]:checked + div {
+        margin-left: 0; }
+      .tabs .tab-2:not(:first-child):not(:last-child) [type="radio"] + div {
+        margin-left: 100%; }
+      .tabs .tab-2:not(:first-child):not(:last-child) [type="radio"]:checked + div {
+        margin-left: -100%; }
+      .tabs .tab-2:last-child [type="radio"] + div {
+        margin-left: 200%; }
+      .tabs .tab-2:last-child [type="radio"]:checked + div {
+        margin-left: -200%; }
+
+      }
+@media only screen and (max-device-width: 800px) {
+  .tabs {
+    display: block;
+    margin: 0;
+    padding: 2vw;
+    background-color: #1C1D20;
+    border-top-left-radius: 2vw;
+    border-top-right-radius:2vw ;
+
+  }
+  .tabs [class^="tab"] label,
+  .tabs [class*=" tab"] label {
+      color: white;
+      display: block;
+      font-size: 4vw;
+      padding: 0.1vw 1vw;
+      text-align: center; 
+    }
+    .mobileTabOptimize{
+      display: none;
+    }
+}

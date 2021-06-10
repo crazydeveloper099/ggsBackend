@@ -1,0 +1,280 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    var playerPlaceJson = [];
+    var unBlockedList=[];
+    $("#tableSearch").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+
+    $('.wallet').click(function(e){
+      var index = $(this).attr("id").split(":");
+      var email =$("#email"+index[1]).val();
+      var wallet =$("#wallet"+index[1]).val();
+
+      bootbox.prompt("Email: "+email+"\nCurrent Amount: "+wallet+'\nEnter new wallet amount:',
+       function(result){ 
+        if(result!=null){
+          bootbox.confirm({
+              message: "Confirm?",
+              buttons: {
+                  confirm: {
+                      label: 'Yes',
+                      className: 'btn-success'
+                  },
+                  cancel: {
+                      label: 'No',
+                      className: 'btn-danger'
+                  }
+              },
+              callback: function (isConfirm) {
+                  if(isConfirm){
+                    var loader = bootbox.dialog({
+                        message: '<p class="text-center mb-0"><i class="fa fa-spin fa-cog"></i> Please wait...</p>',
+                        closeButton: false
+                    });
+                    $.post('/updateWalletAmount',
+                    {"email":email,"wallet":result }, 
+                    function(data, status){
+                      
+                      loader.modal('hide');
+                      if(data=='Success'){
+                        location.reload(); 
+                      }
+                      else{
+                        bootbox.alert("Error Occured! Please try again");
+                      }
+                    }); 
+                  }
+              }
+          });
+        }
+      });
+    })
+
+
+    $('.add').click(function(e) {
+      var button_classes, value = +$('.playersAdded').val();
+      button_classes = $(e.currentTarget).prop('class');
+      if (button_classes.indexOf('add') !== -1) {
+        value = (value) + 1;
+      }
+      value = value < 0 ? 0 : value;
+
+      $('.playersAdded').val(value);
+
+      var buttonValue = value + 1;
+      var index = $(this).attr("id").split(":");
+      var str = $(this).data("obj");
+      var email =$("#email"+index[1]).val();
+
+
+      playerPlaceJson.push(email);
+
+      document.getElementById("rem:" + index[1]).style.display = "inline";
+      document.getElementById("choose:" + index[1]).style.display = "none";
+    });
+    $('.rem').click(function(e) {
+      var button_classes, value = +$('.playersAdded').val();
+      button_classes = $(e.currentTarget).prop('class');
+      if (button_classes.indexOf('rem') !== -1) {
+        value = (value) - 1;
+      }
+      value = value < 0 ? 0 : value;
+      $('.playersAdded').val(value);
+      var buttonValue = value + 1;
+      var index = $(this).attr("id").split(":");
+      var str = $(this).data("obj");
+      var email =$("#email"+index[1]).val();
+
+      var indexObj=playerPlaceJson.indexOf(email);
+      playerPlaceJson.pop(indexObj);
+      playerPlaceJson.pop(playerPlaceJson.length-1);
+      document.getElementById("rem:" + index[1]).style.display = "none";
+      document.getElementById("choose:" + index[1]).style.display = "inline";
+
+    });
+    $(".submitUsers").click(function(e){
+      if(playerPlaceJson.length>1 || unBlockedList.length>1){
+        alert("You can select maximum 1 user at a time");
+      }
+      else{
+      $('#frameModalBottom').modal({
+        show: true
+      });
+    }
+    });
+    $(".del").click(function(e){
+      var index = $(this).attr("id").split(":");
+      var ihtml=document.getElementById("del:" + index[1]).innerText;
+      var str = $(this).data("obj");
+      var email =$("#email"+index[1]).val();
+
+
+      if(ihtml==="UNBLOCK"){
+        var button_classes, value = +$('.playersAdded').val();
+        button_classes = $(e.currentTarget).prop('class');
+        if (button_classes.indexOf('del') !== -1) {
+          value = (value) + 1;
+        }
+        value = value < 0 ? 0 : value;
+
+        $('.playersAdded').val(value);
+
+          unBlockedList.push(email);
+          document.getElementById("del:" + index[1]).innerText="Re Block";
+      }
+      else if(ihtml==='RE BLOCK'){
+        var button_classes2, value2 = +$('.playersAdded').val();
+        button_classes2 = $(e.currentTarget).prop('class');
+        if (button_classes2.indexOf('del') !== -1) {
+          value2 = (value2) - 1;
+        }
+        value2 = value2 < 0 ? 0 : value2;
+        $('.playersAdded').val(value2);
+        var indexObj=playerPlaceJson.indexOf(email);
+        unBlockedList.pop(indexObj);
+        document.getElementById("del:" + index[1]).innerText="Unblock";
+      }
+    });
+    $("#confirmButton").click(function(e) {
+      $('#frameModalBottom').removeClass('show');
+      $("#jsonData1").val(JSON.stringify(playerPlaceJson));
+      $("#jsonData2").val(JSON.stringify(unBlockedList));
+      $("#uploadForm").submit();
+    });
+  });
+
+</script>
+
+<form id="uploadForm" action="/userConsole" method="post">
+  <input id="jsonData1" type="hidden" name="jsonData1" value="">
+  <input id="jsonData2" type="hidden" name="jsonData2" value="">
+</form>
+
+
+<div>
+  <div>
+    <div style=" position: absolute;  z-index: 0;" id="warningAlert" class="alert alert-warning alert-dismissible fade" role="alert">
+      <strong>Please add atleat a player to proceed.</strong>
+
+    </div>
+  </div>
+  <div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+    <div class="container">
+      <p style="color:#ffa500; font-size:2rem; font-family: 'BIGMACCA';">User Management Console</p>
+    </div>
+  </div>
+
+
+  <div class="container" style="">
+    <div class="row">
+      <div class="col-sm">
+        <div style=" ">
+          <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
+            Total Users selected out of <%= data.length %>
+          </div>
+          <input class='playersAdded' style="float:left; background:transparent; font-size:3rem;font-weight:bold;  border:none; color:#FFFFFF;" type="text" value='0' readonly="readonly" />
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-success submitUsers" style="height:6vh;">PUBLISH</button>
+
+      <div class="col-sm">
+        <form style=" " class="form-inline d-flex justify-content-center md-form form-lg mt-0">
+          <i style="color:#a8a8a8;" class="fas fa-search" aria-hidden="true"></i>
+          <input id="tableSearch" style="padding:15px; color:#FFFFFF; font-size:1.5rem;" class="form-control form-control-lg= ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid" style="margin-top:20px; padding: 0px 250px 0px;">
+
+    <table class="table table-bordered table-striped" style="border:2px solid #444; ">
+      <thead class="thead_style" style="border:2px solid #444; ">
+        <tr class="table_row">
+          <th class="table_head" style="border: none;">Image</th>
+
+          <th class="table_head" style="border: none;">Email</th>
+          <th class="table_head" style="border: none;">Wallet Amount</th>
+          <th class="table_head" style="border: none;">isBlocked</th>
+          <th class="table_head" style="border: none;">Action</th>
+        </tr>
+      </thead>
+      <% data.map((datai,i)=>{ %>
+      <tbody class="thead_style" style="border:2px solid #444; " id="myTable">
+        <tr style=" background-color:#222;height:20px; ">
+          <td class="table_head" style="border: none;     vertical-align:middle;">
+            <img style="width:50px;" src="https://image.flaticon.com/icons/svg/847/847969.svg">
+          </td>
+
+          <td class="table_head" style="border: none;   color:white; vertical-align:middle;">
+            <%=datai.email %>
+          </td>
+          <td class="table_head" style="border: none;   color:white; vertical-align:middle;">
+            <%=datai.wallet_amount %>
+          </td>
+          <td class="table_head" style="border: none;   color:white; vertical-align:middle;">
+            <%=datai.isBlocked %>
+          </td>
+          <td class="table_head" style="border: none;     vertical-align:middle;">
+            <% if(datai.isBlocked){ %>
+            <button  id="<%= "del:"+i %>" data-obj=<%=datai.email%> value=<%= datai.user_id+":"+i%> class="btn btn-danger del">
+              Unblock</button>
+            <% } %>
+
+            <button  id="<%= "rem:"+i %>" data-obj=<%=datai.email%> value=<%= datai.email+":"+i%> class="btn btn-danger rem" style="display:none;">
+              Remove</button>
+            <% if(!datai.isBlocked){ %>
+            <button id="<%= "choose:"+i %>" style="2rem;" data-obj=<%=datai.email%> type="button" class="btn btn-success add">
+              Block
+            </button>
+
+          
+            <% } %>
+            <button id="<%= "waltAmt:"+i %>"  data-obj='<%=datai.email%>' type="button" class="btn btn-success wallet">
+              Update Wallet Amount
+            </button>
+
+            <input id="<%="email"+i %>" type="hidden" name="" value="<%=datai.email%>">
+            <input id="<%='wallet'+i %>" type="hidden" name="" value="<%=datai.wallet_amount %>">
+
+          </td>
+        </tr>
+      </tbody>
+      <% }); %>
+    </table>
+  </div>
+
+
+
+  <div class="modal fade bottom " id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center align-items-center">
+
+            <p class="pt-3 pr-2">
+              Confirm Block Selected Users?
+            </p>
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="confirmButton" type="button" class="btn btn-primary">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<%- include('partials/footer') %>

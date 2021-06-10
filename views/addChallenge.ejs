@@ -1,0 +1,726 @@
+<%- include('partials/headerAddChallenge') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/css/bootstrap-material-datetimepicker.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-datetimepicker/2.7.1/js/bootstrap-material-datetimepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.32/moment-timezone-with-data.min.js"></script>
+    
+<script type="text/javascript">
+$(document).ready(function() {
+
+  $('.btn-plus, .btn-minus').on('click', function(e) {
+  const isNegative = $(e.target).closest('.btn-minus').is('.btn-minus');
+  const input = $(e.target).closest('.input-group').find('input');
+  if (input.is('input')){
+    input[0][isNegative ? 'stepDown' : 'stepUp']()
+  }
+})
+
+
+$("input:checkbox").change(function(){
+  if(this.checked)
+  $("#livestreamInfo").fadeIn();
+   else $("#livestreamInfo").fadeOut();
+});
+
+
+$('#eventTypeForm input:radio').click(function() {
+
+    if ($(this).val() === 'Tournaments') {
+     $('#liveSteamContainer').fadeOut();
+     $('#battlefyContainer').fadeIn(); 
+     $('#endTimeStaticCh').fadeOut();
+    }
+    else if($(this).val() === 'LiveEvent'){
+      $('#liveSteamContainer').fadeIn();
+     $('#battlefyContainer').fadeOut(); 
+     $('#endTimeStaticCh').fadeOut();
+    } 
+    else if($(this).val() === 'StaticChallenge' || 
+    $(this).val() === 'Minecraft'){
+      $('#endTimeStaticCh').fadeIn();
+      $('#liveSteamContainer').fadeOut();
+     $('#battlefyContainer').fadeOut(); 
+    }
+    else if($(this).val() === 'normalEvents' ){
+      $('#liveSteamContainer').fadeIn();
+     $('#battlefyContainer').fadeOut(); 
+     $('#endTimeStaticCh').fadeOut();
+    } 
+    else{
+      $('#endTimeStaticCh').fadeOut();
+      $('#liveSteamContainer').fadeOut();
+     $('#battlefyContainer').fadeOut(); 
+    }
+  });
+
+  $(function () {
+        $('#end_time').bootstrapMaterialDatePicker({
+            format: 'YYYY-MM-DD HH:mm:ss',
+        });
+    });
+    $('#inputGroupFile02').on('change',function(){
+                var fileName = $(this).val();
+                $(this).next('.custom-file-label').html(fileName);
+    });  
+    setInterval(()=>{
+      $('#gmtTimeNow').html('<br><i class="fas fa-clock" style="margin-right:1vw;"></i>'+moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"))
+      },1000)
+    
+      setInterval(()=>{
+      $('#gmtTimeNow2').html('<br><i class="fas fa-clock" style="margin-right:1vw;"></i>'+moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"))
+      },1000)
+    var timeNow=moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a");     
+    $('#In-YYYY').val(timeNow.split(' ')[0].split('/')[2]);
+    $('#In-MM').val(timeNow.split(' ')[0].split('/')[0]);
+    $('#In-DD').val(timeNow.split(' ')[0].split('/')[1]);
+    $('#In-hh').val(timeNow.split(' ')[1].split(':')[0]);
+    $('#In-mm').val(timeNow.split(' ')[1].split(':')[1]);
+    $('#In-ss').val(timeNow.split(' ')[1].split(':')[2]);
+
+
+    $('#In-YYYY2').val(timeNow.split(' ')[0].split('/')[2]);
+    $('#In-MM2').val(timeNow.split(' ')[0].split('/')[0]);
+    $('#In-DD2').val(timeNow.split(' ')[0].split('/')[1]);
+    $('#In-hh2').val(timeNow.split(' ')[1].split(':')[0]);
+    $('#In-mm2').val(timeNow.split(' ')[1].split(':')[1]);
+    $('#In-ss2').val(timeNow.split(' ')[1].split(':')[2]);
+
+    $('#am').click((e)=>{
+      e.preventDefault();
+      $('#am-pm').html('am');
+    })
+    $('#pm').click((e)=>{
+      e.preventDefault();
+      $('#am-pm').html('pm');
+    })
+
+    $('#am2').click((e)=>{
+      e.preventDefault();
+      $('#am-pm2').html('am');
+    })
+    $('#pm2').click((e)=>{
+      e.preventDefault();
+      $('#am-pm2').html('pm');
+    })
+
+  var j=2;
+  var new_cat=false;  
+    $("#add_a_prize").click(function () { 
+          $('#thisUl').append('<li><label id="label'+j+'" for="exampleInputPassword1">Challenge Prize '+j+'</label><input name="prize" type="text" class="form-control" id="list'+j+'" placeholder="$50"></li>');
+          if(j>=2) $('.delete').css('display','inline');
+          j++;
+        }); 
+      $('.delete').click(function(){
+        j=j-1;
+         if(j<=2) $('.delete').css('display','none');
+        $('#list'+j).remove();
+        $('#label'+j).remove();
+      });  
+      $('#publishButton').click(function(){
+          if($('#am-pm').html().trim()=='am / pm'){
+            alert('Please select am / pm')
+          }
+          else{
+          var timeSelected=$('#In-MM').val()+'/'+$('#In-DD').val()+'/'+$('#In-YYYY').val()+' '+$('#In-hh').val()+':'+$('#In-mm').val()+':'+$('#In-ss').val()+' '+$('#am-pm').html().trim();
+         
+          var prizeData=[];
+          for(i=1;i<=j-1;i++){
+               prizeData.push($('#list'+i).val());
+          }
+          var d = new Date();
+          let eventType=$("#eventTypeForm input[type='radio']:checked").val();
+
+          var endTimeStaticEvt=null;
+          if(eventType!='LiveEvent'){
+            endTimeStaticEvt=$('#In-MM2').val()+'/'+$('#In-DD2').val()+'/'+$('#In-YYYY2').val()+' '+$('#In-hh2').val()+':'+$('#In-mm2').val()+':'+$('#In-ss2').val()+' '+$('#am-pm2').html().trim();
+          }
+          $('#end_time').val(timeSelected.trim())
+
+
+          let liveStreamWidgetType=null
+          let livestreamUrl=null
+          let BattlefyLink=null
+          if(eventType=='LiveEvent'){
+            if ($("#liveStream").is(":checked")) {
+              liveStreamWidgetType=$("#liveStreamWidgetTypeForm input[type='radio']:checked").val();
+              livestreamUrl=$('#liveStreamURL').val();
+            }
+          }
+          if(eventType=='Tournaments'){
+            BattlefyLink=$("#battlefyLink").val();
+          }
+          if(new_cat){
+
+           var category=$('#category_newId').val();
+          var obj={
+            "challengeName":$('#challengeName').val(),
+            "challengeType":$('#challengeType').val(),
+            "prize":prizeData,
+            "start_time":$('#start_time').val(),
+            "end_time":$('#end_time').val(),
+            "challengeTime":$('#end_time').val(),
+            "rules": $('#rules').val(),
+            "desc": $("#desc").val(),
+            "minLevel":$('#mLevel').val(),
+            "spots":$('#spots').val(),
+            "createdAt":d.toLocaleString('en-US', { timeZone: 'America/New_York' }),
+            "ytLinkParticipation":$('#ytLinkParticipate').find(":selected").val(),
+            "challengeBase":$('#challengeBase').is(":checked").toString(),
+            eventType,
+            liveStreamWidgetType,
+            livestreamUrl,
+            BattlefyLink,
+            endTimeStaticEvt
+          }
+          $("#jsonData").val(JSON.stringify(obj));
+          $('#uploadForm').submit();
+          }
+          else{
+            category=$('#category').val();
+          var obj={
+            "challengeName":$('#challengeName').val(),
+            "challengeType":$('#challengeType').val(),
+            "prize":prizeData,
+            "start_time":$('#start_time').val(),
+            "end_time":$('#end_time').val(),
+            "challengeTime":$('#end_time').val(),
+            "rules": $('#rules').val(),
+            "desc": $("#desc").val(),
+            "spots":$('#spots').val(),
+            "minLevel":$('#mLevel').val(),
+            "createdAt":d.toLocaleString('en-US', { timeZone: 'America/New_York' }),
+            "ytLinkParticipation":$('#ytLinkParticipate').find(":selected").val(),
+            "challengeBase":$('#challengeBase').is(":checked").toString(),
+            eventType,
+            liveStreamWidgetType,
+            livestreamUrl,
+            BattlefyLink,
+            endTimeStaticEvt
+          }
+          $("#jsonData").val(JSON.stringify(obj));
+          $('#uploadForm').submit();
+      }  
+    }
+      });
+      $("#add_category").click(function(){
+          new_cat=true;  
+          $(".createCategory").css('display','block');
+          $("#category").css('display','none');
+      });
+      $('.dropdown-item-li').click(function(e) 
+      { 
+        new_cat=false;  
+        $("#category").css('display','block');
+        $(".createCategory").css('display','none');
+        $("#category").val( $(this).html());
+      });
+});
+</script>
+
+<style>
+  ul {
+  list-style-type: none;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 300px;
+  height: 75px;
+
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ca2222;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 65px;
+  width: 65px;
+  left: 7px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2ab934;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(222px);
+  -ms-transform: translateX(222px);
+  transform: translateX(222px);
+}
+
+/*------ ADDED CSS ---------*/
+.on
+{
+  display: none;
+}
+
+.on, .off
+{
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+input:checked+ .slider .on
+{display: block;}
+
+input:checked + .slider .off
+{display: none;}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 80px;
+}
+
+.slider.round:before {
+  border-radius: 50%;}
+
+  .inline-group {
+  max-width: 12rem;
+  padding: .5rem;
+}
+
+.inline-group .form-control {
+  text-align: center;
+}
+
+.form-control[type="number"]::-webkit-inner-spin-button,
+.form-control[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>
+
+<div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center;">
+  <div class="container">
+    <p style="color:white;" class="display-4">Crea un nuevo desafío</p>
+  </div>
+</div>
+<div>
+ 
+
+<div class="container">
+<div class="row text-center">
+  <div class="col d-flex ">
+
+   
+    <div style="margin :0 auto; padding:2%; padding-left:5%; padding-right:5%; width:800px; background:rgba(255,255,255,1); border-radius:15px;">
+      <form style="margin-top:2vh;" id='eventTypeForm'>
+        <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
+          Choose Event Type
+        </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="eventType" id="inlineRadio1" value="StaticChallenge">
+        <label class="form-check-label" for="inlineRadio1">Static Event</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="eventType" id="inlineRadio2" value="LiveEvent">
+        <label class="form-check-label" for="inlineRadio2">Live Event</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="eventType" id="inlineRadio3" value="Tournaments" >
+        <label class="form-check-label" for="inlineRadio3">Tournament</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="eventType" id="inlineRadio4" value="Minecraft" >
+        <label class="form-check-label" for="inlineRadio4">Minecraft Event</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="eventType" id="inlineRadio5" value="normalEvents" >
+        <label class="form-check-label" for="inlineRadio5">Special Events</label>
+      </div>
+    </form>
+    <div id="liveSteamContainer">
+      <div style="margin-top: 2vh;">
+        <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
+          LiveStream
+        </div>
+        <label class="form-check-label">
+          <input type="checkbox" class="form-check-input" id="liveStream" name='liveStream' value="">Enable Live Stream
+        </label>
+        <div id='livestreamInfo' style="display: none;">
+          <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
+            Choose LiveStream Provider
+          </div>
+          <form action="" id="liveStreamWidgetTypeForm">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="liveStreamWidgetType" id="inlineRadio3" value="Facebook" >
+            <label class="form-check-label" for="inlineRadio3">Facebook</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="liveStreamWidgetType" id="inlineRadio4" value="Twitch" >
+            <label class="form-check-label" for="inlineRadio3">Twitch</label>
+          </div>
+        </form>
+          <div class="form-group">
+            <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Enter Url for live stream</label>
+            <input name="liveStreamUrl" type="text" class="form-control" id="liveStreamURL" placeholder="Enter Url for live stream"/>
+          </div> 
+        </div>
+      </div>
+    </div>
+    <div id="battlefyContainer">
+      <div class="form-group">
+        <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Battlefy link</label>
+        <input name="battleftLink" type="text" class="form-control" id="battlefyLink" placeholder="Battlefy link"/>
+      </div> 
+    </div>
+
+  <div class="col-sm">
+    <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
+      Choose a Picture
+    </div>
+    <div class="help-block with-errors"></div>
+
+    <div class="input-group mb-3" stryle="margin-top:20px;">
+      <div class="custom-file">
+        <form id='uploadForm' action='/addChallenge' method='POST' encType="multipart/form-data">
+          <input id="jsonData" type="hidden" name="jsonData" value=""/>
+          <input type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required />
+          <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+   <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Challenge Title</label>
+   <input name="challengeName" type="text" class="form-control" id="challengeName" placeholder="Call Of Duty"/>
+ </div>
+ <div class="form-group">
+   <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Challenge Type</label>
+   <input name="challengeType" type="text" class="form-control" id="challengeType" placeholder="Global • 1v1 • 50 CUPOS"/>
+ </div>
+ 
+ <div class="form-group">
+  <ul id="thisUl">
+    <li>
+      <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Challenge Prize 1</label>
+      <input name="prize" type="text" class="form-control" id="list1" placeholder="$50">
+    </li>
+  </ul> 
+ </div>
+
+ <button id="add_a_prize"  class="btn btn-success">Add a Prize</button>
+ <button class="delete btn btn-danger" style="display: none;">Remove Prize</button>
+ <div class="form-group">
+   <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Challenge Description</label>
+   <textarea name="desc" class="form-control" id="desc" rows="3"></textarea>
+ </div>
+ <div class="form-group" >
+
+  <input style="display: none;" name="endTime" type="text" class="form-control result" id="end_time" placeholder="YYYY-MM-DD HH:MM:SS">
+  
+  <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px;text-align: center; " >
+    Event Time 
+
+    <h5 id='gmtTimeNow' style="color: black;"></h5>
+
+
+    <label for="quantity">YYYY</label>
+    <div class="input-group inline-group" style="text-align: center;">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id='In-YYYY' class="form-control quantity" min="2021" max="2030" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">MM</label>
+  <div class="input-group inline-group">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-MM" class="form-control quantity" min="1" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">DD</label>
+  <div class="input-group inline-group">
+
+  <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-DD" class="form-control quantity" min="1" max="31" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">hh</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-hh" class="form-control quantity" min="00" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">mm</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-mm" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">ss</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-ss" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="am-pm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        am / pm
+      </button>
+      <div class="dropdown-menu" aria-labelledby="am-pm">
+        <a id="am" class="dropdown-item" href="">am</a>
+        <a id="pm" class="dropdown-item" href="">pm</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+
+<div id='endTimeStaticCh' class="form-group" >
+
+  <input style="display: none;" name="endTime" type="text" class="form-control result" id="end_time" placeholder="YYYY-MM-DD HH:MM:SS">
+  
+  <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px;text-align: center; " >
+    Even End Time 
+
+    <h5 id='gmtTimeNow2' style="color: black;"></h5>
+
+
+    <label for="quantity">YYYY</label>
+    <div class="input-group inline-group" style="text-align: center;">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id='In-YYYY2' class="form-control quantity" min="2021" max="2030" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">MM</label>
+  <div class="input-group inline-group">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-MM2" class="form-control quantity" min="1" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">DD</label>
+  <div class="input-group inline-group">
+
+  <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-DD2" class="form-control quantity" min="1" max="31" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">hh</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-hh2" class="form-control quantity" min="00" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">mm</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-mm2" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">ss</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-outline-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-ss2" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="am-pm2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        am / pm
+      </button>
+      <div class="dropdown-menu" aria-labelledby="am-pm">
+        <a id="am2" class="dropdown-item" href="">am</a>
+        <a id="pm2" class="dropdown-item" href="">pm</a>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<div class="form-group">
+  <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Challenge Rules</label>
+  <textarea name="rules" class="form-control" id="rules" rows="3"></textarea>
+</div>
+<div class="form-group">
+  <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Minimum Level</label>
+  <input name="rules" class="form-control" id="mLevel" ></input>
+</div>
+<!-- <% if(dataCategory  !== null && dataCategory.length >0) { %>
+  <label for="exampleInputPassword1">Category</label>
+
+  <input type="hidden" id="dropdownValueId" name="dropdownValue" value="">
+<div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Select a Category
+  </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <ul id="dropdownUl">
+  <%dataCategory.map(datai=>{%>
+    <li><a class="dropdown-item-li" href="#"><%= datai.categoryId %></a></li>
+<%});%>
+</ul>
+<a class="dropdown-item" id="add_category" href="#">+ Add a category</a>
+
+</div>
+
+</div>
+<div class="form-group">
+  <input name="category" type="text" class="form-control" id="category" placeholder="Action">
+</div>
+
+<%}%> -->
+
+<!-- <div class="createCategory" style="display: none;">
+  <div class="md-form mb-5">
+    <input name="category_new" id="category_newId" type="text" id="form3" class="form-control validate" placeholder="Enter a category name" value="">
+  </div>
+</div> -->
+
+<div class="form-group">
+  <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Maximum Spots</label>
+  <input name="rules" class="form-control" id="spots" ></input>
+</div>
+
+<div class="form-group">
+  <label style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; " for="exampleInputPassword1">Youtube Instruction link for players participating</label>
+  <div class="input-group mb-3">
+    <select name="ytInsLinkParticipate" class="custom-select" id="ytLinkParticipate">
+      <option selected>Choose...</option>
+      <%videoPresetsData.Items.map(iframeCode=>{ %>
+        <option value="<%=iframeCode.iframeCode%>"><%=iframeCode.video_id%></option>
+    <%})%>
+      
+    </select>
+  </div>
+</div>
+
+
+
+ <button type="submit" id="publishButton" class="btn btn-dark">Publish</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<%- include('partials/footer') %>

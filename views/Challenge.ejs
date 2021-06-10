@@ -1,0 +1,935 @@
+<%- include('partials/header_challengeList') %>
+
+<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+<script src="/js/confettiAnimation.js"></script>
+
+<link rel="stylesheet" href="/style/pulseAnimation.css">
+<link rel="stylesheet" href="/css/challenge.css">
+<style>
+  .canvas1 {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  display: none;
+}
+
+</style>
+<input id="endTimeChallenge" type="hidden" value="<%=end_date%>">
+<input id="challengeTime" type="hidden" value="<%=challengeTime%>">
+<input id="isParticipated" type="hidden" value="<%=isParticipated%>">
+<input id="password" type="hidden" value="<%=password%>">
+<input id="passwordTimer" type="hidden" value="<%=passwordTimer%>">
+<input id="ytLinkTutorial" type="hidden" value="<%=ytInstructionLink%>">
+<input id="ytLinkLobbyTutorial" type="hidden" value="<%=ytLobbyTutorial%>">
+<input id="isMathEnded" type="hidden" value="<%=isEnded%>">
+<input id="resultTimer" type="hidden" value="<%=resultTimer%>">
+<input id="challengeID" type="hidden" value="<%=challengeId%>">
+<input id="resultData" type="hidden" value="<%=resultData%>">
+<input id="isFull" type="hidden" value="<%=isFull%>">
+<input type="hidden" id="tempSocketResultData" value="<%=directResultArr%>">
+<input type="hidden" value="<%=name%>" id="userEmail">
+<canvas class="canvas1"></canvas>
+<div style="padding: 4vw;">
+  <div style="background:#1C1D20;border-radius: 1.5vw;border-bottom-left-radius: 1.5vw;border-bottom-right-radius:1.5vw ;">
+<div style="">
+  <div class="head-note-lc-parent">
+    <div class="lbc-heading-m" >Lobby del reto</div>
+</div>
+
+<!--Starting of top container-->  
+<div style="font-family: 'Raleway', sans-serif;" class='challengeTopParentContainer'>
+  <div class="challengeTopContainer">
+<div class='centerElement' >
+  <img class="card_image imageBorder desktopImage" src='<%=src%>'  >
+
+<div class="challenge-top-item1">
+  <img class="card_image_ch imageBorder mobileImage" src='<%=src%>'  >
+
+<div id="nameBanner" class="c-challenge-name" style="font-family: avenir;color: white;">
+  <strong ><%- challengeName %></strong>
+  <div class="pink-tag-ch">
+    Mobile
+  </div>
+</div>
+
+<div class="c-buttonCenter" >
+  <div id="prizeBanner" class="c-challengePrize" style="" >
+    <!-- <span style="color: #A4A5A6;">
+      Prizes:
+    </span> -->
+    <span style="color: #B6B6B6;">
+      <%if(prize.L.length>1) {%>
+        <i class="fas fa-trophy" style="margin-right: 0.5vw;"></i> Premios múltiples
+      <%}%>
+      <%if(prize.L.length===1) {%>
+        <i class="fas fa-trophy" style="margin-right: 0.5vw;"></i> <%= prize.L[0].S %> coin(s)
+      <%}%>
+    </span>
+  </div>
+</div>
+
+
+
+<div class="c-buttonCenter" >
+  <div id="prizeBanner" class="c-challengePrize" style="" >
+    <!-- <span style="color: #A4A5A6;">
+      Type:
+    </span> -->
+    <span id="challengeType" class="mobiletimeBannerContainer-Container2" style="color: #B6B6B6;">
+      <% if(data.challengeType) {%>  
+          <%=data.challengeType.S%>
+      <%}%>
+    </span>
+  </div>
+</div>
+
+<div class="spots-hide-desktop">
+<input id='spotsCount' type="hidden" value='<%=spots%>'>
+<%var spots=spots.split('/');%>  
+<div class='c-challengePrize' >
+    <div id="spotsText" class=' '>
+      <!-- <span style="color: #A4A5A6;">
+        Spots:
+      </span> -->
+      <span style="color: #B6B6B6;" class="mobiletimeBannerContainer-Container2">
+        <%=spots[0]+"/"+spots[1]%> Players Registered
+      </span>
+  </div>
+</div>
+</div>
+
+<!--Button Set-->
+
+<div class="challenge-buttonSet">
+ 
+          <div class="mobileOnlyJoinButton">
+               
+            <%if(!isLogged){%>
+                <button
+                id=""
+                type="submit" 
+                name="more_challenges" 
+                
+                class="button-view-all c-buttonJoin loginButtonForClick"
+                 >                    
+                Iniciar sesion
+                  <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>           
+                </button>
+            <%}%>
+            <%if(isLogged){%> 
+              <%if(isEverSubscribed){%> 
+                <%if(code){%> 
+                 
+                    
+                    <%if(!isParticipated){%>
+                      <button 
+                      id="button_Join_mobile"
+                      type="submit" 
+                      name="more_challenges" 
+                      class="button-view-all c-buttonJoin" 
+                      data-toggle="modal" data-target="#participateModal" > 
+                      Participar
+          
+                      <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+                    </button>
+                    <%}%> 
+                    <%if(isParticipated){%>
+                      <button 
+                      id="button_Join_mobile"
+                      type="submit" 
+                      name="more_challenges" 
+                      class="button-view-all c-buttonJoin" 
+                       > 
+                       Estas participando 
+                 
+                    </button>         
+                    <%}%> 
+                <%}%>
+                <%if(!code){%> 
+                  <%if(isParticipated){%>
+                    <button 
+                    id="button_Join_mobile"
+                    type="submit" 
+                    name="more_challenges" 
+                    class="button-view-all c-buttonJoin" 
+                     > 
+                     Estas participando 
+                 
+                  </button>         
+                  <%}%> 
+                  <%if(!isParticipated){%>
+                  <form action="/subscribe" method="get">
+                    <button 
+                    id=""
+                    type="submit" 
+                    name="more_challenges" 
+                    class="button-view-all c-buttonJoin"> 
+                    Resubscribe  
+                    <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>     
+                  </button> 
+                </form>
+              <%}%>    
+              <%}%>
+              <%}%>
+              <%if(!isEverSubscribed){%> 
+                <%if(isParticipated){%>
+                  <button 
+                  id="button_Join_mobile"
+                  type="submit" 
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin" 
+                   > 
+                  Estas participando 
+                         
+                </button>         
+                <%}%> 
+                <%if(!isParticipated){%>
+                  <p class="no-subs-message" style="color: #FFF;">
+                    No tienes una suscripción activa, para ver la contraseña de esta partida,<br> activa tu suscripción haciendo click en "Comienza ya"
+                  </p>
+                <form action="/subscribe" method="get">
+                  <button 
+                  id=""
+                  type="submit" 
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin" > 
+                   COMIENZA YA  
+                  <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>     
+                </button> 
+                
+              </form>
+              <%}%>    
+              <%}%> 
+            <%}%> 
+           
+            
+          
+          </div>
+          
+            <div class="secondary-buttons-ch">
+            <!-- <button id="tutorialDialogButton" class="buttonShdwEffect  mobiletimeBannerContainer-Container2" style="margin-top:1vw;display: inline-block;">Tutorial  <i class="fa fa-info" style="margin-left: 0.6vw;" aria-hidden="true"></i></button> -->
+            <button id="passwordDialogButton" class="buttonShdwEffect mobiletimeBannerContainer-Container2" style="" disabled><i style="margin-right: 0.6vw;" class="fas fa-lock"></i> Contraseña de sala por anunciar </button>
+            <button id="matchEnded" class="buttonShdwEffect mobiletimeBannerContainer-Container2" style="display: none;" disabled><i style="margin-right: 0.6vw;" class="fas fa-lock"></i> partida finalizada</button>
+            <button href="#" class="buttonShdwEffect" id="btn-share"><i class="fas fa-share-alt"></i> Compartir </button> 
+            <a href="https://docs.google.com/forms/u/2/d/1XRBopevC2CwhUi6R1JS1URRghmHiSDnOlsY0VKaM41M/edit" target="_blank" >
+            <button  id="feedbackButton" class="buttonShdwEffect mobiletimeBannerContainer-Container2" style="display: none;" ><i style="margin-right: 0.6vw;" class="fas fa-star-half-alt"></i>Feedback</button>
+            </a>
+          </div>
+        </div>
+        <!--Button Set-->
+        </div> 
+        
+        <div class="c-buttonCenter ">
+          
+          <div class="pcOnlyJoinButton">
+            <div class="spots-hide-mobile" style="margin-bottom:1vw">
+            
+            <div class='c-challengePrize' >
+                <div id="spotsText" class='spotsTextStyle'>
+                  <!-- <span style="color: #A4A5A6;">
+                    Spots:
+                  </span> -->
+                  <span style="color: white;" class="mobiletimeBannerContainer-Container2">
+                    <i class="fas fa-user-friends" style="margin-right: 1vw;"></i>
+                    <%=spots[0]+"/"+spots[1]%>
+                  </span>
+              </div>
+            </div>
+            </div>
+
+          <%if(!isLogged){%>
+            <!-- <form action="/login" method="get"> -->
+              <button
+              id=""
+              type="submit" 
+              name="more_challenges" 
+              
+              class="button-view-all c-buttonJoin loginButtonForClick"
+               >                    
+              Iniciar sesion
+                <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>           
+              </button>
+          <!-- </form> -->
+          <%}%>
+          <%if(isLogged){%> 
+            <%if(isEverSubscribed){%> 
+              <%if(code){%> 
+               
+                  
+                  <%if(!isParticipated){%>
+                    <button 
+                    id="button_Join"
+                    type="submit" 
+                    name="more_challenges" 
+                    class="button-view-all c-buttonJoin" 
+                    data-toggle="modal" data-target="#participateModal" > 
+                    Participar
+                    <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+                  </button>
+                  <%}%> 
+                  <%if(isParticipated){%>
+                    <button 
+                    id="button_Join"
+                    type="submit" 
+                    name="more_challenges" 
+                    class="button-view-all c-buttonJoin" 
+                     > 
+                     Estas participando
+         
+                  </button>         
+                  <%}%> 
+              <%}%>
+              <%if(!code){%> 
+                <%if(isParticipated){%>
+                  <button 
+                  id="button_Join"
+                  type="submit" 
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin" 
+                   > 
+                   Estas participando 
+        
+                </button>         
+                <%}%> 
+                <%if(!isParticipated){%>
+                <form action="/subscribe" method="get">
+                  <button 
+                  id=""
+                  type="submit" 
+                  name="more_challenges" 
+                  class="button-view-all c-buttonJoin"> 
+                  Resubscribe  
+                  <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>     
+                </button> 
+              </form>
+            <%}%>    
+            <%}%>
+            <%}%>
+            <%if(!isEverSubscribed){%> 
+              <%if(isParticipated){%>
+                <button 
+                id="button_Join"
+                type="submit" 
+                name="more_challenges" 
+                class="button-view-all c-buttonJoin" 
+                 > 
+                 Estas participando 
+        
+              </button>         
+              <%}%> 
+              <%if(!isParticipated){%>
+                <p class="no-subs-message" style="color: #FFF;" >
+                  No tienes una suscripción activa, para ver la contraseña de esta partida,<br> activa tu suscripción haciendo click en "Comienza ya"
+                </p>
+              <form action="/subscribe" method="get">
+                <button 
+                id=""
+                type="submit" 
+                name="more_challenges" 
+                class="button-view-all c-buttonJoin" > 
+                 COMIENZA YA  
+                <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>     
+              </button> 
+              
+            </form>
+            <%}%>    
+            <%}%> 
+          <%}%> 
+        
+  
+      
+    
+          <%if(password!='null'){%>
+          <%}%>
+        </div>
+          <div style="margin-top:1vw" style="" >
+            <div class="c-buttonCenter" style="" >
+              <div id="prizeBanner" class="buttonShdwEffect mobiletimeBannerContainer-Container2" style="text-align: center;" >
+    
+                <span id="timeBanner" class="mobiletimeBannerContainer-Container2" style="color: #ABABAB;" >
+                  
+                </span>
+              </div>
+            </div>
+            </div>
+        </div>
+        
+ </div>
+</div>
+
+</div>
+<!--Ending of top container-->  
+
+<div style="border-bottom: 4px solid #16171A;margin-top: 2vw;"></div>
+
+<div class="tabs" style=" ">
+ 
+  <div class="tab-2" >
+    <label for="tab3-1" style="font-family: 'avenir-light';">Vista general</label>
+    <input id="tab3-1" name="tabs-two" type="radio" checked="checked" class='mobileTabOptimize'>
+    
+    <div>
+      <div class="ch-container-2" >
+        <span class="c-challenge-name" >Tutorial</span>  
+        <div id="" class="row modalVideoRow" >  
+        </div>
+        <!-- <div id="" class="row PasswordVideoRow" style="margin-left: 1.5vw;">
+        </div> -->
+      </div>
+      
+      <!-- <div style="border-bottom: 4px solid #16171A;margin-top: 1vw;padding-bottom: 0;margin-bottom: 0;"></div> -->
+      <div class="ch-container-2">
+      <span class="c-challenge-name" >
+        Descripcion
+      </span>  
+
+      <div id="challengeDescription" class="c-textrd" style="font-family: 'avenir-light';">
+        <%- challengeDescription %>
+      </div>
+    </div>
+      <!-- <div style="border-bottom: 4px solid #16171A;margin-top: 1vw;padding-bottom: 0;margin-bottom: 0;"></div> -->
+ 
+      <div class="ch-container-2">
+      <div class="c-challenge-name" >
+        Premios <span class='coinToCOPHint' style="font-family: avenir-light;">(1 coin is $1000.00 COP)</span>
+      </div>  
+  <div class="c-prize-mobile" style="text-align: center;margin-top: 2vw">
+    <% var k=2; %>
+
+    <% var len=prize.L.length;
+    for(j = 0; j < (len)/k; j++){ %>
+      <div >
+      
+      <% var filteredArray=prize.L.slice(j*k,(j*k)+k); %>
+    <% for(i=0;i<filteredArray.length ; i++) {%>  
+        <div class="c-prize-background" style="" >    
+            <%if(i===0){%>
+              <img src="/images/chest_img.png" class="c-image-prize" alt="">
+              <div  class="c-prize-text"> 
+            <span  class='position-span'><%=1%>ro</span>●
+           
+            <div class="c-text-prize" style="color:white;font-family: 'avenir-light';">
+              <img class="coin-icon-ch" src="/images/coinIcon.png" alt=""> 
+              <!-- <%if(resultData!='null' && JSON.parse(resultData.Item.resultData.S).length>i){%>
+                <span class='winnersName' style="display: none;color: #A4A5A6;font-weight:500;"><%=JSON.parse(resultData.Item.resultData.S)[i].username%></span>
+                <%}%>   -->
+              <%= prize.L[i].S%> coin(s)
+              
+              
+            </div>
+            </div>
+            <%}%>
+            <%if(i===1){%>
+              <img src="/images/chest-low.png" class="c-image-prize" alt="">
+              <div  class="c-prize-text"> 
+              <span  class='position-span'><%=2%>do</span>●
+              <div class="c-text-prize" style="color:white;font-family: 'avenir-light';">
+                <img class="coin-icon-ch" src="/images/coinIcon.png" alt=""> 
+                <%if(resultData!='null' && JSON.parse(resultData.Item.resultData.S).length>i){%>
+  
+                  <span class='winnersName' style="display: none;color: #A4A5A6;font-weight:500;"><%=JSON.parse(resultData.Item.resultData.S)[i].username%></span>
+                <%}%>  
+                <%= prize.L[i].S%> coin(s)
+               
+                
+                
+              </div>
+              </div>
+              <%}%>
+            <%if(i===2){%>
+              <img src="/images/chest-lowest.png" class="c-image-prize" alt="">
+              <div  class="c-prize-text"> 
+            <span  class='position-span'><%=3%>ro</span>●
+            <div class="c-text-prize" style="color:white;font-family: 'avenir-light';">
+              <img class="coin-icon-ch" src="/images/coinIcon.png" alt=""> <%= prize.L[i].S%> coin(s)
+              
+              <%if(resultData!='null' && JSON.parse(resultData.Item.resultData.S).length>i){%>
+                <span class='winnersName' style="display: none;color: #A4A5A6;font-weight:500;"><%=JSON.parse(resultData.Item.resultData.S)[i].username%></span>
+                <%}%>  
+            </div>
+            </div>
+
+            <%}%> 
+            <%if(i===3){%>
+              <img src="/images/chest-lowest.png" class="c-image-prize" alt="">
+              <div  class="c-prize-text"> 
+              <span class='position-span'><%=4%>ro</span>  
+              ●
+              <div class="c-text-prize" style="color:white;font-family: 'avenir-light';">
+                <img class="coin-icon-ch" src="/images/coinIcon.png" alt=""> <%= prize.L[i].S%> coin(s)                
+                <%if(resultData!='null' && JSON.parse(resultData.Item.resultData.S).length>i){%>
+                  <span class='winnersName' style="display: none;color: #A4A5A6;font-weight:500;"><%=JSON.parse(resultData.Item.resultData.S)[i].username%></span>
+                <%}%>  
+              </div>
+              </div>
+              <%}%>  
+              <%if(i>=4){%>
+                <h1  class="c-prize-text"> 
+                <%=i+1%>ro
+                </h1>
+                          <img src="/images/chest-lowest.png" class="c-image-prize" alt="">
+
+                <%}%>    
+          
+        </div>
+       <%}%>
+      </div>
+
+       <% } %>
+  </div>
+</div>
+ 
+<div class="ch-container-2">
+  <span class="c-challenge-name " >
+    Reglas
+  </span> 
+  <div id="challengeRules" class="c-textrd" style="margin-top: 1vw;font-family: 'avenir-light'">
+    <%- rules %>
+  </div>
+    </div>
+  </div>
+  </div>
+  <div style="border-bottom: 4px solid #16171A;margin-top: 4vh;margin-bottom: 2vh;" class="hr-mobile"></div>
+
+  <div class="tab-2" >
+    <label for="tab3-2" style="font-family: 'avenir-light';"  >Jugadores</label>
+    <input id="tab3-2" name="tabs-two" type="radio" class='mobileTabOptimize'>
+
+     <% if(usersData!=null && userImgObj!=null){ %>
+  <div> 
+  
+	<div class="limiter">
+    <div class="c-challenge-name" >
+      Lista de jugadores
+    </div> 
+		<div class="container-table100">
+			<div class="wrap-table100">
+					<div class="table100 ver5 m-b-110">
+					<div class="table100-head">
+						<table>
+							<thead>
+								<tr class="row100 head">
+									<th class="cell100 column1 " style="font-family: 'Open Sans', sans-serif;">#</th>
+									<th class="cell100 column2"  style="font-family: 'Open Sans', sans-serif;">Participante</th>
+									<th class="cell100 column3" style="font-family: 'Open Sans', sans-serif;">Victorias</th>
+									<th class="cell100 column4" style="font-family: 'Open Sans', sans-serif;">Total participado</th>
+									<th class="cell100 column5" style="font-family: 'Open Sans', sans-serif;">Total ganado</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+
+					<div class="table100-body">
+						<table>
+							<tbody>
+              <% for(i=0;i< usersData.length; i++) { %>
+                <tr class="row100 body">
+									<td class="cell100 column1" style="font-family: 'Open Sans', sans-serif;"><%=i+1%></td>
+									<td class="cell100 column2" style="font-family: 'Open Sans', sans-serif;"><%=userImgObj[i].M.score.S%></td>
+									<td class="cell100 column3" style="font-family: 'Open Sans', sans-serif;"><%=usersData[i].win_count%></td>
+									<td class="cell100 column4" style="font-family: 'Open Sans', sans-serif;"><%=usersData[i].total_count%></td>
+									<td class="cell100 column5" style="font-family: 'Open Sans', sans-serif;"><%=usersData[i].win_count=='-'?'-':parseInt(parseInt(usersData[i].win_count)/parseInt(usersData[i].total_count)*100)+'%' %> </td>
+                </tr>		
+                <%if(name==userImgObj[i].M.email.S){%>
+                  <input type="hidden" id="userGameName" value="<%=userImgObj[i].M.score.S%>">
+                <%}%>
+                <%if(isAdmin){%>
+                  <input type="hidden" id="userGameName" value="Admin">
+                <%}%>
+              <%}%>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+    </div>
+  </div>
+</div>
+
+  <% } %>
+  <% if(usersData==null) {%>
+    <div style="width: 80vw; height:70vh; display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;" >
+    <div class="rg-logo-footer" style="color: white;">RG</div>
+      <h6 style="color: #FFF;">¡Sé el primero en unirse!</h6>
+    </div>
+  <% } %>  
+  </div>
+  <div class="tab-2">
+    <div style="border-bottom: 4px solid #16171A;margin-top: 4vh;margin-bottom: 2vh;" class="hr-mobile"></div>
+
+    <label for="tab3-3" style="font-family: 'avenir-light';"  >Chat en vivo</label>
+    <input id="tab3-3" name="tabs-two" type="radio" class='mobileTabOptimize'>
+    
+    <div>
+
+    <div id=messages_center>
+      <ul id="messages"></ul>
+    </div>
+  
+      <div id='bottomDiv'>
+        <div id=username_is_typing_board style="visibility: hidden;color: white;margin-left:3vw ;padding: 0.5vw;">typing..</div>
+        <form class="form-inline" id=message_form autocomplete="off">
+        
+        <%if(!isLogged){%>
+          <div class="chat-disabled-info"><div>Debes hacer login para acceder al chat</div></div>
+        <%}%>  
+        <%if(isLogged){%>         
+        <%if(!isParticipated && !isAdmin){%>
+          <div class="chat-disabled-info"><div>Debes participar para poder acceder al chat</div></div>
+        <%}%>
+        <%if(isParticipated || isAdmin){%>
+          <div style="border-bottom: 4px solid #16171A;margin-top: 2vw;"></div>
+
+          <!-- <div id="emojiBut" type="button" ><i class="far fa-laugh-beam" style="font-size: 1.5vw;color: white;"></i></div>  -->
+          <!-- <input type="text" id="message_form_input" class="form-control form-control-lg" style="height: 8vh;display: none;"   /> -->
+          <div style="z-index: 9999;">
+            <button class='messageBubble' id='chatMsg8'>No</button>
+            <button class='messageBubble' id='chatMsg1'>GG</button>
+            <button class='messageBubble' id='chatMsg7'>¡Sí!</button> 
+            <button class='messageBubble' id='chatMsg11'>¡Gané!</button>
+            <button class='messageBubble' id='chatMsg5'>¡Hola! 👋</button>
+            <button class='messageBubble' id='chatMsg4'>¡Adiós! 👋</button>
+            <button class='messageBubble' id='chatMsg3'>He perdido 😔</button>
+            <button class='messageBubble' id='chatMsg13'>¡Buena partida!</button>
+            <button class='messageBubble' id='chatMsg6'>¡Voy a darlo todo!</button>
+            <button class='messageBubble' id='chatMsg2'>¡Buena suerte a todos!</button>
+            <button class='messageBubble' id='chatMsg12'>¡Gané! ¿Ahora qué debo hacer?</button>
+            <button class='messageBubble' id='chatMsg9'>Tengo un problema con mi partida </button> 
+            <button class='messageBubble' id='chatMsg10'>Necesito la asistencia de un Admin</button> 
+
+            <button class='messageBubble' id='chatMsg14'>Quiero dar mi opinión respecto a este evento.</button>
+            
+          </div>
+        <%}%>
+        <%}%> 
+          <!-- <button id='sendMsgButton' type="submit">SEND</button> -->
+      </form>  
+        </div>
+      </div>
+  </div>
+</div>
+
+<div style="margin-bottom: -100vh;">
+  <%- include('partials/footer') %>
+</div>
+</div>
+</div>
+</div>
+
+
+<div class="modal fade" id="participateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true" style="z-index: 999999;">
+  
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">
+          ingresa tu usuario ingame
+        </h2>
+      </div>
+      <div id='modalBodyParticipate' class="modal-body" style="text-align: center;" >
+        <!-- <form id='uploadForm' action='/declareResult' method='POST' encType="multipart/form-data"> -->
+          <!-- <input style="display: none;" type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required onchange="checkUpload();" /> -->
+          <p id="fileName" style="color: white;"></p>
+          <h4 id="timeLeft" style="color: white;display: none;">Los resultados se anunciarán en</h4>
+          <div id="input-block">
+          <label for="inputEmail3MD" class="col-form-label" style="color: white;">Escribe tu nombre de usuario en el juego</label>
+          <div class="col-sm-12">
+            <div class="md-form mt-0">
+              <input type="text" style="color:white;text-align: center;"  class="form-control" id="inputScore" placeholder="Username" required>
+            </div>
+            <div id='userAlreadyParticipatedMsg' style="display: none;color: #FFF;">User already participated</div>
+            <div id='spotsFullMessage' style="display: none;color: #FFF;">¡Lo sentimos! Ya están llenos los cupos</div>
+          </div>
+        </div>
+          <button   
+          id="button_choose_image"
+          type="button"
+          name="more_challenges" 
+          class="button-view-all c-buttonJoin"
+           > 
+           Seleccionar imágen
+            <i class="fas fa-external-link-alt"style="margin-left: 0.6vw;" ></i>
+        </button>       
+        <!-- </form>   -->
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <button type="button" id="cancel_footer" data-dismiss="modal" class='footerMobileFontSize mr-auto' style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';"> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+<!-- <div style="margin-top:13vh;">
+
+
+<%if(isLogged===false){%>
+  <div class="" style="text-align:center; margin-bottom:50px;">
+    <% if(code==null) { %>
+      <h3 style="color:white; margin-top:4vh;font-size:1.5vw;">Please Log in/ Sign Up First to join a challenge. </h3>
+      <form class="" action="/login" method="get">
+      <button name="id" value=<%= challengeId %> class="buttonCard" type="submit" style="margin-top:4vh; width:10vw;border-radius:0;background:#FF0000;font-size:1vw;"  >Inicia sesión/ Regístrate</button>
+    </form>
+      <% } %>
+  </div>
+<% } %>
+<%if(isLogged===true){%>
+  <%if(isEverSubscribed===true){%>
+    <div class="" style="text-align:center; margin-bottom:50px;">
+      <% if(code==null) { %>
+        <% var end_date_formatted =end_date.substring(0,4)+"/"+end_date.substring(4,6)+"/"+end_date.substring(6,8) %>
+        <h3 style="color:white;  margin-top:4vh;font-size:1.5vw;">¡Ups! Tu suscripción el: <%=end_date_formatted%>.<br /> Para participar en este reto por favor renueva tu membresía haciendo click.<br /> clicking on Recharge button. </h3>
+        <button name="id" value=<%= challengeId %> class="buttonCard" type="submit" style="margin-top:4vh; width:10vw;border-radius:0;background:#FF0000;font-size:1vw;"  >Renovar</button>
+        <% } %>
+      <% if(code!=null) { %>
+          <% } %>
+    </div>
+    <% } %>
+  <%if(isEverSubscribed===false){%>
+    <div class="" style="text-align:center; margin-bottom:50px;">
+      <% if(code==null) { %>
+        <h3 style="color:white; margin-top:4vh;font-size:1.5vw;">¡Comienza tu suscripción hoy y disfruta de acceso ilimitado a nuestros retos!</h3>
+        <button name="id" value=<%= challengeId %> class="buttonCard" type="submit" style="margin-top:4vh; width:10vw;border-radius:0;background:#FF0000;font-size:1vw;">COMIENZA YA <i class="fas fa-chevron-right" style="margin-left:1vw;"></i></button>
+        <% } %>
+    </div>
+    <% } %>
+<% } %>
+</div> -->
+
+<div class="modal fade" id="ytVideoParticipationTutorial" tabindex="-1" role="dialog" aria-labelledby="ytVideoParticipationTutorialTitle"
+  aria-hidden="true" style="z-index: 999999;">
+
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: #1C1D20; text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">
+          Tutorial
+        </h2>
+      </div>
+      <div class="modal-body" style="text-align: center;" >
+        <div id="" class="row modalVideoRow" style="padding:1vw">
+        
+          </div>
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <button type="button" id="closeVideoDialog" data-dismiss="modal" class='footerMobileFontSize'  style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';"> Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+  
+<div class="modal fade" id="exampleModalCenterExpPass" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleExp"
+  aria-hidden="true" style="z-index: 999999;">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: #1C1D20;text-align: center;border-radius: 0.5vw;;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">Detalles de Sala</h2>
+      </div>
+      <div class="modal-body" style="text-align: center;" >
+        <div id="modalVideo-PasswordRow" class="row" style="padding:1vw;justify-content:center;">
+        
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <button type="button" id="closePasswordDialog" data-dismiss="modal" class='footerMobileFontSize mr-auto' style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModalCenterExpFeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleTutorial"
+  aria-hidden="true" style="z-index: 999999;">
+
+  <div class="modal-dialog modal-dialog-centered" role="document" >
+
+    <div class="modal-content"  style="background: #1C1D20;text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">¡El reto ha finalizado! <i style="margin-left: 0.6vw;" class="fas fa-star-half-alt"></i></h2>
+      </div>
+      <div class="modal-body" style="text-align: center;" >
+        <div id="modalVideo-PasswordRow" class="row" style="padding:1vw;justify-content:center;color: white;">
+          <div class="winnerHead feedbackWinnerRow">
+            ¡Ganaste este reto! <i style='margin-left:0.5vw;' class="fas fa-trophy"></i>
+          </div>
+          <br>
+          <div style="width: 100%;font-family: 'avenir-light';color: #B6B6B6;">
+            Danos tu opinión sobre la experiencia:
+          </div>
+          <br>
+          <div >
+          <a class="feedbackWinnerRow" href="<%='/leaderBoardChallenge?id='+challengeId%>" target="_blank" >
+          <button   
+            type="button"
+            id='feedbackModalResults'
+            name="more_challenges" 
+            class="button-view-all feedbackButtonStyle"
+            style="background-color:#0D0D0D;"
+            > 
+            Clasificaciones
+          </button></a>
+          <a href="/wallet" target="_blank" class="feedbackWinnerRow">
+          <button   
+            type="button"
+            id='feedbackModalWallet'
+            name="more_challenges" 
+            class="button-view-all feedbackButtonStyle"
+            style="background-color:#0D0D0D;"
+             > 
+             Mi Billetera
+          </button></a>    
+          <a href="https://docs.google.com/forms/u/2/d/1XRBopevC2CwhUi6R1JS1URRghmHiSDnOlsY0VKaM41M/edit" target="_blank" >
+          <button   
+          type="button"
+          id='feedbackModalButton'
+          name="more_challenges" 
+          class="button-view-all feedbackButtonStyle"> 
+           Feedback
+          </button></a> 
+        </div>
+         
+        </div>
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <button type="button" id="closeFeedbackDialog" data-dismiss="modal" class='footerMobileFontSize' style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';">Tal vez en otro momento</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="challengeDeletedInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleTutorial"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false" style="z-index: 999999;">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: #1C1D20;text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">Challenge Deleted </h2>
+      </div>
+      <div class="modal-body" style="text-align: center;" >
+        <div id="modalVideo-PasswordRow" class="row" style="padding:1vw;justify-content:center;color: white;">
+          Uh oh! This challenge has been deleted!
+          <br/>
+          
+          <a href="/dashboard"  >
+          <button   
+          type="button"
+          id='feedbackModalButton'
+          name="more_challenges" 
+          class="button-view-all c-buttonJoin"
+          style="margin-top: 1vw;background-color: rgb(0, 0, 0);"
+           > 
+           INICIO
+           <i class="fas fa-chevron-right"style="margin-left: 0.6vw;" ></i>
+        </button>  
+      </a>     
+        </div>
+      </div>
+     
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="exampleModalCenterExpShare" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleExp"
+aria-hidden="true" style="z-index: 999999;">
+
+<div class="modal-dialog modal-dialog-centered" role="document">
+
+  <div class="modal-content"  style="background: #1C1D20;text-align: center;border-radius: 0.5vw;">
+    <div class="modal-header" style="border: none;font-family: 'avenir';">
+      <div href="/" class=" rg-logo-dialog " style="color: white;margin: 0 auto;" >RG</div>
+      <!-- <img src="/images/RG_6.png" class='' style="margin:0 auto;"> -->
+    </div>
+    <div style="border-bottom: 4px solid #16171A;margin-top: 2vw;"></div>
+
+    <div class="modal-body" style="text-align: center;" >
+      <div id="modalShareRow" class="row" style="justify-content:center;">
+        <ul style='list-style-type: none;'>
+          <li class='shareLi'>
+          
+            <a  href='#' 
+                title="'+Copy Link+'" 
+                target="_blank" id='copyButton' class="btn btn-black shareA" style="color: white;font-family: 'avenir';border-radius: 15vw;"><i class="fas fa-copy" style="margin-right: 0.5vw;"></i>Copiar Link
+              </a>
+          </li>  
+        <li class='shareLi'>
+          
+          <a  href="https://www.facebook.com/sharer/sharer.php?u=<%='https://retosgamer.com/challenge?id='+challengeId%>" 
+              target="_blank" class="btn btn-facebook shareA" style="color: white;font-family: 'avenir';border-radius: 15vw;"><i class="fab fa-facebook" style="margin-right: 0.5vw;"></i>Publicar en Facebook
+            </a>
+        </li>
+        <li class='shareLi'>
+          <%var twitterText=`https://twitter.com/intent/tweet?text=¡Ven y participa conmigo en el reto ${challengeName}, de Retos Gamer! ¡Únete a Retos Gamer y participa por grandes PREMIOS!&url=https://retosgamer.com/challenge?id=${+challengeId}`%>
+          <a id="twitterShareLink" href='<%-twitterText%>'
+          title="¡Únete a Retos Gamer y participa por grandes PREMIOS!" 
+          target="_blank" 
+          class="btn btn-twitter shareA"  style="color: white;font-family: 'avenir';border-radius: 15vw;"><i class="fab fa-twitter" style="margin-right: 0.5vw;"></i>Compartir en Twitter</a>
+        </li>
+        <li class='shareLi'>
+          <a 
+          href="mailto:?subject=Hi Join Retos Gamer with this Link <%='https://retosgamer.com/challenge?id='+challengeId%>" 
+          title="¡Únete a Retos Gamer y participa por grandes PREMIOS!"
+           class="btn btn-email shareA" style="color: black;font-family: 'avenir';border-radius: 15vw;"><i class="fas fa-envelope" style="margin-right: 0.5vw;"></i> Enviar por correo</a>
+        </li>
+      </ul>
+      </div>
+    </div>
+    <div class="modal-footer" style="border: none;text-align: center;">
+      <button type="button" id="closePasswordDialog" data-dismiss="modal" class='footerMobileFontSize mr-auto' style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';">Cancelar</button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+<%if(end_date!=null && code===false){%>
+  
+  <input type="hidden" id="expired_modal_indicator" value="true"/>
+  <div class="modal fade" id="exampleModalCenterExp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleExp"
+  aria-hidden="true" style="z-index: 999999;">
+
+  <div class="modal-dialog modal-dialog-centered" role="document">
+
+    <div class="modal-content"  style="background: #1C1D20;text-align: center;border-radius: 0.5vw;;">
+      <div class="modal-header" style="border: none;font-family: 'avenir';">
+        <h2 class="modal-title" id="exampleModalLongTitle" style="color: white;font-weight: bold;width: 100%;text-align: center;">Subscription Finalizado!</h2>
+      </div>
+      <div id='thisDialogBody' class="modal-body" style="text-align: center;" >
+        <!-- <form id='uploadForm' action='/declareResult' method='POST' encType="multipart/form-data"> -->
+          <input style="display: none;" type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required onchange="checkUpload();" />
+          <% var end_date_formatted =end_date.substring(0,4)+"/"+end_date.substring(4,6)+"/"+end_date.substring(6,8) %>
+          <h4 id="timeLeft" style="color: white;display: none;">Tu suscripción expiro en <%=end_date_formatted%>. Por favor renuévala para participar en este reto.</h4>
+            <a    
+              href="/subscribe"           
+              type="submit" 
+              class="button-view-all c-buttonJoin hover-color"
+              style="padding-top: 0.5vw;;"
+              >
+              Reactivar suscripcion
+              <i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+          </a>   
+        <!-- </form>   -->
+      </div>
+      <div class="modal-footer" style="border: none;text-align: center;">
+        <button type="button" id="cancel_footer" data-dismiss="modal" class='footerMobileFontSize mr-auto' style="background-color: rgba(0,0, 0, 0);border:none;color: #B6B6B6;font-family: 'avenir';">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<%}%>

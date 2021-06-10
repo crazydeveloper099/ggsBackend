@@ -1,0 +1,685 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+   
+
+  
+
+    var a = 0;
+    $(".meter-m > span").each(function() {
+  	$(this)
+		.data("origWidth", $(this).width())
+		.width(0)
+		.animate({
+			width: $(this).data("origWidth")
+		}, 1200);
+});
+    $("#verCat").click(function() {
+      $('html, body').animate({
+        scrollTop: $("#catalogo").offset().top
+      }, 2000);
+    });
+    $('#acceptTANDC').click(function(event) {
+      $.cookie("tandc", true);
+      $('#exampleModalCenter').modal("hide");
+    });
+    if (typeof $.cookie('tandc') === 'undefined') {
+      $('#exampleModalCenter').appendTo("body").modal('show');
+    }
+    var len = document.getElementById("lengthData").value;
+    
+    for (var i = 0; i < len; i++) {
+
+var time = document.getElementById("cal" + i).innerText;
+var countDownDate = new Date(time).getTime();
+var x = timer("timeLeft" + i, countDownDate);
+myFunction("cal" + i, time)
+}
+
+function timer(id, countDownDate) {
+setInterval(function() {
+  var now = moment(moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"),'MM/DD/YYYY hh:mm:ss a').valueOf()
+  var distance = countDownDate - now;
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  if(days===0){
+          if(hours>0){
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("font-weight", 'bold');
+          document.getElementById(id).innerHTML =  hours + "H " + minutes + "M ";
+          }
+          else{
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("font-weight", 'bold');
+          document.getElementById(id).innerHTML =  "en "+ minutes + "M ";
+          }
+        }
+        else if(days>=1){
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("font-weight", 'bold');
+          document.getElementById(id).innerHTML =  "Comienza en "+days+" Días"
+        }
+        else {
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("font-weight", 'bold');
+          document.getElementById(id).innerHTML = "Finalizado";
+        }
+}, 1000);
+}
+
+
+function myFunction(id, time) {
+var weekday = new Array(7);
+weekday[0] = "Sunday";
+weekday[1] = "Monday";
+weekday[2] = "Tuesday";
+weekday[3] = "Wednesday";
+weekday[4] = "Thursday";
+weekday[5] = "Friday";
+weekday[6] = "Saturday";
+var n = weekday[new Date(time).getDay()];
+var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+var ti=time.split(" ");
+var timeString = ti[1];
+var H = +timeString.substr(0, 2);
+var h = (H % 12) || 12;
+var ampm = H < 12 ? " AM" : " PM";
+timeString = h + timeString.substr(2, 3) + ampm;
+document.getElementById(id).innerHTML = '<i class="fa fa-calendar" aria-hidden="true" style="margin-top:2.5px; margin-right:0.5vw;"></i>'+ n.substring(0, 3) + ", " + months[new Date(time).getMonth()].substring(0, 3) + " " + new Date(time).getDate() + " " + '<i class="fa fa-clock-o" aria-hidden="true" style="margin-top:3.5px; margin-right:0.5vw;margin-left:0.5vw;"></i>'+" "+timeString;
+};
+});
+</script>
+<style media="screen">
+  .carousel-item {
+    height: 80vh;
+  }
+
+  .carousel-item img {
+    height: 80vh;
+  }
+
+  .card_styles_back {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+  }
+  .carousel-indicators li { visibility: hidden; }
+
+  .button_gradient {
+    background: #FF4E50;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F9D423, #FF4E50);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #F9D423, #FF4E50);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+
+  .view_more_bck {
+    background: #040707;
+    border-radius: 5px;
+    /* fallback for old browsers */
+    /* background: -webkit-linear-gradient(to right, #56ab2f, #a8e063); /* Chrome 10-25, Safari 5.1-6 */
+  }
+  
+</style>
+
+
+<div class="blurredBackground">
+
+</div>
+
+
+
+<input type="hidden" id="lengthData" name="length" value='<%=data.length%>' />
+
+
+<div class="" style="
+position: absolute;
+z-index:-101;
+background: url('images/cover-image.png') no-repeat center center fixed; 
+-webkit-background-size: cover;
+-moz-background-size: cover;
+-o-background-size: cover;
+background-size: cover;
+width:100%; height:100vh;
+box-shadow: 169px 2px 91px -35px rgba(0,0,0,0.64) inset;
+-webkit-box-shadow: 169px 2px 91px -35px rgba(0,0,0,0.64) inset;
+-moz-box-shadow: 169px 2px 91px -35px rgba(0,0,0,0.64) inset;
+">
+</div>
+<div style="
+  height:0vh;
+  width:100%;
+  position:absolute;
+  z-index:-99;
+  background:black;
+  margin-top:100vh;
+  ">
+</div>
+<div style="
+  display: -webkit-flex;
+  margin-top:0vh;
+  width:100%;
+  height:100vh;
+  align-items: center;
+  display: flex;">
+  <ul class="li-container-dashboard">
+    <li>
+      <div class="cover-prize-indo-container">
+        <p class="p-dashboard-heading2"> $1.000.000 COP en premios todos los meses</p>
+      </div>
+    </li>
+    <li style="">
+      <h1 class="h1-dashboard-heading" style="font-family: 'avenir';">
+       Participa por<br>
+       Premios Semanales<br>
+       En tus juegos Favoritos
+      </h1>
+    </li>
+    <li>
+      <p class="p-dashboard-heading" style="font-family: 'avenir-light';">¿Quieres participar? Suscríbete con tu operador Tigo o Claro en instantes </p>
+    </li>
+    <li style="">
+      <form action="/login" method="get">
+        <button type="submit" class="dashboard-grid-button" 
+        style="font-family: 'avenir';">COMIENZA YA </button>
+      </form>
+      </li>
+  </ul>
+</div>
+<div id="carousel-example-2" class=" carousel slide carousel-optimize" data-interval="false" style="margin-top: -10vh;">
+  <!-- <ol class="carousel-indicators">
+    <li data-target="#carousel-example-2" data-slide-to="0" class="active"></li>
+    <li data-target="#carousel-example-2" data-slide-to="1"></li>
+    <li data-target="#carousel-example-2" data-slide-to="2"></li>
+  </ol> -->
+  <div class="carousel-inner text-center" role="listbox">
+    <div class="carousel-item active text-center" style="height:20vh;">
+      <div class="view align-items-center justify-content-center">
+        <div style="display: inline-flex;">
+          <div style="width: 33.33%;padding: 2vw 6vw;">
+          <img  src="/images/codm-logo.png" alt="First slide" style="width: 10vw;height: 5vw;">
+          </div>
+          <div style="width: 33.33%;padding: 2vw 6vw;">
+          <img src="/images/fortnite-logo.png" alt="First slide" style="width: 10vw;height: 5vw;">
+          </div>
+          <div style="width: 33.33%;padding: 2vw 6vw;">
+          <img  src="/images/freefire-logo.png" alt="First slide" style="width: 10vw;height: 5vw;">
+          </div>
+
+        </div>
+        <!-- <div class="mask rgba-black-strong"></div> -->
+      </div>
+      <!-- <div class="carousel-caption " style="top: 50%;transform: translateY(-50%);bottom: initial;">
+       <div class="carousel-caption-custom">¡Participa en retos y gana cada semana!</div>
+        <a href="#" class="square_btn " class="carousel-button-custom">Registrate <i class="fas fa-chevron-right" style="margin-left:1vw;"></i></a>
+      </div> -->
+    </div>
+  </div>
+
+  <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev" style="background-color;">
+    <span ><i class="fa fa-chevron-left" style="color: white;background-color: red;border-radius: 50%;width:2vw;height:2vw;  line-height: 2vw;text-align: center;" aria-hidden="true"></i></span>
+    <span class="sr-only" >Previous</span>
+  </a>
+  <a  class=" carousel-control-next " href="#carousel-example-2" role="button" data-slide="next">
+      <i class="fa fa-chevron-right" style="color: white;background-color: red;border-radius: 50%;width:2vw;height:2vw;  line-height: 2vw;text-align: center;" aria-hidden="true"></i>
+      <span class="sr-only" style="width:100px;">Next</span>
+  </a>
+</div>
+
+<!-- <div class="container" style="text-align:center;padding:40px; ">
+  <h6 style="color:#ffa500; font-size:2vw; font-family: 'BIGMACCA';">RETOS DISPONIBLES</h6>
+</div> -->
+<div class='heading-container-dashboard' >
+<div class="category-dashboard-heading activeTopNav left" style="display: inline-block;font-family: 'avenir';">Retos Activos</div>
+<a href="/challengeList"><i class="fa fa-chevron-right fa-background-circle" aria-hidden="true"></i></a>
+</div>
+
+<% var o=0; %>
+  <% var k=4; %>
+  
+  <div class="home-challenges-container" id="catalogo" style="">
+    <div class='' style="color:white;margin-bottom: 2vh;" >
+      <!-- <div class="category-dashboard-heading" style="display: inline-block">Eventos disponibles</div> -->
+      </div>
+    <% var len=data.length;
+          
+    for(i = 0; i < (len)/k; i++){ %>
+    <div class="" style="color:white;">
+      <div class="">
+        <div class="carouselNew-row"  >
+          <%var t=len/k%>
+          <% var filteredArray=data.slice(i*k,(i*k)+k); %>
+          <% for(l=0; l< filteredArray.length;l++){ %>
+          <div class="carouselNew-tile mobile-cl-optimize" >
+            <div style="flex-basis: 0;">
+            <form action="/dashboard" method="post">
+              <input name="id" value='<%= filteredArray[l].challengeId %>' type="hidden" />
+              <a style="max-width: 100%;" href="javascript:void(0);" onclick="$(this).closest('form').submit();">
+                    <div style="">
+                      <img class="card_image imageBorder" src="<%=filteredArray[l].src%>" style="object-fit: cover;">
+                    </div>
+                    <div style="background:rgba(255, 255, 255, 0.0);
+                    padding-top: 0.5vw;
+                    margin: auto;"                  
+                    class='cardContainerSize'>
+                    
+                    <div class="cardBodyContainer" >
+                      <% var edited_date=filteredArray[l].challengeTime.split(" ")[0].split("-");%>
+                      <% var edited_time=filteredArray[l].challengeTime.split(" ");%>      
+                     
+                      <div class="mobile_center" >
+                        <%if(filteredArray[l].challengeBase=='true'){%>
+                          <div class='challengeBaseLableStyle' ><strong>Battle Royale</strong></div>               
+                          <%}%>
+                          <%if(filteredArray[l].challengeBase=='false'){%>
+                            <div class='challengeBaseLableStyle'><strong>SALA PRIVADA</strong></div>               
+                        <%}%>
+                        ·
+                        <%if(filteredArray[l].resultTimer!='null'){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].resultTimer %></strong>
+                        </div>
+                          <%}%>
+                        <%if(filteredArray[l].resultTimer=='null' && filteredArray[l].passwordTimer!='null'){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].passwordTimer %></strong>
+                        </div> 
+                          <%}%>
+                        <%if(filteredArray[l].resultTimer=='null' && filteredArray[l].passwordTimer=='null'  && filteredArray[l].challengeTime!='null' ){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].challengeTime %></strong>
+                        </div> 
+                          <%}%>
+                        </div>
+                      </div>  
+                      <div class="challenge-heading" style="font-weight:bold;">
+                        <%- filteredArray[l].challengeName %>
+                      </div> 
+                     
+                      <!-- <hr style="background-color: #4f515a;padding: 0;margin: 0;margin-bottom: 0.35vw;"> -->
+                      <div class='cardFooter'>
+                        <%var spots=filteredArray[l].spots.split('/');%>  
+                       
+                        <div class=''>
+                          <div class='spotsFontSize' style="color:#9E9E9E;;padding:0;margin-right: 0.1vw;"><strong><%=parseInt(spots[1])-parseInt(spots[0])%> cupos disponibles </strong></div>  
+                        </div>
+                      </div>
+                      <div class="dashboard-card-prize-style"  style="color: #E0E0E0;margin-left: 0.2vw;">
+                        <% if(filteredArray[l].challengePrize.length>1) {%>
+                          Premios múltiples
+                        <% } %>
+                        <% if(filteredArray[l].challengePrize.length===1) { %>
+                          Premios: <%= filteredArray[l].challengePrize[0] %> coin(s)
+                          <% } %>
+                      </div>
+                      <%if(filteredArray[l].isResultPublished){%>
+                        <a
+                        href="<%='/leaderBoardChallenge?id='+filteredArray[l].challengeId%>"
+                        name="more_challenges"
+                        class='participateButton buttonDashboardResults' 
+                        style="color: black;
+                        font-family: 'avenir';
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        ">                    
+                        <div><strong>Resultados</strong></div><i class="fas fa-chevron-right" style="margin-left:1vw;color: black;"></i></i>
+                      </a>
+                      <%}%>
+                      <%if(!filteredArray[l].isResultPublished){%>
+                        <a
+                        href='<%="/challenge?id="+filteredArray[l].challengeId%>'
+                        name="more_challenges"
+                        class='participateButton buttonDashboardParticipate'
+                        style="color: white;
+                        font-family: 'avenir';
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;">
+                        <div><strong>Participar</strong></div>                    
+                        <strong><i class="fas fa-chevron-right" style="margin-left:1vw;"></i></strong></i>
+                      </a>
+                      <%}%>
+                      <form action="/dashboard" method="post">
+                      </form> 
+                    </div>
+              </a>
+            </form>
+          </div>
+          </div>
+          <% o++; %>
+          <% }; %>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+<div class="img-grid-right-container">
+  <div class="image-grid-dashboard">
+    <img src="/images/img-poster-4.jpg" style="position: absolute;z-index: -4;margin-top: 0;width: 90%;margin-left: 5%;" alt="">
+    <img src="/images/img-poster-1.jpg" style="position: absolute;z-index: -3;left:22%;margin-top: 15%;width: 60%;" alt="">
+    <img src="/images/img-poster-2.jpg" style="position: absolute;z-index: -2;margin-top: 42%; margin-left: 15%;width: 70%;" alt="">
+    <img src="/images/img-poster-3.jpg" style="position: absolute;z-index: -5;margin-top: 45%;width: 60%;" alt="">
+  </div>
+  
+  <div class="img-grid-text" >
+  <ul class="img-grid-txt-container">
+    <li>
+      <div class="cover-prize-indo-container" style="background-color: #26344A;">
+        <div class="p-dashboard-heading2" > Compite y Gana</div>
+      </div>
+    </li>
+    <li style="">
+      <h1 class="h1-dashboard-heading">
+        ¡Participa de nuestros<br>
+        retos y gana premios<br>
+        en dinero real!
+      </h1>
+    </li>
+    <li>
+      <p class="p-dashboard-heading">¿Quieres participar? Suscríbete con tu operador Tigo o Claro en instantes </p>
+    </li>
+    <li style="">
+      <form action="/login" method="get">
+        <button type="submit" class="dashboard-grid-button" 
+        style="-webkit-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+        -moz-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+        box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);">COMIENZA YA </button>
+      </form>
+      </li>
+  </ul>
+</div>
+</div>
+
+<div class="img-grid-left-container">
+
+<div class="image-grid-left-dashboard">
+  <img src="/images/img-poster-5.jpg" style="position: absolute;z-index: -4;margin-top: 0;width: 90%;margin-left: 5%;" alt="">
+  <img src="/images/img-poster-6.jpg" style="position: absolute;z-index: -3;left:22%;margin-top: 15%;width: 60%;" alt="">
+  <img src="/images/img-poster-3.jpg" style="position: absolute;z-index: -2;margin-top: 42%; margin-left: 15%;width: 70%;" alt="">
+  <img src="/images/img-poster-2.jpg" style="position: absolute;z-index: -5;margin-top: 45%;width: 60%;" alt="">
+</div>
+
+  <div class="img-grid-text-left">
+  <ul class="img-grid-txt-container">
+    <li>
+      <div class="cover-prize-indo-container" style="background-color: #26344A;">
+        <p class="p-dashboard-heading2" >  Nuevos retos siempre</p>
+      </div>
+    </li>
+    <li style="">
+      <h1 class="h1-dashboard-heading">
+        ¡Retos semanales <br> en
+        Free Fire,<br> 
+        CoD Mobile y Fornite!
+      </h1>
+    </li>
+    <li>
+      <p class="p-dashboard-heading">¿Quieres participar? Suscríbete con tu operador Tigo o Claro en instantes </p>
+    </li>
+    <li style="">
+      <form action="/login" method="get">
+        <button type="submit" class="dashboard-grid-button" 
+        style="-webkit-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+        -moz-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+        box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);">COMIENZA YA </button>
+      </form>
+      </li>
+  </ul>
+</div>
+
+</div>
+
+
+<% if(tandc===null) { %>
+<div class="modal fade show" data-backdrop="static" data-keyboard="false" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable " role="document" >
+
+
+    <div class="modal-content" 
+    style="background: #1C1D20; text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border-bottom: none;text-align: center;">
+        <div class="modal-title" id="exampleModalLongTitle" style="text-align: center;color: white;font-family: 'avenir';width: 100%;">
+          <strong>Términos y Condiciones de Uso de “retosgamer.com”</strong> 
+        </div>
+        
+      </div>
+      <div style="border-bottom: 4px solid #16171A;margin-top: 2vw;"></div>
+
+      <div class="modal-body" style="text-align: center;color: #a8a8a8;">
+        <br>
+        <strong style='color:white'>Términos y condiciones:</strong><br/>
+Retos Gamer es un lugar creado para los amantes a los Videojuegos. Con desafíos semanales y premios en dinero, el usuario podrá acceder para competir con otros jugadores y retarse en distintas modalidades. Con juegos como Fortnite, LOL, FreeFire o WarZone entre otros, el usuario tiene la posibilidad de participar y ser quien se lleve el gran premio. Modalidades de compra: El usuario puede adquirir el servicio de manera mensual por $8.000 IVA incluido +Impoconsumo si aplica, monto que será cobrado en tu factura pospago o descontado de tu saldo prepago, o puede adquirirlo de manera semanal por $3.000 IVA incluido +Impoconsumo si aplica, monto que será cobrado en tu factura pospago o descontado de tu saldo prepago, según aplique. Dicho cobro permite al usuario participar en cada uno de los retos diarios o semanales mostrados en el portal. Para solicitar el servicio el valor del mensaje es de $0 pesos. Para adquirir el servicio mensual, el usuario debe enviar un mensaje de texto al código 35100 con la palabra SOLICITO RETOM y si desea suscribirse de manera semanal debe enviar un mensaje de texto al 35100 con la palabra SOLICITO RETOS. La vigencia de la suscripción es por tiempo indefinido hasta que el usuario se dé de baja. Para cancelar el servicio deberá enviar un mensaje de texto con la palabra SALIR al 35100. Los servicios de texto son estrictamente de entretenimiento por lo que la interpretación y uso del servicio será responsabilidad exclusiva del usuario. Exclusivo Claro. Dudas o comentarios, escríbenos a sac.co@3dm.com.co o llama a nuestra línea de atención gratuita 018000185176. Proveedor 3DM.
+        <br /><br>
+        <strong style='color:white'>ASPECTOS GENERALES
+          INFORMACIÓN</strong><br/>
+        Avenik CO S.A.S es una sociedad constituida conforme a las leyes colombianas, identificada con NIT: 900763833-7, con domicilio en la ciudad de Bogotá D.C., que para los efectos de los presentes términos se denominará EL OPERADOR.
+        NATURALEZA JURÍDICA
+        Los presentes términos y condiciones de uso regulan la relación contractual de carácter comercial que une a los usuario que acceden a la plataforma virtual y al OPERADOR, especialmente en la autorización de uso que otorga éste en favor de
+        aquel.
+        <br /><br>
+        <strong style='color:white'>DEFINICIONES</strong><br/>
+        Carriers: Los operadores de telecomunicaciones y marcas aliadas en Colombia que ofrecen su plataforma de pago para hacer efectiva la suscripción y renovación de servicios en Retosgamer.
+        Mensajes de datos: La información generada, enviada, recibida, almacenada o comunicada por medios electrónicos, ópticos o similares, como pudieran ser, entre otros, el Intercambio Electrónico de Datos (EDI), Internet, el correo electrónico,
+        el telegrama, el télex o el telefax (Ley 527 de 1999 art. 2 lit. a).
+        Comercio Electrónico: Comprende el envío, transmisión, recepción, almacenamiento de mensajes de datos por vía electrónica. Las dudas que surjan respecto de la eficacia y validez de los mensajes de datos y demás actividades vinculadas al
+        comercio electrónico se interpretarán de conformidad con la ley 527 de 1999.
+        Cookies: Cadenas de texto enviadas virtualmente que son almacenadas por el uso de La Plataforma por el Operador, para la consulta de las actividades y preferencias de los usuarios.
+        usuario: Toda persona natural que, como destinatario final, use la Plataforma con el fin de adquirir bienes o servicios.
+        Operador de La Plataforma: Encargado de administrar operativamente y funcionalmente la Plataforma, representado para los efectos de los presentes términos por Avenik CO SAS, o por la persona natural o jurídica que ésta designe.
+        Datos personales: Es toda información que permite identificar o hacer identificable a una persona física.
+        Interacción en La Plataforma: Facultad de acceso por parte de los usuario para conocer los productos y servicios exhibidos por el OPERADOR, el contenido puesto a disposición en la Plataforma y manifestar su voluntad de adquirir y/o renovar
+        una suscripción.
+        Mayor de edad: Persona natural mayor de dieciocho (18) años.
+        Comunicaciones externas a la plataforma: Retosgamer podrá comunicarse con el usuario a través de otros canales como Whatsapp y cualquier otro medio de acceso al usuario siempre y cuando éste haya compartido la información con Retosgamer
+        mediante su previa autorización a la Política de tratamiento de datos personales. Retosgamer únicamente será responsable por las comunicaciones y/o notificaciones enviadas desde los canales adicionales que establezca para dicho fin.
+        Retosgamer no será responsable frente al usuario o terceros, por mensajes y comunicaciones enviadas desde canales que Retosgamer no reconozca como propios.
+        Pasarela de pagos: Servicio que permite la realización de pagos por parte de los usuario directamente a los Carriers, a través de medios electrónicos utilizando plataformas tecnológicas (software).
+        La Plataforma: Aplicativo web y móvil administrado por el OPERADOR, que permite la concurrencia de usuario con suscripciones activas para participar en diferentes retos de videojuegos online con premios en dinero real para clasificados y
+        ganadores de cada actividad.
+        Publicidad: Es toda forma de comunicación realizada por el OPERADOR, con el fin de brindar información sobre productos, actividades comerciales y comunicar estrategias o campañas publicitarias o de mercadeo, propias o de terceros; realizada
+        como mecanismo de referencia y no como oferta pública.
+        Suscripción: Membresía diaria, semanal, o mensual adquirida a través de Carriers y utilizada a través de la Plataforma.
+        Términos y condiciones de uso de La Plataforma: Constituyen los términos que han de regular el uso que los usuario dan a La Plataforma.
+        Ventanas emergentes (Pop-Ups): Ventana o aviso de internet que emerge automáticamente en cualquier momento cuando se utiliza la Plataforma.
+
+        <br /><br>
+        <strong style='color:white'>OBJETO</strong><br/>
+        Los presentes términos y condiciones regulan la autorización de uso que otorga el Operador a los usuario, para que éstos ingresen a la plataforma virtual, se informen sobre las suscripciones exhibidas, y participen en actividades premium que
+        principalmente constan de retos en videojuegos online con premios en dinero real para clasificados y ganadores de cada actividad.
+        El Operador a través de la Plataforma realiza las siguientes acciones: i) exhibe diferentes actividades premium con premios en dinero real, ii) facilita acceso a suscripciones pagas diariamente, semanalmente, o mensualmente en conjunto con
+        Carriers, iii) administra las actividades de cada usuario verificando resultados, y asegurando la sana competencia e integridad de cada participante.
+        PLATAFORMA TECNOLÓGICA QUE PERMITE SU USO
+        Es una plataforma que permite su uso gratuito por varios medios, a saber: i) portal web: www.Retosgamer.com. Los usuarios podrán utilizar La Plataforma exclusivamente para su uso personal y entretenimiento, sin que esto implique el
+        otorgamiento de una licencia de la tecnología de la plataforma de ningún tipo.
+        
+<br/><br />
+        <strong style='color:white'>MODIFICACIÓN</strong><br/>
+        El Operador podrá modificar autónomamente y en cualquier momento en aspectos formales, procedimentales o sustanciales los presentes Términos y Condiciones de uso de La Plataforma, los cuales serán actualizados y puestos a disposición de los
+        usuarios en La Plataforma, siendo la última versión publicada la que regulará las relaciones comerciales que se generen al momento de realizarse la transacción. Así mismo, cuenta con plena autonomía para modificar los usos de La Plataforma
+        permitidos a los usuarios, con el único deber de informarlo por un medio virtual que permita su publicación y comunicación al público.
+        <br /><br/>
+        <strong style='color:white'>DETALLE DEL SERVICIO</strong><br/>
+        usuarios
+        Toda persona natural que, como destinatario final, use La Plataforma para solicitar por medio de ésta una suscripción premium, con el fin de participar en actividades Gamer que constan principalmente de retos con premios en dinero real para
+        clasificados y ganadores.
+        El uso de la Plataforma lo realiza el usuario como persona capaz, manifestando que, para la celebración de contratos, cuenta con plena capacidad legal para ser sujeto de derechos y obligaciones, calidades que refrenda al momento de generar su
+        registro.
+        <br /><br/>
+        <strong style='color:white'>CUENTA DE USUARIO</strong><br/>
+        Los usuarios usan como referencia para su suscripción, un perfil creado dentro de retosgamer, teniendo como condición necesaria la creación de una Cuenta de Usuario, donde se solicitarán datos como nombre, fecha de nacimiento, teléfono, y
+        dirección de correo electrónico. Se encuentra prohibido tener más de una (1) cuenta relacionada a cualquiera de los datos anteriormente mencionados. Esta información se utiliza para la plena identificación de las personas que pretenden
+        realizar suscripciones y participar en actividades Gamer con premios en dinero real. Para el cumplimiento de los presentes términos y condiciones, para la prevención de fraudes, para vincular al usuario con sus respectivas participaciones y
+        en general para los fines definidos en el acápite manejo de información.
+        Los usuarios en caso de tener cuentas en las redes sociales Facebook y Google +, podrán crear su cuenta de usuario con la utilización de las credenciales allí definidas.
+        Podrán los usuarios, además de la información obligatoria y facultativa requerida al momento de la creación de la cuenta, suministrar voluntariamente más datos relacionados con su individualización al momento en que cree su propio Perfil
+        dentro de La Plataforma.
+        El uso de las cuentas es personal e intransferible, por lo cual los usuario no se encuentran facultados para ceder los datos de validación para el acceso a La Plataforma ni el uso de su cuenta a ningún tipo de terceros. El incumplimiento de
+        lo anterior, acarreará la suspensión y bloqueo definitivo de la cuenta (incluye correo electrónico y número de identificación personal). En caso de olvido de los datos de validación o de usurpación de éstos, es obligación del usuario informar
+        al Operador a través de la opción “olvidó su contraseña” o a través de comunicación enviada al correo electrónico soporte@retosgamer.com. Las cuentas de los usuarios serán administradas por el Operador o por la persona que éste designe,
+        teniendo plena facultad para la conservación o no de la cuenta, cuando la información suministrada por los usuario no sea veraz, completa o segura; o cuando se presente incumplimiento de las obligaciones de los usuarios. En ningún momento el
+        Operador solicitará al usuario información que NO resulte necesaria para su participación en retos y/o actividades de plataforma o facilitar el pago de su suscripción. Por lo tanto, los datos de tarjetas débito o crédito, solo se solicitarán
+        al momento de realizar el pago virtual si ese es el método de pago deseado por el usuario a través de un Carrier.
+        Con la creación de la Cuenta de Usuario, los usuarios están manifestando su voluntad de aceptación expresa e inequívoca de los presentes Términos y Condiciones de uso de La Plataforma.
+        Parágrafo. Autoriza expresamente el usuario al momento de la aceptación de los presentes Términos, el uso de Cookies por parte del Operador en toda actividad de uso que realice de la Plataforma.
+        <br /><br/>
+        <strong style='color:white'>CAPACIDAD</strong><br/>
+        En virtud de las condiciones de capacidad legal establecidas en el Código Civil Colombiano y de la validez de la manifestación de voluntad a través de medios electrónicos establecida en la ley 527 de 1999, los usuarios al momento de la
+        creación de la Cuenta de Usuario, manifiestan expresamente tener capacidad para celebrar el tipo de transacciones que se pueden realizar usando La Plataforma; y con base en lo prescrito en la ley 1098 de 2006 de la República de Colombia los
+        menores de edad cuentan con capacidad para celebrar éste tipo de transacciones, no obstante el Operador deberá: i) Excluir del sistema de información los datos de menores de edad que hayan utilizado La Plataforma; ii) Dar a conocer a las
+        autoridades de cualquier situación, de la que tenga conocimiento, que ponga en peligro la integridad de un menor de edad; iii) Informar a los menores que se encuentren interesados en adquirir suscripciones a través de La Plataforma usando
+        medios de pago electrónico, que deberán realizar la transacción económica de carácter electrónico a través de sus padres o representantes legales, previo registro en la plataforma por parte de éstos.
+        <br /><br/>
+        <strong style='color:white'>DESCRIPCIÓN DEL SERVICIO</strong><br/>
+        El Operador ofrece a través de La Plataforma suscripciones pagas para usuarios con las cuales acceden a actividades en videojuegos online que principalmente constan de retos de habilidad en juegos individuales. Cada reto tiene clasificatorios
+        por posición basadas en capturas de pantalla que el usuario sube a la plataforma como prueba de su participación en dicho reto. Un administrador de retosgamer verifica cada captura de pantalla y declara al ganador, publicando las capturas de
+        pantalla de los clasificados como pruebas de su posición y premio.
+        Suscripción: El usuario realizará el pago directamente al carrier a través de las plataforma virtuales de pagos que tiene contratadas el Operador para este fin. El usuario debe seleccionar el medio de pago que desea utilizar, teniendo como
+        posibilidades las que cada carrier ofrezca respectivamente.
+        Registro: El Usuario debe crear su cuenta personal en la cual se requerirán los datos personales que permitan su identificación y validación de participación en cada actividad de la plataforma. Una vez completado el registro el Usuario podrá
+        acceder a cada actividad exhibida en la plataforma y esperar a la fecha de finalización para verificar su posición y/o victoria para el reclamo respectivo de premio si da a lugar.
+        Reclamo de premios: De ser ganador, EL OPERADOR se comunicará con el usuario desde el correo electrónico soporte@retosgamer.com con el fin de coordinar el pago. Los métodos disponibles de pagos son a través de tarjetas de regalo en Steam,
+        transferencia electrónica, o consignación bancaria en la cuenta que el usuario designe. Los pagos se realizan semanalmente, hasta 5 días hábiles después de la fecha de finalización, con el fin de verificar la identidad e integridad de cada
+        participante clasificado y/o ganador de premios.
+        <br /><br/>
+        <strong style='color:white'>DEBERES DEL USUARIO</strong><br/>
+        Con la aceptación de los presentes términos El usuario se obliga a: (1) Suministrar información veraz y fidedigna al momento de crear su Cuenta de Usuario; (2) Abstenerse de transferir a terceros los datos de validación (nombre de usuario y
+        contraseña); (3) Abstenerse de utilizar la Plataforma para realizar actos contrarios a la moral, la ley, el orden público y buenas costumbres en contra del Operador, los Carriers o de terceros; (4) Pagar oportunamente al Carrier la
+        contraprestación económica definida en su respectiva suscripción; (5) Informar inmediatamente al Operador en caso de olvido o usurpación de los datos de validación; (6) Abstenerse de realizar conductas atentatorias del funcionamiento de La
+        Plataforma, como trampa o ‘hacking’ dentro de videojuegos a participar; (7) Abstenerse de suplantar la identidad de otros usuarios; (8) Abstenerse de descifrar, descompilar o desensamblar cualquier elemento de La Plataforma o de cualquiera de
+        sus partes; (9) Habilitar la utilización de ventanas emergentes durante la operación; (10) En general todas aquellas conductas necesarias para la ejecución del negocio jurídico.
+        <br /><br/>
+        <strong style='color:white'>DEBERES DEL OPERADOR</strong><br/>
+        En virtud de los presentes términos el Operador, se obliga a (1) Suministrar información cierta, fidedigna, suficiente, clara y actualizada respecto de las suscripciones que exhibe y actividades que ofrece en la plataforma; (2) Informar
+        suficientemente sobre los medios habilitados para que los usuario realicen el pago; (3) Poner a disposición de los usuario los términos y condiciones de uso de La Plataforma de forma actualizada; (4) Utilizar la información únicamente para
+        los fines establecidos en los presentes términos; (5) Facilitar la renovación de su suscripción redireccionando al respectivo Carrier; (6) Disponer y pagar dentro de los plazos establecidos en estos términos y condiciones los premios
+        respectivos a cada ganador de las actividades en la plataforma; (7) Asegurar la sana competencia e integridad de cada participación verificando las respectivas capturas de pantalla de usuarios en la plataforma.
+        <br /><br/>
+        CONSIDERACIONES FINALES
+        CONTENIDOS
+        A través de la Plataforma el Operador podrá poner a disposición de los usuarios información de carácter comercial y publicitario, propio o de terceros de conformidad a las buenas costumbres comerciales. En estos casos el Operador no avala,
+        garantiza o compromete su responsabilidad frente a los servicios y/o productos que se comercialicen por éstos terceros, ya que la Plataforma sirve como canal de comunicación y publicidad, mas no como herramienta de prestación de servicios. En
+        consecuencia, es total responsabilidad de los usuarios el acceso a los sitios que remite la publicidad, asumiendo la obligación de verificar y conocer los términos de los servicios ofrecidos por los terceros.
+        Toda la información puesta a disposición en la Plataforma como imágenes, publicidad, nombres, marcas, lemas y demás elementos de propiedad intelectual; son utilizados legítimamente por el Operador, sea porque son de su propiedad, porque tiene
+        autorización para ponerlos a disposición, o porque se encuentra facultado para hacerlo en virtud de las decisiones 351 de 1993 y 486 de 2000 de la Comunidad Andina de Naciones y la ley 23 de 1982 .
+        <br /><br/>
+        <strong style='color:white'>FUNCIONAMIENTO DE LA PLATAFORMA</strong><br/>
+        El Operador administra directamente o por medio de terceras personas la Plataforma, toda la información que se comunica allí corresponde a información cierta y actualizada. En ningún caso responderá por daños directos o indirectos que sufra
+        el usuario por la utilización o incapacidad de utilización de La Plataforma.
+        La plataforma se encuentra disponible las 24 horas del día para su acceso y participación en actividades. Para la realización y/o renovación de suscripciones la disponibilidad de La Plataforma y sus carriers es de 24 horas al día. El Operador
+        realiza los mejores esfuerzos para mantener en operación La Plataforma, pero en ningún caso garantiza disponibilidad y continuidad permanente de La Plataforma.
+        El Operador se reserva el derecho de cancelar las cuentas de usuarios y/o de prohibir el acceso a La Plataforma a los usuarios que realicen conductas violatorias de los presentes términos o que incumplan las obligaciones contraídas.
+        <br /><br/>
+        <strong style='color:white'>SOPORTE</strong><br/>
+        Retosgamer no opera directamente las plataformas de pagos de Carriers con las que slos usuarios realizan su suscripción respectiva. Retosgamer sólo actúa como un portal de contacto entre usuario y Carriers para realizar su pago. Para
+        problemas con la realización de su pago en cualquiera de las suscripciones que adquiera el usuario a través de Carriers aliados, podrá ejercer su derecho de retracto frente al Carrier conectándose a través de sus puntos de contacto por medio
+        eléctronico o presencial designados en el portal web respectivo.
+        En ningún momento Retosgamer renovará la suscripción de cada usuario sin el previo consentimiento del mismo al momento de realizar el pago con su respectivo Carrier.
+        Retosgamer brindará soporte a cada usuario inmediato a través del chat integrado a la plataforma, y soporte especializado para consultas individuales dentro de las siguientes 24 horas al requerimiento.
+        <br /><br/>
+        <strong style='color:white'>COMERCIO ELECTRÓNICO</strong><br/>
+        En cumplimiento de las disposiciones colombianas sobre mensajes de datos según la ley 527 de 1999, se comunica que la legislación nacional reconoce validez a los mensajes de datos y por tanto ellos adquieren carácter y entidad probatoria. En
+        consecuencia, entienden los usuarios, que mediante el cruce de mensajes de datos los intervinientes pueden dar lugar al nacimiento, modificación y extinción de obligaciones, siendo de su resorte exclusivo el contenido, consecuencias,
+        responsabilidades y efectos de la información generada.
+        <br /><br/>
+        <strong style='color:white'>MANEJO DE INFORMACIÓN</strong><br/>
+        La información recolectada por el Operador para la suscripción y registro, es suministrada por los usuario de forma libre y voluntaria, para que esta sea administrada por el Operador o por quien éste designe para el cumplimiento de los
+        deberes adquiridos, lo que implica su recolección; almacenamiento en servidores o repositorios del Operador o de terceros; circulación de los mismos dentro de la organización del Operador; comunicación a los usuario información comercial,
+        publicitaria y de mercadeo relacionada con su actividad comercial.
+        Así mismo, los datos recolectados serán objeto de análisis para fines de mejorar la estrategia de negocios del portal web, apoyada en herramientas de inteligencia de negocios y minería de datos, que permiten adquirir conocimientos
+        prospectivos para fines de predicción, clasificación y segmentación.
+        El usuario podrá ejercer su derecho de conocer, actualizar, modificar y suprimir los datos personales existentes en las bases de datos asociadas a la Plataforma. Para ello deberá realizar la solicitud de consulta, reclamo o supresión a la
+        dirección electrónica soporte@retosgamer.com detallando las modificaciones a realizar y aportando los documentos que lo soportan.
+        El Operador es responsable del tratamiento de la información personal recolectada a través del portal web, responsabilidad que podrá delegar en un tercero, en calidad de responsable o encargado de la información, asegurando contractualmente
+        adecuado tratamiento de la misma.
+       <br /><br/>
+        <strong style='color:white'>DOMICILIO Y LEGISLACIÓN APLICABLE</strong><br/>
+        Los presentes Términos y Condiciones de Uso de La Plataforma se acogen en el territorio Colombiano, conforme a su normatividad general y sectorial. Su adopción implica el ejercicio de su libre voluntad y que la relación que surge de este
+        documento se regirá en todos sus efectos por su contenido y en su defecto por la ley comercial colombiana.
+        <br /><br/>
+        <strong style='color:white'>ACEPTACIÓN TOTAL DE LOS TÉRMINOS</strong><br/>
+        El usuario manifiesta expresamente tener capacidad legal para usar La Plataforma y para celebrar las transacciones comerciales que se puedan generar con los Carriers. Así mismo, manifiesta haber suministrado información real, veraz y
+        fidedigna; por ende de forma expresa e inequívoca declara que ha leído, que entiende y que acepta la totalidad de las situaciones reguladas en el presente escrito de Términos y Condiciones de Uso de la Plataforma, por lo que se compromete al
+        cumplimiento total de los deberes, obligaciones, acciones y omisiones aquí expresadas.
+        En caso que usuarios de otros países utilicen La Plataforma para suscripciones en Colombia se sujetan completamente a lo dispuesto en los presentes términos.
+
+      </div>
+      <div style="border-bottom: 4px solid #16171A;margin-top: 2vw;"></div>
+      <div class="modal-footer" style="border-top: none;">
+        <button type="button" id="acceptTANDC" class="dashboard-grid-button mr-auto" 
+        style="font-family: 'avenir';">Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+
+
+<!-- 
+<div class="container-fluid" style="text-align:center;
+justify-content: center;
+align-items: center;
+background:url('images/grid.jpg') no-repeat center center fixed;
+   -moz-background-size: cover;
+   -webkit-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+   box-shadow: inset 0 0 0 1000px rgb(30, 30, 30,0.4);
+   padding-top: 12vh;
+   padding-bottom:3vh;">
+  <div class="row" style="color:white;
+justify-content: center;
+font-size:1.9vw;">
+  </div>
+  <div class="row-stats"  >
+    <div class="col col-lg-4 col-sm-12 counter">
+      <i class="fa fa-user" aria-hidden="true" style="color:white;"></i>
+      <p class="p-stats-custom">Gamers </p>
+      <p class="counter-value">30,000+</span>
+    </div>
+    <div class="col col-lg-4 col-sm-12 counter">
+      <i class="fa fa-money" aria-hidden="true" style="color:white;"></i>
+      <p class="p-stats-custom">Premios cada mes </p>
+      <p class="counter-value ">$1.000.000 COP+</span>
+    </div>
+    <div class="col col-lg-4 col-sm-12 counter">
+      <i class="fa fa-trophy" aria-hidden="true" style="color:white;"></i>
+      <p class="p-stats-custom">Retos realizados </p>
+      <p class="counter-value" >100+</span>
+    </div>
+  </div>
+</div> -->
+<div class=" align-self-center foot-note-container" >
+  <div class="row-stats align-self-center">
+    <div class="" style="text-align:center;">
+      <p class="p-foot-note">
+        <strong>¡Comienza tu suscripción ahora!</strong>
+      </p>
+      <p class="p-foot-node-body">
+        ¡Suscríbete ahora y obtén acceso a todos los retos de la plataforma!
+      </p>
+    </div>
+    <div class="" style="text-align:center; margin-top: 1vw;">
+      <form action="/subscribe" method="get">
+      <button type="submit" class="dashboard-grid-button" style="font-family: 'avenir';">
+        <strong>Suscríbete</strong>
+      </button>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

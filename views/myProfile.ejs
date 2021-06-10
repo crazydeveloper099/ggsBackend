@@ -1,0 +1,367 @@
+<%- include('partials/header_challengeList') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.challengeProfile').click(function(e){
+      e.preventDefault();
+      var i=$(this).data("value");
+      var isPub=$("#pub"+i).val();
+      alert(isPub);
+      if(isPub==="true"){
+        $("#form1"+i).submit();
+      }
+      else{
+        $("#form2"+i).submit();
+      }
+    });
+    $(".c-buttonJoin").click(function(e){
+        e.preventDefault();
+        window.location.href = window.location.origin+"/subscribe";
+    });
+    $('.lbc-img-optimized').click(function(){
+        
+        $("#modalImg").attr("src",$(this).attr("src"));
+        $('#exampleModalCenter').modal('show');
+
+      });
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            $('.mobile-otpimizeNav-cl').show();
+		}
+  });
+</script>
+
+<!-- <div class=" "  style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+    <h6  style="font-size:2rem;color:#ffa500; margin-top:20px;  font-family: 'BIGMACCA';">MI PERFIL</h6>
+</div> -->
+
+<!-- <div style=" display: flex;
+align-items: center;
+margin-top:80px;
+justify-content: center;
+flex-direction: column; ">
+  <div class="card-container">
+	<img class="round" style="width:100px;" src="https://image.flaticon.com/icons/svg/695/695563.svg" alt="user" />
+	<h3 style="margin-top:20px;"><strong><%=name%></strong></h3>
+	<h6 style="font-size:0.8rem;"><%=email%></h6>
+	<p><%=phone%></p>
+	<div class="buttons">
+		<button class="primary">
+			Message
+		</button>
+		<button class="primary ghost">
+			Following
+		</button>
+	</div>
+	<div class="skills">
+		<ul>
+
+		</ul>
+	</div>
+</div>
+</div> -->
+<style>
+  table {
+    border-top: none;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-collapse: inherit;
+    border-spacing: 0 2vh;
+}
+td {
+  padding-top:20px;
+  padding-bottom:20px;
+  padding-right:20px;   
+}
+
+td:first-child {
+  padding-left:20px;
+  padding-right:0;
+}
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #b30000; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b30000; 
+}
+</style>
+<div style="background: #0D0D0D;height: 100%;width: 100%;padding: 2vw;">
+  <div class="mp-heading-container" style="text-align: center;border-bottom:none;" >
+    <h1  class="mp-heading-mobile" style="font-weight: bold;border-bottom:none;">Mi Perfil</h1>
+    <form action="/forgetPassword" method="GET" >
+            
+      <button
+      id=""
+      type="submit"
+      name="more_challenges"
+      class="button-myProfile button-myProfile-style"
+      style="">                    
+      <strong>¿Se te olvidó tu contraseña?</strong>
+    </button>
+    </form>
+  </div>
+  
+  <div class="input-label-mp-container">
+      <div class="input-label-mp">Username</div>
+      <input type="text"  value="<%=name%>" class="input-myprofile" disabled>
+  </div>
+  <div class="input-label-mp-container">
+    <div class="input-label-mp">Email</div>
+    <input type="text"  value="<%=email%>" class="input-myprofile" disabled>
+</div>
+<div class="input-label-mp-container">
+  <div class="input-label-mp">Phone</div>
+  <input type="text"  value="<%=phone %>" class="input-myprofile" disabled>
+</div>
+<div class="input-label-mp-container">
+   <div class="input-label-mp2">Estado de suscripción</div>
+  <div type="text" class="mp-active-inactive-container" disabled>
+    <% if(active){ %>
+      <div class="inactive-mp">Inactiva </div><div class="active-mp">Activa</div>
+    <% } %>
+    <% if(!active){ %>
+      <div class="active-mp">Inactiva </div><div class="inactive-mp">Activa</div>
+    <% } %>
+</div>
+<%if(end_date!=null){%>
+<% var end_date_formatted =end_date.substring(6,8)+"/"+end_date.substring(4,6)+"/"+ end_date.substring(0,4) %>
+<div class="mp-active-inactive-label-2">La Suscripción termina</div>
+<div class="date-bubble-mp"><%= end_date_formatted%></div>
+</div>
+<%}%>
+<%if(end_date==null){%>
+  <div class="mp-active-inactive-label-2">La Suscripción termina</div>
+<div class="date-bubble-mp">N/A</div>
+</div>
+<%}%>
+<div class="mp-heading-container2">
+  <div class="mp-heading-mobile" style="">Mis Retos</div>
+</div>
+  
+<%if(challengesParticipated!=null){%>
+<% challengesParticipated.map((datai,x) =>{ %>
+
+    <div class="carouselNew-row" style="margin-bottom:3vw;">
+      <div class="lbc-topmost-parent">
+        <div style="display: block;">
+        <div class="lbc-card-container-mobile">
+          <h1 class="heading-card-mp-mobile" style="" >
+            <%=datai.challengeName%>
+          </h1>
+          <div class="mobile-pink-tag" >
+            Mobile
+          </div>
+        </div>
+      </div>
+      <div class="lbc-topmost-parent2">
+        <img class="card_image_lbc imageBorder" src='<%=datai.src%>'  >
+        <div class="lbc-card-container-parent" >
+          <div class="lbc-card-container">
+          <h1 class="heading-card-mp" style="" >
+            <%=datai.challengeName%>
+          </h1>
+          <div class="mobile-pink-tag">
+            Mobile
+          </div>
+        </div>
+        <div style="margin-top: 3vw;width: 100%;">
+          <div class="lal lbc-card-text-alignment">
+            <div class="lbc-text-segment-container">
+              <span class="lbc-card-text-key">Challenge Type:</span><br>
+              <span class="lbc-card-text-value" ><%= datai.challengeType %></span>
+            </div>
+            <div class="lbc-text-segment-container" >
+              <span class="lbc-card-text-key">Date:</span><br>
+              <span class="lbc-card-text-value" ><%= new Date(datai.challengeTime).getUTCDate()+'/'+(parseInt(new Date(datai.challengeTime).getUTCMonth()) + parseInt(1)).toString()+'/'+new Date(datai.challengeTime).getUTCFullYear() %></span>
+            </div>
+            <div class="lbc-text-segment-container" >
+              <span class="lbc-card-text-key">Time:</span><br>
+              <span class="lbc-card-text-value" ><%= new Date(datai.challengeTime).toLocaleTimeString() %></span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 3vw;width: 100%;">
+          <div class="lal lbc-card-text-alignment" >
+            <div class="lbc-text-segment-container" >
+              <span class="lbc-card-text-key">Challenge ID:</span><br>
+                  <span class="lbc-card-text-value" ><%= datai.challengeId %></span>
+            </div>
+            <div class="lbc-text-segment-container" >
+              <span class="lbc-card-text-key">Game Type:</span><br>
+              <span class="lbc-card-text-value" style="color: #EE0000;">Battle Royale</span>
+            </div>
+            <div class="lbc-text-segment-container" style="visibility: hidden;">
+              <span class="lbc-card-text-key">Game Type:</span><br>
+              <span class="lbc-card-text-value" style="color: #EE0000;">Battle Royale</span>
+            </div>
+          </div>
+        </div>
+        <!-- <div style="width:100%;text-align:center;  margin: 0;margin-top:-1vh;">
+          <img src="images/winner.png" style="width:6vw; margin-left: auto;margin-right: auto;display: block;">
+        </div> -->
+          <h4 style="color:white"></h4>
+            <div style="  display: flex;justify-content: center;">
+      </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+<%}); %>
+<%} %>
+<%if(challengesParticipated==null){%>
+
+<div style="width: 80vw; height:70vh; display: flex;
+align-items: center;
+flex-direction: column;
+justify-content: center;" >
+<div class="rg-logo-footer" style="color: white;"><i class="fas fa-gamepad"></i></div>
+  <h6 style="color: #a8a8a8;font-family: 'avenir-light';">Aqui verás tu historial de retos cuando participes en uno</h6>
+</div>
+<%} %>
+
+  <!-- <table style="margin-top:2vh;">
+    <tbody>
+      <tr>
+        <td class="td-myProfile" ><strong>Detalles <br> de suscripción</strong></td>
+        <td class="td-myProfile"><strong><%=name%></strong></td>
+        <td class="td-myProfile"><strong><%=email%></strong>
+          
+       
+        </td>
+        <td class="td-myProfile">
+          <div class="table-heading-myProf">Estado de suscripción:</div> 
+          <% if(active){ %>
+          <strong>Activa</strong>
+        <% } %>
+        <% if(!active){ %>
+          <strong>Inactiva</strong>
+        <% } %>
+        <br>
+        <strong> (<%=phone %>)</strong>
+      </td>
+        <td class="td-myProfile">
+          <% if(active && end_date!=null){ %>
+            Suscripción termina: <br><strong><%= end_date_formatted%></strong>
+          <% } %>
+          <% if(!active && end_date!=null){ %>
+            <button
+            id=""
+            type="submit"
+            name="more_challenges"
+            class="button-view-all c-buttonJoin button-myProfile"
+            style="background-color:red;">                    
+            <strong>Reactivar suscripción</strong><i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+          </button>
+          <% } %>
+          <% if(!active && end_date==null){ %>
+            <button
+            id=""
+            type="submit"
+            name="more_challenges"
+            class="button-view-all c-buttonJoin button-myProfile"
+            style="background-color:red;">                    
+            <strong>Registrate</strong><i class="fas fa-chevron-right" style="margin-left:1vw;"></i>
+          </button>
+          <% } %>
+          </td>
+      </tr>
+      </tbody>
+      </table> -->
+
+      <div class="mp-heading-container2">
+        <div  class="mp-heading-mobile">Retos Ganados</div>
+      </div>
+        <% if(challengesWon!=null) {%> 
+
+          <div class="container-table100" style="border:none ;">
+            <div class="wrap-table100">
+                <div class="table100 ver5 m-b-110">
+                <div class="table100-head">
+                  <table>
+                    <thead>
+                      <tr class="row100 head">
+                        <th class="cell100 column1 " style="font-family: 'Open Sans', sans-serif;">#</th>
+                        <th class="cell100 column2"  style="font-family: 'Open Sans', sans-serif;">Nombre del reto</th>
+                        <th class="cell100 column3" style="font-family: 'Open Sans', sans-serif;">Premio</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+      
+                <div class="table100-body">
+                  <table>
+                    <tbody>
+                      <% challengesWon.map((datai,i)=>{ %>
+                        <tr class="row100 body">
+                        <td class="cell100 column1" style="font-family: 'Open Sans', sans-serif;"><strong><%=datai.pos %></strong></td>
+                        <td class="cell100 column2" style="font-family: 'Open Sans', sans-serif;"><strong><%=datai.challengeName %></strong></td>
+                        <td class="cell100 column3" style="font-family: 'Open Sans', sans-serif;"><strong>
+                          <% datai.prize.map((dataiP,j)=>{ %>
+                          <%=dataiP.S%>
+                          <% if(j<datai.prize.length-1) {%>
+                            ,
+                            <%}%>
+                          <%});%></strong>
+                        </td>
+                        </tr>	
+                        <%});%>	
+                      </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+            <%}%>
+            <% if(challengesWon==null) {%> 
+              <td style="text-align: center;"></td>
+              <td class='td-myProfile' >
+                <div style="width: 80vw; height:70vh; display: flex;
+                    align-items: center;
+                    flex-direction: column;
+                    justify-content: center;" >
+                    <div class="rg-logo-footer" style="color: white;"><i class="fas fa-clipboard-list"></i></div>
+                      <h6 style="color: #a8a8a8;font-family: 'avenir-light';">Aún no has ganado ningún reto ¡Ánimo!</h6>
+                    </div>
+                <div style="color: white;text-align: center;font-family: 'avenir';"></div></td>
+              <td> </td>
+              <td></td>
+            <%}%>
+   
+</div>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+
+    <div class="modal-content" style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <img src="" id="modalImg" class="lbc-mobile-optimized-img" alt="">
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

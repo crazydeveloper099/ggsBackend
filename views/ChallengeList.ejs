@@ -1,0 +1,339 @@
+
+<%- include('partials/header_challengeList') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+  
+    $.get( "/fetchResultsStatus", async( data )=> {
+      if(data!=null && data.length>0){
+       
+      }
+    });
+
+ 
+    var len = document.getElementById("lengthData").value;
+    $("#message").hide();
+    
+    $(".anchorCard").click(function(e) {
+      var clicked_value=$(this).data("value");
+      $('#id_store').val(clicked_value);
+
+      $('#joinForm').submit();
+    });
+
+
+    $(".buttonCardTransparent").hide();
+
+    for (var i = 0; i < len; i++) {
+      var time = document.getElementById("cal" + i).innerText;
+      var countDownDate = new Date(time).getTime();
+      timer("timeLeft" + i, countDownDate);
+      myFunction("cal" + i, time)
+      
+    }
+
+    function timer(id, countDownDate) {
+      console.log(id);
+      setInterval(function() {
+        var now = moment(moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"),'MM/DD/YYYY hh:mm:ss a').valueOf()
+        var distance = countDownDate - now;
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if(days===0){
+          if(hours>0){
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("padding", '0.1vw 0.5vw 0.1vw 0.5vw');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("background-color", '#6F1EDC');
+          document.getElementById(id).innerHTML =  hours + "H " + minutes + "M ";
+          }
+          else{
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("padding", '0.1vw 0.5vw 0.1vw 0.5vw');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("background-color", '#6F1EDC');
+          document.getElementById(id).innerHTML =  "en "+ minutes + "M ";
+          }
+        }
+        else if(days>=1){
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("padding", '0.1vw 0.5vw 0.1vw 0.5vw');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("background-color", '#6F1EDC');
+          document.getElementById(id).innerHTML =  "Comienza en "+days+" Días"
+        }
+        else {
+          $('#'+id).css("display", 'inline');
+          $('#'+id).css("padding", '0.1vw 0.5vw 0.1vw 0.5vw');
+          $('#'+id).css("border-radius", '0.5vw');
+          $('#'+id).css("background-color", '#6F1EDC');
+          document.getElementById(id).innerHTML = "Finalizado";
+        }
+      }, 1000);
+    }
+
+    function myFunction(id, time) {
+      
+      var weekday = new Array(7);
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      var n = weekday[new Date(time).getDay()];
+      var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+     
+      var ti=time.split(" ");
+      var timeString = ti[1];
+      var H = +timeString.substr(0, 2);
+      var h = (H % 12) || 12;
+      var ampm = H < 12 ? " AM" : " PM";
+      timeString = h + timeString.substr(2, 3) + ampm;
+     document.getElementById(id).innerHTML = '<i class="fa fa-calendar" aria-hidden="true" style="margin-top:2.5px; margin-right:0.5vw;"></i>'+ n.substring(0, 3) + ", " + months[new Date(time).getMonth()].substring(0, 3) + " " + new Date(time).getDate() + " " + '<i class="fa fa-clock-o" aria-hidden="true" style="margin-top:3.5px; margin-right:0.5vw;margin-left:0.5vw;"></i>'+" "+timeString;
+    };
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+            $('.mobile-otpimizeNav-cl').show();
+		}
+  });
+</script>
+
+<style>
+  a, a:hover, a:focus, a:active {
+      color: white;
+      text-decoration: none;
+  }
+
+  #myCarousel-indicators > li {
+    width: 25px;
+  height: 2px;
+  margin: 0;
+  border-radius: 1.2vw;
+  border: 2px solid red;
+  background: transparent;
+  margin: 3px;
+}
+
+
+#myCarousel-indicators > li.active {
+  background: red;
+}
+</style>
+
+  <section  style="width: 100%;">  
+    <form id="joinForm" action="/dashboard" method="post">
+      <div style="width:100%; text-align: center;">
+        <input name="id" type="hidden" id="id_store" value="1234">
+    </div> 
+    </form> 
+
+<div style="width:100%; height:100%;">
+<input type="hidden" id="lengthData" name="length" value=<%=data.length%>>
+<input type="hidden" name="" value="">
+
+<div id="carousel-example-2" class="carousel slide mobile-margin-top" data-ride="carousel" style="padding: 0;margin: 0;" >
+  <ol id="myCarousel-indicators" class="carousel-indicators">
+    <li data-target="#carousel-example-2" data-slide-to="0" class="indicator-style active"></li>
+    <% for(i=1;i< dataPoster.length;i++){ %>
+      <li data-target="#carousel-example-2" data-slide-to="<%= i %>" class="indicator-style"></li>
+      <% };%>
+  </ol>
+
+  <div class="carousel-inner" role="listbox" >
+    <div class="carousel-item active" style="width:100%;height:90vh;">
+      <div class="view">
+        <img class="d-block w-100 imageCarousel img-mobile-cl" src="<%= dataPoster[0].image_url %>" style="object-fit: cover;object-position: center;"
+          alt="">
+      </div>
+    </div>
+    <% dataPoster.splice(0,1); %>
+    <% dataPoster.map((datai,i)=>{ %>
+    <div class="carousel-item" style="width:100%;height:90vh;">
+      <div class="view">
+        <img class="d-block w-100 imageCarousel img-mobile-cl" src="<%= datai.image_url %>" style="object-fit: cover;object-position: center;"
+          alt="">
+      </div>
+      <div class="carousel-caption">
+        <div class="animated fadeInDown">
+      </div>
+      </div>
+    </div>
+    <% });%>
+  </div>
+
+  <a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev" style="background-color;">
+    <span ><i class="fa fa-chevron-left fa-background-circle"  aria-hidden="true"></i></span>
+    <span class="sr-only" >Previous</span>
+  </a>
+  <a  class=" carousel-control-next " href="#carousel-example-2" role="button" data-slide="next">
+      <i class="fa fa-chevron-right fa-background-circle" aria-hidden="true"></i>
+      <span class="sr-only" style="width:100px;">Next</span>
+  </a>
+</div>
+
+
+
+<!-- <div class="content">
+  <div style="width:40%;
+  height:40vw;
+  background:#00000050;
+  position:absolute;
+  z-index:1;
+  
+  color:white;
+  padding:3vw;">
+    <h1 id="nameBanner" style="color:#fff; font-size:2vw; font-family: 'Open Sans', sans-serif;">Call Of Duty</h1>
+    <div style=" display:inline-block;">
+      <p id="timeBanner" style="color:white;margin-right:1vw;">
+        <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </p>
+      <p id="prizeBanner" style="color:#ffb327;font-weight: bold;font-size:1.5vw; ">
+        <i class="fa fa-trophy" aria-hidden="true" style="color:ffb327;height:1vh;"></i>
+        $50
+      </p>
+    </div>
+    <h6 id="descBanner" style="color:white;font-size:0.9vw;">
+    </h6>
+     
+    </div>
+  <div style="width:100%;height:40vw;text-align:right;position:absolute;z-index:-12;">
+    <img id="imgBanner" style="height:40vw;width:100%;" src="" alt="">
+  </div>
+</div> -->
+
+  <% var o=0; %>
+  <% var k=4; %>
+  
+  <div class="heading-container-cl" id="catalogo" >
+    <div class='' style="color:white;margin-bottom: 2vh;" >
+      <div class="category-dashboard-heading activeTopNav left" style="display: inline-block">Eventos disponibles</div>
+      </div>
+    <% var len=data.length;
+          
+    for(i = 0; i < (len)/k; i++){ %>
+    <div class="" style="color:white;">
+      <div class="">
+        <div class="carouselNew-row"  >
+          <%var t=len/k%>
+          <% var filteredArray=data.slice(i*k,(i*k)+k); %>
+          <% for(l=0; l< filteredArray.length;l++){ %>
+          <div class="carouselNew-tile mobile-cl-optimize" >
+            <div style="flex-basis: 0;">
+            <form action="/dashboard" method="post">
+              <input name="id" value='<%= filteredArray[l].challengeId %>' type="hidden" />
+              <a style="max-width: 100%;" href="javascript:void(0);" onclick="$(this).closest('form').submit();">
+                    <div style="">
+                      <img class="card_image imageBorder" src="<%=filteredArray[l].src%>" style="object-fit: cover;
+                      -webkit-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+                        -moz-box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);
+                        box-shadow: 0px 0px 22px 2px rgba(0,0,0,1);">
+                    </div>
+                    <div style="background:rgba(255, 255, 255, 0.0);
+                    padding-top: 0.5vw;
+                    margin: auto;"                  
+                    class='cardContainerSize'>
+                    
+                    <div class="cardBodyContainer" >
+                      <% var edited_date=filteredArray[l].challengeTime.split(" ")[0].split("-");%>
+                      <% var edited_time=filteredArray[l].challengeTime.split(" ");%>      
+                     
+                      <div class="mobile_center" >
+                        <%if(filteredArray[l].challengeBase=='true'){%>
+                          <div class='challengeBaseLableStyle' ><strong>Battle Royale</strong></div>               
+                          <%}%>
+                          <%if(filteredArray[l].challengeBase=='false'){%>
+                            <div class='challengeBaseLableStyle'><strong>SALA PRIVADA</strong></div>               
+                        <%}%>
+                        ·
+                        <%if(filteredArray[l].resultTimer!='null'){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].resultTimer %></strong>
+                        </div>
+                          <%}%>
+                        <%if(filteredArray[l].resultTimer=='null' && filteredArray[l].passwordTimer!='null'){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].passwordTimer %></strong>
+                        </div> 
+                          <%}%>
+                        <%if(filteredArray[l].resultTimer=='null' && filteredArray[l].passwordTimer=='null'  && filteredArray[l].challengeTime!='null' ){%>
+                        <div class="d-board-cardTxt2"  id='<%="timeLeft"+o%>' style="color: #9E9E9E;"></div>
+                        <div class="dashboard-card-time-style" id='<%="cal"+o%>' style="display: none;color: #9E9E9E ;" >
+                          <strong><%= filteredArray[l].challengeTime %></strong>
+                        </div> 
+                          <%}%>
+                        </div>
+                      </div>  
+                      <div class="challenge-heading" style="font-weight:bold;">
+                        <%- filteredArray[l].challengeName %>
+                      </div> 
+                     
+                      <!-- <hr style="background-color: #4f515a;padding: 0;margin: 0;margin-bottom: 0.35vw;"> -->
+                      <div class='cardFooter'>
+                        <%var spots=filteredArray[l].spots.split('/');%>  
+                       
+                        <div class=''>
+                          <div class='spotsFontSize' style="color:#9E9E9E;;padding:0;margin-right: 0.1vw;"><strong><%=parseInt(spots[1])-parseInt(spots[0])%> cupos disponibles </strong></div>  
+                        </div>
+                      </div>
+                      <div class="dashboard-card-prize-style"  style="color: #E0E0E0;margin-left: 0.2vw;">
+                        <% if(filteredArray[l].challengePrize.length>1) {%>
+                          Premios múltiples
+                        <% } %>
+                        <% if(filteredArray[l].challengePrize.length===1) { %>
+                          Premios: <%= filteredArray[l].challengePrize[0] %> coin(s)
+                          <% } %>
+                      </div>
+                      <%if(filteredArray[l].isResultPublished){%>
+                        <a
+                        href="<%='/leaderBoardChallenge?id='+filteredArray[l].challengeId%>"
+                        name="more_challenges"
+                        class='participateButton buttonDashboardResults' 
+                        style="color: black;
+                        font-family: 'avenir';
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        ">                    
+                        <div><strong>Resultados</strong></div><i class="fas fa-chevron-right" style="margin-left:1vw;color: black;"></i></i>
+                      </a>
+                      <%}%>
+                      <%if(!filteredArray[l].isResultPublished){%>
+                        <a
+                        href='<%="/challenge?id="+filteredArray[l].challengeId%>'
+                        name="more_challenges"
+                        class='participateButton buttonDashboardParticipate'
+                        style="color: white;
+                        font-family: 'avenir';
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;">
+                        <div><strong>Participar</strong></div>                    
+                        <strong><i class="fas fa-chevron-right" style="margin-left:1vw;"></i></strong></i>
+                      </a>
+                      <%}%>
+                      <form action="/dashboard" method="post">
+                      </form> 
+                    </div>
+              </a>
+            </form>
+          </div>
+          </div>
+          <% o++; %>
+          <% }; %>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+  
+
+</div>
+<%- include('partials/footer') %>
+</section>
+</div>

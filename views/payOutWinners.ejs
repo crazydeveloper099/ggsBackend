@@ -1,0 +1,193 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.add').prop('checked', false);
+          var playerPlaceJson = [];
+    var indexArr = [];
+    $("#tableSearch").on("keyup", function() {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+      });
+    });
+
+    
+
+    var jsonData = [];
+     
+      $('.add').change(
+              function(eve){
+                var index = $(this).attr("id").split(":");
+                index=index[1];
+                  if ($(this).is(':checked')) {
+                     jsonData.push($(this).val())
+                  }
+                  else{
+                    var arrIndex = jsonData.indexOf($(this).val());
+                    if (arrIndex !== -1) {
+                      jsonData.splice(arrIndex, 1);
+                    }
+                  }
+      });   
+
+    
+    $("#publish").click(function(e) {
+        $('#frameModalBottom').modal({
+          show: true
+        });
+    
+    });
+    $("#confirmButton").click(function(e) {
+      $('#frameModalBottom').removeClass('show');
+      $("#jsonData").val(JSON.stringify(jsonData));
+      $("#uploadForm").submit();
+
+    });
+    $('.lbc-img-optimized').click(function(){
+        
+        $("#modalImg").attr("src",$(this).attr("src"));
+        $('#exampleModalCenter').modal('show');
+
+      });
+  });
+</script>
+<style>
+   input.larger {
+        transform: scale(1.3);
+      }
+</style>
+<input type="hidden" value="<%=userData.length%>" id='dataLength'>
+<%if(typeof(userData)  === 'undefined' || userData===null) {%>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <h1>No Users have joined till now</h1>
+  </div>
+</div>
+<% } %>
+<%if(typeof(userData)  !== 'undefined' && userData.length >0) {%>
+<div>
+  <div>
+    <div style=" position: absolute;  z-index: 0;" id="warningAlert" class="alert alert-warning alert-dismissible fade" role="alert">
+      <strong>Please add atleat a player to proceed.</strong>
+
+    </div>
+    <div style=" position: absolute; z-index: 1;" id="warningAlertFile" class="alert alert-warning alert-dismissible fade" role="alert">
+      <strong>Please choose a file then try to proceed again.</strong>
+    </div>
+    <div style=" position: absolute; z-index: 2;" id="warningAlertMultiple" class="alert alert-warning alert-dismissible fade" role="alert">
+      <strong>Please choose a file and atleast a player to proceed.</strong>
+
+    </div>
+  </div>
+  <div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+    <div class="container">
+      <p style="color:#ffa500; font-size:2rem; font-family: 'BIGMACCA';">ADMINISTRAR | RETOS Y TORNEOS</p>
+    </div>
+  </div>
+
+
+  <div class="container" style="">
+    <div class="row">
+      <div class="col-sm">
+        <form style=" " class="form-inline d-flex justify-content-center md-form form-lg mt-0">
+          <i style="color:#a8a8a8;" class="fas fa-search" aria-hidden="true"></i>
+          <input id="tableSearch" style="padding:15px; color:#FFFFFF; font-size:1.5rem;" class="form-control form-control-lg= ml-3 w-75" type="text" placeholder="Search" aria-label="Search">
+        </form>
+      </div>
+      <div class="col-sm">
+
+        <button id="publish" type="button" form="editChallenge" class="btn btn-lg btn-warning">PUBLICAR</button>
+  </div>
+    </div>
+  </div>
+
+
+  <form id='uploadForm' action='/payoutWinners' method='POST' >
+    <input id="jsonData" type="hidden" name="jsonData" value="">
+  </form>
+  
+
+
+  <div class="container-fluid" style="margin-top:20px; padding: 0px 250px 0px;">
+    <table class="table table-bordered table-striped" style="border:2px solid #444; ">
+      <thead class="thead_style" style="border:2px solid #444; ">
+        <tr class="table_row">
+          <th class="table_head" style="border: none;">Withdrawal ID</th>
+
+          <th class="table_head" style="border: none;">Phone</th>
+          <th class="table_head" style="border: none;">Prize Amount</th>
+
+          <th class="table_head" style="border: none;">Approve withdrawal</th>
+        </tr>
+      </thead>
+      <% userData.map((datai,i)=>{ %>
+      <tbody class="thead_style" style="border:2px solid #444; " id="myTable">
+        <tr style=" background-color:#222;height:20px; ">
+         
+          <td class="table_head" style="border: none;    vertical-align:middle;">
+            <%=datai._id %>
+          </td>
+          <td class="table_head" style="border: none;    vertical-align:middle;">
+            <%=datai.phone %>
+          </td>
+          <td class="table_head" style="border: none;    vertical-align:middle;">
+            <%=datai.amount %>
+          </td>
+          <td class="table_head" style="border: none;     vertical-align:middle;">
+            <h4></h4>
+            <input class='add larger' type="checkbox" id='<%= "checkbox:"+i %>' name='<%= "checkbox:"+i %>' value="<%=datai.associatedTxnID+','+datai.email+','+datai.amount%>" style="width: 3vw;height: 3vw;"></input>            
+          </td>
+        </tr>
+      </tbody>
+      <% }); %>
+    </table>
+  </div>
+  <form id="submitForm" action="/declareResult" method="post">
+  </form>
+
+
+  <div class="modal fade bottom " id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-frame modal-bottom" role="document">
+
+
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center align-items-center">
+            <p class="pt-3 pr-2">
+              Confirm Publish results? You won't be able to make changes after this.
+            </p>
+
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="confirmButton" type="button" class="btn btn-primary">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% } %>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+
+    <div class="modal-content" style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <img src="" id="modalImg" class="lbc-mobile-optimized-img" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>

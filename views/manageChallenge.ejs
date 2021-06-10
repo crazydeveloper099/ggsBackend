@@ -1,0 +1,575 @@
+<%- include('partials/header') %>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    
+    var j=1;
+    var k=1;
+    if($('#isPasswordPublished').val()=='true'){
+      setInterval(()=>{
+      $('#gmtTimeNow').html('<br><br>Its<br>'+moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"))
+      },1000)
+      $('.passButton').html('Password Already Published<br>Click to change')
+    }
+    
+    $('.btn-plus, .btn-minus').on('click', function(e) {
+  const isNegative = $(e.target).closest('.btn-minus').is('.btn-minus');
+  const input = $(e.target).closest('.input-group').find('input');
+  if (input.is('input')) {
+    input[0][isNegative ? 'stepDown' : 'stepUp']()
+  }
+})
+    var timeNow=moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a");     
+    $('#In-YYYY').val(timeNow.split(' ')[0].split('/')[2]);
+    $('#In-MM').val(timeNow.split(' ')[0].split('/')[0]);
+    $('#In-DD').val(timeNow.split(' ')[0].split('/')[1]);
+    $('#In-hh').val(timeNow.split(' ')[1].split(':')[0]);
+    $('#In-mm').val(timeNow.split(' ')[1].split(':')[1]);
+    $('#In-ss').val(timeNow.split(' ')[1].split(':')[2]);
+
+    $('#am').click((e)=>{
+      e.preventDefault();
+      $('#am-pm').html('am');
+    })
+    $('#pm').click((e)=>{
+      e.preventDefault();
+      $('#am-pm').html('pm');
+    })
+
+
+    $("#add_a_prize").click(function () { 
+          
+            $('#thisUl').append('<li><input style="float:left;" id="label'+j+'" for="exampleInputPassword1" placeholder="name '+j+'"></input><input name="prize" type="text"  id="list'+j+'" placeholder="value '+j+'" ></li>');
+            
+          if(j>=1){$('.delete').css('display','inline');$('#link_dropdown').css('display','inline');} 
+          j++;
+        }); 
+      $('.delete').click(function(){
+        j=j-1;
+         if(j<=1){
+          $('.delete').css('display','none');
+          $('#link_dropdown').css('display','none');
+         
+         } 
+        $('#list'+j).remove();
+        $('#label'+j).remove();
+      });  
+    $('.passButton').click(()=>{
+      if($('#passBool').val()==='0'){
+        $('#passBool').val('1');
+        $('.passButton').html('Cancel');
+        $('#add_a_prize').show();
+      }
+      else if($('#passBool').val()==='1'){
+        $('#passBool').val('0');
+        $('.passButton').html('Publish Password');
+        $('#add_a_prize').hide();
+        $('.delete').hide();
+        $("#thisUl").empty();
+        $('#link_dropdown').css('display','none');
+
+      }
+    })  
+
+    $('#nameButton').click(()=>{
+      if(document.getElementById("nameInput").disabled){
+        document.getElementById("nameInput").disabled= false;
+      }
+      else{
+        document.getElementById("nameInput").disabled= true;
+      }
+    })
+    $('#timeButton').click(()=>{
+      if(document.getElementById("timeInput").disabled){
+        document.getElementById("timeInput").disabled= false;
+      }
+      else{
+        document.getElementById("timeInput").disabled= true;
+      }
+    })
+    $('#descButton').click(()=>{
+      if(document.getElementById("descInput").disabled){
+        document.getElementById("descInput").disabled= false;
+      }
+      else{
+        document.getElementById("descInput").disabled= true;
+      }
+    })
+    $('#spotsButton').click(()=>{
+      if(document.getElementById("spotsInput").disabled){
+        document.getElementById("spotsInput").disabled= false;
+      }
+      else{
+        document.getElementById("spotsInput").disabled= true;
+      }
+    })
+    $('#rulesButton').click(()=>{
+      if(document.getElementById("rulesInput").disabled){
+        document.getElementById("rulesInput").disabled= false;
+      }
+      else{
+        document.getElementById("rulesInput").disabled= true;
+      }
+    })
+    for(i=0;i<JSON.parse($('#prizeInput').val()).length;i++){
+      $('#prizeUL').append('<li id="prizeLi'+k+'"><input name="prize" type="text"  id="prizeList'+k+'" value="'+JSON.parse($('#prizeInput').val())[i].S+'" /></li>');
+      k++;
+    }
+  $('#prizeAddButton').click(()=>{
+      $('#prizeUL').append('<li><input name="prize" type="text"  id="prizeList'+k+'" placeholder="Enter Prize" /></li>');
+      if($('#prizeDelButton').css('display') == 'none')
+      {
+        $('#prizeDelButton').css('display','inline-block');
+      }
+      k++;
+    })
+    $('#prizeDelButton').click(()=>{
+      k=k-1;
+      if(k<=1) $('#prizeDelButton').css('display','none');
+      $('#prizeList'+k).remove();
+      $("#prizeLi"+k).remove();
+    });
+    $('#publishChanges').click(()=>{
+      $('#frameModalBottom').modal({
+          show: true
+        });
+    });
+    $("#confirmButton").click(function(e) {
+      $('#frameModalBottom').removeClass('show');
+      var arr=[];
+      var name=$('#nameInput').val();
+      var time=$('#timeInput').val();
+      var desc=$('#descInput').val();
+      var spots=$('#spotsInput').val();
+      var rules=$('#rulesInput').val();
+      var ytLink=$('#ytLink').find(":selected").val()!='undefined'?$('#ytLink').find(":selected").val():'null';
+      var prizesArr=[];
+      var flag=0;
+      var password=[];
+      var passwordTimer=moment(moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"),'MM/DD/YYYY hh:mm:ss a').add(10, 'minutes')
+
+      $('#prizeUL li').each((i)=> {
+        if($('#prizeList'+(i+1)).val().trim()){
+          prizesArr.push($('#prizeList'+(i+1)).val());
+        }
+      });
+      $('#thisUl li').each((i)=>{
+        if($('#label'+(i+1)).val().trim() && $('#list'+(i+1)).val().trim()){
+          var myObj={"key" :$('#label'+(i+1)).val(),
+           "value":$('#list'+(i+1)).val()}
+          password.push(myObj);
+        }
+        else{
+          flag=1;
+          alert("Please Fill all the fields of password.");
+          return;
+      }
+    });
+    var timeSelected=null;
+    if($('#cb1').is(':checked')){
+      timeSelected=$('#In-MM').val()+'/'+$('#In-DD').val()+
+                  '/'+$('#In-YYYY').val()+' '+$('#In-hh').val()+
+                  ':'+$('#In-mm').val()+':'+$('#In-ss').val()+
+                  ' '+$('#am-pm').html().trim()
+      $('#resultTimer').val(timeSelected.trim())            
+    }
+    var resultTimer=$('#resultTimer').val()
+    var endMatch=$('#cb1').is(':checked')
+    if(flag==0){
+      arr.push(name, time, desc, spots, rules, prizesArr, password,ytLink,resultTimer,endMatch,passwordTimer)      
+      sendData(JSON.stringify(arr));  
+      } 
+    });
+    const sendData=(arr)=>{
+      $("#jsonData").val(arr);
+      $("#uploadForm").submit();
+    }
+    jQuery('<div class="quantity-nav"><button class="quantity-button quantity-up">&#xf106;</button><button class="quantity-button quantity-down">&#xf107</button></div>').insertAfter('.quantity input');
+  jQuery('.quantity').each(function () {
+    var spinner = jQuery(this),
+        input = spinner.find('input[type="number"]'),
+        btnUp = spinner.find('.quantity-up'),
+        btnDown = spinner.find('.quantity-down'),
+        min = input.attr('min'),
+        max = input.attr('max');
+
+    btnUp.click(function () {
+      var oldValue = parseFloat(input.val());
+      if (oldValue >= max) {
+        var newVal = oldValue;
+      } else {
+        var newVal = oldValue + 1;
+      }
+      spinner.find("input").val(newVal);
+      spinner.find("input").trigger("change");
+    });
+
+    btnDown.click(function () {
+      var oldValue = parseFloat(input.val());
+      if (oldValue <= min) {
+        var newVal = oldValue;
+      } else {
+        var newVal = oldValue - 1;
+      }
+      spinner.find("input").val(newVal);
+      spinner.find("input").trigger("change");
+    });
+  });
+  });
+</script>
+<style>
+  ul {
+  list-style-type: none;
+}
+
+  
+
+.quantity {
+  position: relative;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.quantity input {
+  width: 60px;
+  height: 42px;
+  line-height: 1.65;
+  float: left;
+  display: block;
+  padding: 0;
+  margin: 0;
+  padding-left: 20px;
+  border: none;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+  font-size: 1rem;
+  border-radius: 4px;
+}
+
+.quantity input:focus {
+  outline: 0;
+}
+
+.quantity-nav {
+  float: left;
+  position: relative;
+  height: 42px;
+}
+
+.quantity-button {
+  position: relative;
+  cursor: pointer;
+  border: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.08);
+  width: 21px;
+  text-align: center;
+  color: #333;
+  font-size: 13px;
+  font-family: "FontAwesome" !important;
+  line-height: 1.5;
+  padding: 0;
+  background: #FAFAFA;
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.quantity-button:active {
+  background: #EAEAEA;
+}
+
+.quantity-button.quantity-up {
+  position: absolute;
+  height: 50%;
+  top: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  font-family: "FontAwesome";
+  border-radius: 0 4px 0 0;
+  line-height: 1.6
+}
+
+.quantity-button.quantity-down {
+  position: absolute;
+  bottom: 0;
+  height: 50%;
+  font-family: "FontAwesome";
+  border-radius: 0 0 4px 0;
+}
+
+label{
+  color: aliceblue;
+  text-align: center;
+  width: 100%;
+}
+
+</style>
+<input type="hidden" id="isPasswordPublished" value='<%=isPasswordPublished%>'>
+<input type="hidden" id="eventType" value='<%=eventType%>'>
+
+<div>
+  <div class="jumbotron jumbotron-fluid" style="background-color:transparent; text-align:center; font-family: 'Monoton', cursive;font-weight:normal;font-style:normal;">
+    <div class="container">
+      <p style="color:#ffa500; font-size:2rem; font-family: 'BIGMACCA';">ADMINISTRAR | RETOS Y TORNEOS</p>
+      <p  style="color:white; font-size:1.5vw; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;"><%=eventType%>
+      </p>
+    </div>
+  </div>
+
+  <div style=" padding: 0px 250px 0px; margin-top:70px;">
+    <div class="shadow_admin" style="background:#222; border-radius:10px; padding:15px;">
+      <img style="border-radius:10px;
+      margin-right:20px;
+      float:left;
+      height:160px;
+      width:300px;
+      margin-top:0px;
+      padding-top:0px;"
+      src=<%=unitChallenge.src.S%>>
+
+
+      <div>
+        <h4 style="color:white;"><%= unitChallenge.challengeName.S %></h4>
+        <h6 style="color:#AAAAAA; margin-top: 2px;"><%- unitChallenge.challengeDescription.S %></h6>
+        <h6 style="color:#AAAAAA;">ID: <%= unitChallenge.challengeId.S %></h6>
+        <button id="publishChanges" type="button" form="editChallenge" class="btn btn-lg btn-warning">PUBLISH CHANGES</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container-fluid" style="margin-top:20px; padding: 0px 250px 0px;">
+    <div>
+      <div>
+        <input id="nameInput" type="text" value="<%=unitChallenge.challengeName.S%>" disabled>
+        <button id="nameButton"><i class="fas fa-edit"></i></button>
+      </div>
+      <div>
+        <input id="timeInput" type="text" value="<%=unitChallenge.challengeTime.S%>" disabled>
+        <button id="timeButton"><i class="fas fa-edit"></i></button>
+      </div>
+      <div>
+        <input id="descInput" type="text" value="<%=unitChallenge.challengeDescription.S%>" disabled>
+        <button id="descButton"><i class="fas fa-edit"></i></button>
+      </div>
+      <div>
+        <input id="spotsInput" type="text" value="<%=unitChallenge.spots.S%>" disabled>
+        <button id="spotsButton"><i class="fas fa-edit"></i></button>
+      </div>
+      <div>
+        <input id="rulesInput" type="text" value="<%=unitChallenge.challengeRules.S%>" disabled>
+        <button id="rulesButton"><i class="fas fa-edit"></i></button>
+      </div>
+      <ul id="prizeUL"></ul>
+      <input id="prizeInput" type="hidden" value="<%=JSON.stringify(unitChallenge.challengePrize.L)%>" disabled>
+      <button id="prizeDelButton"><i class="fas fa-trash-alt"></i> Remove Prize</button>
+      <button id="prizeAddButton"><i class="fas fa-plus"></i> Add Prize</button>
+    </div>
+    <div  id='link_dropdown' style="display:none;">
+      <label for="exampleInputPassword1" id='labelYT' style="color: white;">Choose Video preset</label>
+      <select name="ytLink"  id="ytLink"  class="custom-select">
+        <option selected>Choose</option>
+        <%videoPresetsData.Items.map(iframeCode=>{ %>
+          <option value="<%=iframeCode.iframeCode%>"><%=iframeCode.video_id%></option>
+      <%})%> 
+      </select>
+    </div>
+    <%if(eventType!='Minecraft' && eventType!='StaticChallenge'){%>
+      <div>
+        <ul id="thisUl"></ul> 
+        <button class="passButton btn btn-primary" >Publish Password</button>   
+        <input type="hidden" value="0" id="passBool">   
+        <button id="add_a_prize"  class="btn btn-success" style="display: none;">Add Field</button>
+        <button class="delete btn btn-danger" style="display: none;">Remove Field</button>      
+      </div>
+      <%}%>
+    <%if(isPasswordPublished || (eventType=='Minecraft' || eventType=='StaticChallenge')){%>
+
+      <div>
+        <h5 id='gmtTimeNow' style="color: white;"><strong></strong></h5>
+        <div style="display: inline-flex;">
+        <input type="checkbox" id="cb1" name="vehicle1">
+        <label for="checkBox" style="color: white;text-align: left;"> Mark Lobby as completed</label><br>
+      </div>
+        <label for="resultTimer" style="color: white;display: none;"> Results will be announced by</label><br>
+        <input id="resultTimer" type="text" style="display: none;" placeholder="DD-MM-YYYY HH:MM:SS" >
+      </div>
+
+      <div class="form-group" style="display: inline-block;">
+
+  <div style="text-align: center; display: inline-flex;align-items: center"> 
+    <label for="quantity">YYYY</label>
+    <div class="input-group inline-group">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id='In-YYYY' class="form-control quantity" min="2021" max="2030" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">/MM</label>
+  <div class="input-group inline-group">
+
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-MM" class="form-control quantity" min="1" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">/DD</label>
+  <div class="input-group inline-group">
+
+  <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-DD" class="form-control quantity" min="1" max="31" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">hh</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-hh" class="form-control quantity" min="00" max="12" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">:mm</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-mm" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <label for="quantity">:ss</label>
+  <div class="input-group inline-group">
+    <div class="input-group-prepend">
+      <button class="btn btn-secondary btn-minus">
+        <i class="fa fa-minus"></i>
+      </button>
+    </div>
+    <input id="In-ss" class="form-control quantity" min="00" max="59" name="quantity" value="1" type="number">
+    <div class="input-group-append">
+      <button class="btn btn-secondary btn-plus">
+        <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div>
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="am-pm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 10vw;">
+        am / pm
+      </button>
+      <div class="dropdown-menu" aria-labelledby="am-pm">
+        <a id="am" class="dropdown-item" href="">am</a>
+        <a id="pm" class="dropdown-item" href="">pm</a>
+      </div>
+    </div>
+  </div>
+  </div>
+
+</div>
+
+
+
+      
+      <!-- <div class="quantity">
+        
+        <input type="number" min="2021" max="2050" step="1" value="1">
+      </div>
+      <div class="quantity">
+        <input type="number" min="1" max="12" step="1" value="1">
+      </div>
+      <div class="quantity">
+        <input type="number" min="1" max="31" step="1" value="1">
+      </div> -->
+    <%} %>
+    
+  </div>
+
+  <form id="submitForm" action="/declareResult" method="post"></form>
+
+  <div class="modal fade bottom " id="frameModalBottom" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-frame modal-bottom" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="row d-flex justify-content-center align-items-center">
+            <p class="pt-3 pr-2">
+              Confirm Publish results? You won't be able to make changes after this.
+            </p>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button id="confirmButton" type="button" class="btn btn-primary">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ <div>
+</div>
+<form id='uploadForm' action='/manageChallenge' method='POST'>
+  <input id="jsonData" type="hidden" name="jsonData" value="">
+</form>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+
+  <!-- Add .modal-dialog-centered to .modal-dialog to vertically center the modal -->
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+
+
+    <div class="modal-content" style="background: rgba(20,20, 20, 0.6); backdrop-filter: blur(4px);text-align: center;border-radius: 0.5vw;">
+      <div class="modal-header" style="border: none;">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+       <img src="" id="modalImg" class="lbc-mobile-optimized-img" alt="">
+      </div>
+      
+    </div>
+  </div>
+</div>
+<%- include('partials/footer') %>
