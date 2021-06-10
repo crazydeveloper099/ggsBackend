@@ -12,7 +12,7 @@ const http = require('http').Server(app);
 
 const options={
   cors:true,
-  origins:["http://127.0.0.1:4000"],
+  origins:["http://127.0.0.1:3000"],
 }
 
 const io = require('socket.io')(http,options);
@@ -174,6 +174,6 @@ app.post('/resetPassword',Routes.resetPassword);
 app.post('/newPassword',Routes.newPassword);
 app.post('/subscribeFCM',Routes.subscribeTokenFCM)
 app.post('/mcWhitelistUser',Routes.mcWhitelistUser)
-http.listen(4000, function() {
+http.listen(3000, function() {
   console.log(process.env.NODE_ENV);
 });
