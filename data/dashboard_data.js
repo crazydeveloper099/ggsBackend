@@ -162,6 +162,7 @@ exports.createEvent = (
   livestreamUrl,
   BattlefyLink,
   endTimeStaticEvt,
+  carouselImg,
   callback) => {
     if(eventType!=null){
           const params = {
@@ -191,6 +192,7 @@ exports.createEvent = (
           livestreamUrl,
           "battlefyLink":BattlefyLink,
           endTimeStaticEvt,
+          carouselImg
         }
       };
       docClient.put(params, function(err, data) {
@@ -252,7 +254,7 @@ exports.fetchResult = (eventType, callback) => {
 exports.dbChallengeFetcher = (eventType, callback) => {
   const params = {
     TableName: getEnv(eventType),
-    ProjectionExpression: "challengeId, challengeName, challengePrize,challengeType,challengeTime, src, challengeDescription, challengeRules,isResultPublished, spots, minLevel, createdAt,ytLinkParticipationInfo,ytLinkLobbyTutorial,resultTimer,isMatchEnded,passwordTimer,challengeBase,eventType, battlefyLink,endTimeStaticEvt"
+    ProjectionExpression: "challengeId, challengeName, challengePrize,challengeType,challengeTime, src, challengeDescription, challengeRules,isResultPublished, spots, minLevel, createdAt,ytLinkParticipationInfo,ytLinkLobbyTutorial,resultTimer,isMatchEnded,passwordTimer,challengeBase,eventType, battlefyLink,endTimeStaticEvt, carouselImg"
   };
   docClient.scan(params, (err, data) => {
     if (err) {
@@ -272,7 +274,7 @@ exports.dbChallengeFetcher = (eventType, callback) => {
 exports.challengeFetcher = (eventType, callback) =>{
   const params = {
     TableName: getEnv(eventType),
-    ProjectionExpression: "challengeId, category, challengeDescription, challengeName, challengePrize, challengeRules, src, challengeType, end_time, start_time,isResultPublished,  createdAt,ytLinkParticipationInfo,ytLinkLobbyTutorial,resultTimer,isMatchEnded,passwordTimer,challengeBase,eventType"
+    ProjectionExpression: "challengeId, category, challengeDescription, challengeName, challengePrize, challengeRules, src, challengeType, end_time, start_time,isResultPublished,  createdAt,ytLinkParticipationInfo,ytLinkLobbyTutorial,resultTimer,isMatchEnded,passwordTimer,challengeBase,eventType,carouselImg"
   };
   docClient.scan(params, (err, data) => {
     if (err) {
@@ -759,7 +761,8 @@ exports.participate=(email,id,url,score,gameScore,userData,eventType,isParticipa
         "battlefyLink":dataChallenge.Item.battlefyLink.NULL?null:
                         dataChallenge.Item.battlefyLink.S,
         "endTimeStaticEvt":  dataChallenge.Item.endTimeStaticEvt.NULL?null:
-        dataChallenge.Item.endTimeStaticEvt.S,              
+        dataChallenge.Item.endTimeStaticEvt.S,   
+        "carouselImg":  "carouselImg" in dataChallenge.Item? dataChallenge.Item.carouselImg.S:null         
       }
     }
     
@@ -978,7 +981,9 @@ exports.updateChallenge=(dataChallenge,tokenArr,action,eventType,callback)=>{
         "battlefyLink":dataChallenge.battlefyLink.NULL?null:
                         dataChallenge.battlefyLink.S,
         'endTimeStaticEvt':  dataChallenge.endTimeStaticEvt.NULL?null:
-        dataChallenge.endTimeStaticEvt.S,              
+        dataChallenge.endTimeStaticEvt.S,  
+        "carouselImg":"carouselImg" in dataChallenge? 
+        dataChallenge.carouselImg.S:null               
         }
       }
       docClient.put(params, (err, data)=> {

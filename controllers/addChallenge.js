@@ -18,14 +18,24 @@ exports.getAddChallenge=(req,res)=>{
 exports.postAddChallenges=(req,res)=>{
   const jData= JSON.parse(req.body.jsonData);
  const bufDataFile = new Buffer(req.files.screenshot.data, "utf-8");
+ const bufDataFile2 = new Buffer(req.files.screenshot2.data, "utf-8");
+
  const fname=String(Math.random()*Math.pow(10,17));
+
   fs.writeFile(rootPath.rootPath+"/"+fname+'.jpg', bufDataFile, function(err) {
-    data.uploadFile(rootPath.rootPath+"/"+fname+'.jpg',fname , 'challenges', (url)=>{
+    fs.writeFile(rootPath.rootPath+"/"+fname+'-c'+'.jpg', bufDataFile2, function(err) {
+    
+      data.uploadFile(rootPath.rootPath+"/"+fname+'.jpg',fname , 'challenges', (url)=>{
+          data.uploadFile(rootPath.rootPath+"/"+fname+'-c'+'.jpg',fname+'-c' , 'challenges', (url2)=>{
+
       fs.unlinkSync(rootPath.rootPath+"/"+fname+'.jpg');
+      fs.unlinkSync(rootPath.rootPath+"/"+fname+'-c'+'.jpg');
+
       const challengeName=jData.challengeName;
       const challengeType= jData.challengeType;
       const end_time=jData.end_time;
       const image=url;
+      const carouselImg=url2;
       const id=fname;
       const description=jData.desc;
       const rules=jData.rules;
@@ -57,6 +67,7 @@ exports.postAddChallenges=(req,res)=>{
             livestreamUrl,
             BattlefyLink,
             endTimeStaticEvt,
+            carouselImg,
             (err,data)=>{
             if(err)
             {
@@ -78,6 +89,8 @@ exports.postAddChallenges=(req,res)=>{
             }
           });
   });
+});
+});
 });
 };
 

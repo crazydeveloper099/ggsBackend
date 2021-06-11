@@ -61,7 +61,11 @@ $('#eventTypeForm input:radio').click(function() {
     });
     $('#inputGroupFile02').on('change',function(){
                 var fileName = $(this).val();
-                $(this).next('.custom-file-label').html(fileName);
+                $(this).next('#custom-file-label1').html(fileName);
+    });  
+    $('#inputGroupFile03').on('change',function(){
+                var fileName = $(this).val();
+                $(this).next('#custom-file-label2').html(fileName);
     });  
     setInterval(()=>{
       $('#gmtTimeNow').html('<br><i class="fas fa-clock" style="margin-right:1vw;"></i>'+moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"))
@@ -396,19 +400,24 @@ input:checked + .slider .off
 
   <div class="col-sm">
     <div style="color:#a8a8a8; font-size:1.5rem; margin-top:20px; ">
-      Choose a Picture
+      Choose Image for Card and Carousel
     </div>
     <div class="help-block with-errors"></div>
-
-    <div class="input-group mb-3" stryle="margin-top:20px;">
-      <div class="custom-file">
         <form id='uploadForm' action='/addChallenge' method='POST' encType="multipart/form-data">
           <input id="jsonData" type="hidden" name="jsonData" value=""/>
-          <input type="file" name="screenshot" class="custom-file-input" id="inputGroupFile02" required />
-          <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+          <div class="input-group mb-3" stryle="margin-top:20px;">
+            <div class="custom-file">
+          <input type="file" name="screenshot" class="custom-file-input1" id="inputGroupFile02" required />
+          <label id='custom-file-label1' class="custom-file-label" for="inputGroupFile02">Choose Card Image</label>
+        </div>
+        </div>
+        <div class="input-group mb-3" stryle="margin-top:20px;">
+          <div class="custom-file">
+          <input type="file" name="screenshot2" class="custom-file-input2" id="inputGroupFile03" required />
+          <label id='custom-file-label2' class="custom-file-label" for="inputGroupFile03">Choose Carousel Image</label>
+        </div>
+        </div>
         </form>
-      </div>
-    </div>
   </div>
 
   <div class="form-group">
