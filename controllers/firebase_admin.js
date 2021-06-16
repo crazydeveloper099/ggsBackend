@@ -57,7 +57,7 @@ exports.sendToTopic=(challengeName,challengeId,eventType,callback)=>{
             title:challengeName+" Evento añadido",
             body:"¡Únete y entra a la sala para ganar!",
             icon: 'https://retos-bucket.s3.us-east-2.amazonaws.com//static/ggsLogoNoBg.png',
-            click_action: 'https://ggslatam.gg/events/'+eventType+'?'+challengeId
+            click_action: 'https://ggslatam.gg/events/'+eventType+'/'+challengeId
         },
       },
         topic: 'all'
@@ -78,7 +78,7 @@ exports.sendToTopic=(challengeName,challengeId,eventType,callback)=>{
 
 
 
-exports.sendToTopicResults=(challengeName,challengeId,callback)=>{
+exports.sendToTopicResults=(challengeName,challengeId,eventType,callback)=>{
   if(process.env.NODE_ENV=='development'){
 
       const message = {
@@ -88,7 +88,7 @@ exports.sendToTopicResults=(challengeName,challengeId,callback)=>{
           title:challengeName+" resultados anunciados",
           body:"Revisa las posiciones",
           icon: 'https://retos-bucket.s3.us-east-2.amazonaws.com//static/ggsLogoNoBg.png',
-          click_action: 'https://ggslatam.gg/leaderboard'
+          click_action: 'https://ggslatam.gg/leaderboard#'+eventType+"#"+challengeId
       },
     },
       topic: 'all'
@@ -119,14 +119,14 @@ exports.challengeNotification=(action,resultTime,challengeId,challengeName,event
         {title:challengeName+" El código de la sala ha sido anunciado",
         body:"¡Únete y entra a la sala para ganar!",
         icon: 'https://retos-bucket.s3.us-east-2.amazonaws.com//static/ggsLogoNoBg.png',
-        click_action: 'https://ggslatam.gg/events/'+eventType+'?'+challengeId
+        click_action: 'https://ggslatam.gg/events/'+eventType+'/'+challengeId
 }    } 
     else if(action==='DETAILS_UPDATED'){
       message.webpush.notification=
       {title:'Se ha modificado el evento '+challengeName,
       body:"Mira los cambios ahora.",
       icon: 'https://retos-bucket.s3.us-east-2.amazonaws.com//static/ggsLogoNoBg.png',
-        click_action: 'https://ggslatam.gg/events/'+eventType+'?'+challengeId
+        click_action: 'https://ggslatam.gg/events/'+eventType+'/'+challengeId
 }      } 
 
     else if(action==='MATCH_ENDED'){
@@ -134,7 +134,7 @@ exports.challengeNotification=(action,resultTime,challengeId,challengeName,event
       {title:"El reto "+challengeName+" ha finalizado",
       body:"",
       icon: 'https://retos-bucket.s3.us-east-2.amazonaws.com//static/ggsLogoNoBg.png',
-        click_action: 'https://ggslatam.gg/events/'+eventType+'?'+challengeId
+        click_action: 'https://ggslatam.gg/events/'+eventType+'/'+challengeId
 }    
 
 
