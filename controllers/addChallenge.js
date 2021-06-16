@@ -21,7 +21,10 @@ exports.postAddChallenges=(req,res)=>{
  const bufDataFile2 = new Buffer(req.files.screenshot2.data, "utf-8");
 
  const fname=String(Math.random()*Math.pow(10,17));
-
+ var dir = rootPath.rootPath+'/public/uploads/';
+ if (!fs.existsSync(dir)){
+   fs.mkdirSync(dir);
+}
   fs.writeFile(rootPath.rootPath+"/"+fname+'.jpg', bufDataFile, function(err) {
     fs.writeFile(rootPath.rootPath+"/"+fname+'-c'+'.jpg', bufDataFile2, function(err) {
     

@@ -253,20 +253,30 @@ exports.subscribeTokenFCM=(req,res)=>{
     })
 }
 
+
+
 exports.mcWhitelistUser=(req,res)=>{
     
-    multicraftApi.sendConsoleCommand({"server_id":`${process.env.mcServerID}`, 
-    "command":`easywl add ${req.body.username}`})
-        .then((data) =>{
-            API.updateMCUsername(req.body.email,req.body.username,(err, data)=>{
-                if(err){
-                    console.log(err)
-                    res.send({status:'ERR'})}
-                else{res.send({status:'OK'})}
-            })
-        })
-        .catch((err) => {
-            res.send({status:'ERR'});
-            console.log(err)
-        });
+    multicraftApi.getServerStatus({"id":`${process.env.mcServerID}`})
+    .then(checkMCServerRes=>{
+
+   checkMCServerRes.success?
+       checkMCServerRes.data.status!='offline'?
+            multicraftApi.sendConsoleCommand({"server_id":`${process.env.mcServerID}`, 
+            "command":`easywl add ${req.body.username}`})
+                .then((data) =>{
+                    API.updateMCUsername(req.body.email,req.body.username,(err, data)=>{
+                        if(err){
+                            console.log(err)
+                            res.send({status:'ERR'})}
+                        else{res.send({status:'OK'})}
+                    })
+                })
+                .catch((err) => {
+                    res.send({status:'ERR'});
+                })
+            :res.send({status:'ERR'})
+        :res.send({status:'ERR'});
+    })
+    .catch(err=>res.send({status:'ERR'}))    
 }

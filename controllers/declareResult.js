@@ -61,6 +61,10 @@ exports.uploadMiddleWare = (req, res) => {
       let isResultAlreadyPublished=dataCh.Item.isResultPublished.BOOL;
       if(errCh) {console.log(errCh); res.send(errCh);}
       else{
+        var dir = rootPath.rootPath+'/public/uploads/';
+        if (!fs.existsSync(dir)){
+          fs.mkdirSync(dir);
+      }
       fs.writeFile(
         rootPath.rootPath+"/public/uploads/"+unitChallenge+'.jpg',
         bufDataFile,
@@ -71,7 +75,7 @@ exports.uploadMiddleWare = (req, res) => {
             "results/"+req.cookies.challengeIdChallengeClicked,
             (url) => {
               fs.unlinkSync(rootPath.rootPath+"/public/uploads/"+unitChallenge+'.jpg');
-              fb.sendToTopicResults(dataCh.Item.challengeName.S,unitChallenge, (errFcm, resFcm)=>{
+              fb.sendToTopicResults(dataCh.Item.challengeName.S,unitChallenge, eventType,(errFcm, resFcm)=>{
                 if(errFcm)
                 {res.send(errFcm);}
                 else{
@@ -218,7 +222,7 @@ exports.uploadMiddleWare = (req, res) => {
       let isResultAlreadyPublished=dataCh.Item.isResultPublished.BOOL;
       if(errCh) {console.log(errCh); res.send(errCh);}
       else{
-              fb.sendToTopicResults(dataCh.Item.challengeName.S,unitChallenge,(errFcm, resFcm)=>{
+              fb.sendToTopicResults(dataCh.Item.challengeName.S,unitChallenge,eventType,(errFcm, resFcm)=>{
                 if(errFcm)
                 {res.send(errFcm);}
                 else{

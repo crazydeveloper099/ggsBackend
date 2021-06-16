@@ -28,5 +28,5 @@ exports.uploadFileFromReq=(file,challengeID,eventType,mail,callback)=>{
             callback(url)
           })
         })
-      }
   }
+}

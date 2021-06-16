@@ -60,6 +60,8 @@
         $('#passBool').val('1');
         $('.passButton').html('Cancel');
         $('#add_a_prize').show();
+        $('#passwordTimer').show();
+        $('#passTimerLabel').show()
       }
       else if($('#passBool').val()==='1'){
         $('#passBool').val('0');
@@ -68,6 +70,8 @@
         $('.delete').hide();
         $("#thisUl").empty();
         $('#link_dropdown').css('display','none');
+        $('#passwordTimer').hide();
+        $('#passTimerLabel').hide()
 
       }
     })  
@@ -136,6 +140,7 @@
         });
     });
     $("#confirmButton").click(function(e) {
+     
       $('#frameModalBottom').removeClass('show');
       var arr=[];
       var name=$('#nameInput').val();
@@ -147,13 +152,11 @@
       var prizesArr=[];
       var flag=0;
       var password=[];
-      var passwordTimer=moment(moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"),'MM/DD/YYYY hh:mm:ss a').add(10, 'minutes')
 
-      $('#prizeUL li').each((i)=> {
-        if($('#prizeList'+(i+1)).val().trim()){
-          prizesArr.push($('#prizeList'+(i+1)).val());
-        }
-      });
+
+
+      if($('#passBool').val()==='1'){
+
       $('#thisUl li').each((i)=>{
         if($('#label'+(i+1)).val().trim() && $('#list'+(i+1)).val().trim()){
           var myObj={"key" :$('#label'+(i+1)).val(),
@@ -166,6 +169,22 @@
           return;
       }
     });
+    if($('#passwordTimer').val().length==0){
+        alert('Please Fill password Timer value')
+        return;
+      }
+      else if($('#passwordTimer').val().length>0 && !$.isNumeric($('#passwordTimer').val())){
+        alert('Password timer value can only be numeric signifying the minutes after this moment.')
+        return;
+      }
+      var passwordTimer=moment(moment.tz(new Date(), "GMT").utcOffset(-300).format("MM/DD/YYYY hh:mm:ss a"),'MM/DD/YYYY hh:mm:ss a').add(parseInt($('#passwordTimer').val()), 'minutes')
+
+      $('#prizeUL li').each((i)=> {
+        if($('#prizeList'+(i+1)).val().trim()){
+          prizesArr.push($('#prizeList'+(i+1)).val());
+        }
+      });
+  }
     var timeSelected=null;
     if($('#cb1').is(':checked')){
       timeSelected=$('#In-MM').val()+'/'+$('#In-DD').val()+
@@ -338,18 +357,18 @@ label{
       padding-top:0px;"
       src=<%=unitChallenge.src.S%>>
 
-
       <div>
         <h4 style="color:white;"><%= unitChallenge.challengeName.S %></h4>
         <h6 style="color:#AAAAAA; margin-top: 2px;"><%- unitChallenge.challengeDescription.S %></h6>
         <h6 style="color:#AAAAAA;">ID: <%= unitChallenge.challengeId.S %></h6>
         <button id="publishChanges" type="button" form="editChallenge" class="btn btn-lg btn-warning">PUBLISH CHANGES</button>
+
       </div>
     </div>
   </div>
 
 
-  <div class="container-fluid" style="margin-top:20px; padding: 0px 250px 0px;">
+  <div class="container-fluid" style="margin-top:20px; padding: 0px 250px 0px;text-align: center;">
     <div>
       <div>
         <input id="nameInput" type="text" value="<%=unitChallenge.challengeName.S%>" disabled>
@@ -376,6 +395,12 @@ label{
       <button id="prizeDelButton"><i class="fas fa-trash-alt"></i> Remove Prize</button>
       <button id="prizeAddButton"><i class="fas fa-plus"></i> Add Prize</button>
     </div>
+    <%if(eventType=='LiveEvent') { %>
+      <div style='text-align: center;'>
+        <label for="passwordTimer" id='passTimerLabel' style="color: white;display: none;">Password Timer</label>
+        <input type="text" name='passwordTimer' id="passwordTimer" style="display: none;width: 80%;padding: 10px;" placeholder="Example In 10 mins from now, valid values 10,20,30, etc">
+      </div>
+      <%}%> 
     <div  id='link_dropdown' style="display:none;">
       <label for="exampleInputPassword1" id='labelYT' style="color: white;">Choose Video preset</label>
       <select name="ytLink"  id="ytLink"  class="custom-select">
@@ -388,10 +413,13 @@ label{
     <%if(eventType!='Minecraft' && eventType!='StaticChallenge'){%>
       <div>
         <ul id="thisUl"></ul> 
-        <button class="passButton btn btn-primary" >Publish Password</button>   
+        <button class="passButton btn btn-primary" >Publish Password</button> 
+          
         <input type="hidden" value="0" id="passBool">   
+        
         <button id="add_a_prize"  class="btn btn-success" style="display: none;">Add Field</button>
-        <button class="delete btn btn-danger" style="display: none;">Remove Field</button>      
+        <button class="delete btn btn-danger" style="display: none;">Remove Field</button>
+          
       </div>
       <%}%>
     <%if(isPasswordPublished || (eventType=='Minecraft' || eventType=='StaticChallenge')){%>
