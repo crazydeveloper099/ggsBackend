@@ -33,4 +33,7 @@ yarn-error.log*
 # vercel
 .vercel
 
-.vercel
+# intelliJ /.idea files
+.idea/vcs.xml
+.idea/modules.xml
+.idea/ggsBackend.iml
